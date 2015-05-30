@@ -1,0 +1,13 @@
+All files in this project are licensed under the MPL-2.0 License.
+All original texts and images are licensed under the CC BY-NC-ND 3.0 license.
+Copyright (c) 2015 Alexander Williams, Unscramble <license@unscramble.jp>
+
+WITH THE EXCEPTION OF THE FOLLOWING:
+
+* 'picolisp-unit' licensed under the MIT License and
+  Copyright (c) 2015 Alexander Williams, Unscramble
+  https://github.com/aw/picolisp-unit
+
+* 'picolisp-json' licensed under the MIT License and
+  Copyright (c) 2015 Alexander Williams, Unscramble
+  https://github.com/aw/picolisp-json
