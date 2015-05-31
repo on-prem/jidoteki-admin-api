@@ -21,12 +21,12 @@
   (setq Info (info Json)
         Size (car Info)
         Date '(httpDate (cadr Info) (cddr Info))
-        Body '(in Json (echo) ]
+        Body (in Json (echo) ]
 
 [de json-string (Json)
   (setq Size (length Json)
         Date '(httpDate (date T) (time T))
-        Body  '(prin Json) ]
+        Body '(prin Json) ]
 
 [de response-json (Json Code Flg)
   (default Code 200)
