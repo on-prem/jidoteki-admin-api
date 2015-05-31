@@ -1,0 +1,56 @@
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+#
+# Copyright (c) 2015 Alexander Williams, Unscramble <license@unscramble.jp>
+
+[de settings-fetch ()
+  (let (App     (json~decode (pack *Admin_path "etc/app.json") T)
+        Network (json~decode (pack *Admin_path "etc/network.json") T) )
+
+    (list (append '("network") Network) (append '("app") App)) ]
+
+[de settings-update (Type)
+  (unless (fork)
+    (exec 'sudo (pack *Admin_path "bin/update_settings.sh") Type) )
+
+  (response-generic 202 NIL NIL NIL '(("Content-Type" . "application/json") ("Location" . "/settings") ]
+
+[de settings-store (Settings)
+  (let (App     (cdr (assoc "app" Settings))
+        Network (cdr (assoc "network" Settings)) )
+
+    (out (pack *Upload_path "app.json") (prinl (json~encode App)))
+    (out (pack *Upload_path "network.json") (prinl (json~encode Network)))
+
+    (if
+      (and
+        (cdr (assoc "ip_address" Network))
+        (cdr (assoc "netmask" Network))
+        (cdr (assoc "gateway" Network)) )
+        (settings-update "static")
+        (settings-update "dhcp") ]
+
+[de settings-parse (File)
+  (if (json~decode File T)
+      (settings-store @)
+      (http-msg 400) ]
+
+[de settings-post ()
+  (let (Data (get 'settings 'http)
+        File (tmp Data) )
+    (if (info File)
+        (settings-parse File)
+        (http-msg 400) ]
+
+(de settings-get ()
+  (response-json (json~encode (settings-fetch))) )
+
+(de settings-request ()
+  (if (validate-token (get 'token 'http))
+      (if *Post
+          (settings-post)
+          (settings-get) )
+      (http-msg 403) ) )
+
+(settings-request)

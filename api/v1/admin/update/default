@@ -1,0 +1,46 @@
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+#
+# Copyright (c) 2015 Alexander Williams, Unscramble <license@unscramble.jp>
+
+[de update-log (Lines)
+  (in (list 'tail "-n" Lines (pack *Admin_path "log/update.log")) (pack (replace (till (eof)) "^J" "\\n") ]
+
+[de update-status ()
+  (in (list 'cat (pack *Admin_path "etc/status_update.txt")) (pack (till "^J") ]
+
+[de update-process ()
+  (let (Log     (update-log 10)
+        Status  (update-status) )
+
+    (list (append '("status") Status) (append '("log") Log) ]
+
+(de update-get ()
+  (response-json (json~encode (update-process))) )
+
+[de update-vm ()
+  (unless (fork)
+    (exec 'sudo (pack *Admin_path "bin/update_vm.sh")) )
+
+  (response-generic 202 NIL NIL NIL '(("Content-Type" . "application/json") ("Location" . "/update") ]
+
+(de update-store (File)
+  (call 'mv "-f" File (pack *Upload_path "software_package-zzz.asc"))
+  (update-vm) )
+
+[de update-post ()
+  (let (Data (get 'update 'http)
+        File (tmp Data) )
+    (if (info File)
+        (update-store File)
+        (http-msg 400) ]
+
+(de update-request ()
+  (if (validate-token (get 'token 'http))
+      (if *Post
+          (update-post)
+          (update-get) )
+      (http-msg 403) ) )
+
+(update-request)
