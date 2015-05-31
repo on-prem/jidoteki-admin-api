@@ -53,14 +53,14 @@ It will launch an `stunnel4` process on port `8443`, so ensure an `enterprise.pe
 
 All API calls are prefixed with `/api/v1/admin`.
 
-  1. [Authentication](#Authentication)
-  2. [Set the API token and upload a license](#Set-the-API-token-and-upload-a-license)
-  3. [View the license details](#View-the-license-details)
-  4. [Update the virtual appliance](#Update-the-virtual-appliance)
-  5. [View the status of a software update](#View-the-status-of-a-software-update)
-  6. [View the software update log](#View-the-software-update-log)
-  7. [Update the network and application settings](#Update-the-network-and-application-settings)
-  8. [View the network and application settings](#View-the-network-and-application-settings)
+  1. [Authentication](#authentication)
+  2. [Set the API token and upload a license](#set-the-API-token-and-upload-a-license)
+  3. [View the license details](#view-the-license-details)
+  4. [Update the virtual appliance](#update-the-virtual-appliance)
+  5. [View the status of a software update](#view-the-status-of-a-software-update)
+  6. [View the software update log](#view-the-software-update-log)
+  7. [Update the network and application settings](#update-the-network-and-application-settings)
+  8. [View the network and application settings](#view-the-network-and-application-settings)
 
 ### Authentication
 
