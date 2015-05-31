@@ -23,7 +23,7 @@
   (unless (fork)
     (exec 'sudo (pack *Admin_path "bin/update_vm.sh")) )
 
-  (response-generic 202 NIL NIL NIL '(("Content-Type" . "application/json") ("Location" . "/update") ]
+  (response-generic 202 NIL NIL NIL '(("Location" . "/api/v1/admin/update") ]
 
 (de update-store (File)
   (call 'mv "-f" File (pack *Upload_path "software_package-zzz.asc"))

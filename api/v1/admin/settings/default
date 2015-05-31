@@ -14,7 +14,7 @@
   (unless (fork)
     (exec 'sudo (pack *Admin_path "bin/update_settings.sh") Type) )
 
-  (response-generic 202 NIL NIL NIL '(("Content-Type" . "application/json") ("Location" . "/settings") ]
+  (response-generic 202 NIL NIL NIL '(("Location" . "/api/v1/admin/settings") ]
 
 [de settings-store (Settings)
   (let (App     (cdr (assoc "app" Settings))
