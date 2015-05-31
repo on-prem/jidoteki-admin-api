@@ -21,12 +21,12 @@
   (setq Info (info Json)
         Size (car Info)
         Date '(httpDate (cadr Info) (cddr Info))
-        Body (in Json (echo) ]
+        Body (pack (in Json (till (eof) ]
 
 [de json-string (Json)
   (setq Size (length Json)
         Date '(httpDate (date T) (time T))
-        Body '(prin Json) ]
+        Body Json ]
 
 [de response-json (Json Code Flg)
   (default Code 200)
@@ -50,7 +50,7 @@
     (prin "Last-Modified: ")
     (eval Date)
     (prinl "^M") )
-  (eval Body) ]
+  (prin Body) ]
 
 # Extensions for @lib/http.l
 (undef 'http404)
