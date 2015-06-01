@@ -18,28 +18,21 @@
       (license-validate)
       (http-msg 400) ]
 
-[de license-update-token (Token File)
-  (update-token Token)
-  (if (validate-token Token)
-      (license-update File)
-      (http-msg 403) ]
-
 [de license-post ()
-  (let (Token (get 'token 'http)
-        Data  (get 'license 'http)
+  (let (Data  (get 'license 'http)
         File  (tmp Data) )
-    (if (and Token Data (info File))
-        (license-update-token Token File)
+    (if (and Data (info File))
+        (license-update File)
         (http-msg 400) ]
 
 (de license-get ()
-  (if (validate-token (get 'token 'http))
-      (license-validate)
-      (http-msg 403) ) )
+  (license-validate) )
 
 (de license-request ()
-  (if *Post
-      (license-post)
-      (license-get) ) )
+  (if (validate-token (get 'token 'http))
+      (if *Post
+          (license-post)
+          (license-get) )
+      (http-msg 403) ) )
 
 (license-request)
