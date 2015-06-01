@@ -10,7 +10,6 @@
       (= Token (in Path (line T) ]
 
 [de update-token (Token)
-  (let Path (pack *Admin_path "etc/api.token")
-    (unless (num? (car (info Path)))
-      (out (pack *Upload_path "api.token") (prinl Token))
-      (call 'sudo (pack *Admin_path "bin/update_token.sh") ]
+  (when Token
+    (out (pack *Upload_path "api.token") (prinl Token))
+    (call 'sudo (pack *Admin_path "bin/update_token.sh") ]

@@ -5,4 +5,4 @@
 # Copyright (c) 2015 Alexander Williams, Unscramble <license@unscramble.jp>
 
 (allowed ("api/v1/admin")
-  token license settings update )
+  newtoken token setup license settings update )
