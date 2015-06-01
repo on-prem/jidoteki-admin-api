@@ -54,26 +54,69 @@ It will launch an `stunnel4` process on port `8443`, so ensure an `enterprise.pe
 All API calls are prefixed with `/api/v1/admin`.
 
   1. [Authentication](#authentication)
-  2. [Set the API token and upload a license](#set-the-api-token-and-upload-a-license)
-  3. [View the license details](#view-the-license-details)
-  4. [Update the virtual appliance](#update-the-virtual-appliance)
-  5. [View the status of a software update](#view-the-status-of-a-software-update)
-  6. [View the software update log](#view-the-software-update-log)
-  7. [Update the network and application settings](#update-the-network-and-application-settings)
-  8. [View the network and application settings](#view-the-network-and-application-settings)
+  2. [Set the API token](#set-the-api-token)
+  3. [Change the API token](#change-the-api-token)
+  4. [Upload a license](#upload-a-license)
+  5. [View the license details](#view-the-license-details)
+  6. [Update the virtual appliance](#update-the-virtual-appliance)
+  7. [View the status of a software update](#view-the-status-of-a-software-update)
+  8. [View the software update log](#view-the-software-update-log)
+  9. [Update the network and application settings](#update-the-network-and-application-settings)
+  10. [View the network and application settings](#view-the-network-and-application-settings)
 
 ### Authentication
 
-Each API request requires a valid API token. The API token must be sent on every request as a query parameter: `?token=yourtoken`. The token can only be set once, when uploading a valid license file.
+Each API request requires a valid API token. The API token must be sent on every request as a query parameter: `?token=yourtoken`, except for the initial **setup** API call.
 
-> You **MUST** set the API token and upload a valid license prior to making any other API calls.
+> You **MUST** [set the API token](#set-the-api-token) prior to making any other API calls.
 
-### Set the API token and upload a license
+### Set the API token
 
-This API call allows you to perform two tasks at once:
+This is the initial **setup** API call where you set the API token.
 
-  1. Set the API token
-  2. Upload a license
+**Endpoint**
+
+```
+POST /api/v1/admin/setup
+```
+
+**Parameters**
+
+  * **newtoken**: **(required)** New API token sent as `multipart/form-data`
+
+**Example**
+
+```
+curl -X POST https://enterprise.vm:8443/api/v1/admin/setup -F newtoken=yourtoken
+
+HTTP/1.1 200 OK
+Content-Type: application/json
+{"Status":"200 OK"}
+```
+
+### Change the API token
+
+**Endpoint**
+
+```
+POST /api/v1/admin/setup?token=yourtoken
+```
+
+**Parameters**
+
+  * **newtoken**: **(required)** New API token sent as `multipart/form-data`
+
+**Example**
+
+```
+curl -X POST https://enterprise.vm:8443/api/v1/admin/setup?token=yourtoken -F newtoken=mynewtoken
+
+HTTP/1.1 200 OK
+Content-Type: application/json
+{"Status":"200 OK"}
+```
+
+### Upload a license
 
 **Endpoint**
 
