@@ -17,7 +17,7 @@ All API calls are prefixed with `/api/v1/admin`
 
 Each API request requires a valid API token. The API token must be sent on every request as a query parameter: `?token=yourtoken`, except for the initial **setup** API call.
 
-> *You **MUST** [set the API token](#set-the-api-token) prior to making any other API calls.*
+> *You **MUST** _Set the API token_ prior to making any other API calls.*
 
 ### 2. Set the API token
 
