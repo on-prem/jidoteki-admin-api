@@ -6,3 +6,5 @@
 
 (allowed ("api/v1/admin")
   newtoken token setup license settings update )
+
+(allow "docs/" T)

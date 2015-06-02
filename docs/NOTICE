@@ -1,0 +1,25 @@
+API Documentation licensing:
+
+* 'strapdown.js' licensed under the MIT License and
+  Copyright (c) 2012 Artur B. Adib
+  https://github.com/arturadib/strapdown
+
+* 'Marked' is licensed under the MIT License and
+  Copyright (c) 2011-2014, Christopher Jeffrey
+  https://github.com/chjj/marked
+
+* 'Google Code Prettify' is licensed under the Apache License v2.0 and
+  Copyright (c) Google Inc.
+  https://github.com/google/code-prettify
+
+* 'Twitter Bootstrap' is licensed under the MIT License and
+  Copyright (c) 2011-2015 Twitter, Inc
+  https://github.com/twbs/bootstrap
+
+* 'Bootswatch' is licensed under the MIT License and
+  Copyright 2014 Thomas Park
+  https://github.com/thomaspark/bootswatch.git
+
+* 'API Documentation' licensed under the MPL-2.0 License and
+  Copyright (c) 2015 Alexander Williams, Unscramble
+  https://github.com/unscramble/jidoteki-admin-api.git
