@@ -58,7 +58,7 @@ See the [API Documentation](docs/API.md).
 
 If you find any bugs or issues, please [create an issue](https://github.com/unscramble/jidoteki-admin-api/issues/new).
 
-If you want to improve this library, please make a pull-request.
+If you want to improve this application, please make a pull-request.
 
 # License
 
