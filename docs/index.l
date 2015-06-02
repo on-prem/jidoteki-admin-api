@@ -12,7 +12,5 @@
 
       (json-string (pack Pre "^J" Doc "^J" Suf))
       (response-generic 200 Size Date Body '(("Content-Type" . "text/html") ]
-      # (response-generic 200 Size Date Body '(("Content-Type" . "text/plain; charset=UTF-8") ]
-    # (prinl)
 
 (default-request)
