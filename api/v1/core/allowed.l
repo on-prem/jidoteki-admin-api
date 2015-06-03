@@ -8,3 +8,5 @@
   newtoken token setup license settings update )
 
 (allow "docs/" T)
+
+(allow "index.html")

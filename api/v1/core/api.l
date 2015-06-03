@@ -25,7 +25,7 @@
     (api-stop)
     (https-start)
     (prinl "HTTP listening on port: " *JIDO_API_PORT)
-    (server *JIDO_API_PORT "docs/index.html") ]
+    (server *JIDO_API_PORT "index.html") ]
 
 (de api-stop ()
   (https-stop) )
