@@ -263,4 +263,4 @@ Content-Type: application/json
 }
 ```
 
-[**Copyright notices**](docs/NOTICE)
+[**Copyright notices**](NOTICE)
