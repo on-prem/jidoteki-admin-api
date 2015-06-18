@@ -1,6 +1,6 @@
 [de MODULE_INFO
   ("name"       "jidoteki-admin-api")
-  ("version"    "1.0.0")
+  ("version"    "1.0.1")
   ("summary"    "Jidoteki Admin API")
   ("source"     "https://jidoteki.com")
   ("author"     "Alexander Williams")
@@ -8,5 +8,5 @@
   ("copyright"  "(c) 2015 Alexander Williams, Unscramble <license@unscramble.jp>")
   ("install"    "make")
   ("requires"
-    ("picolisp-unit"    "v0.6.2"    "https://github.com/aw/picolisp-unit.git")
-    ("picolisp-json"    "v0.6.2"    "https://github.com/aw/picolisp-json.git") ]
+    ("picolisp-unit"    "v1.0.0"    "https://github.com/aw/picolisp-unit.git")
+    ("picolisp-json"    "v1.0.0"    "https://github.com/aw/picolisp-json.git") ]

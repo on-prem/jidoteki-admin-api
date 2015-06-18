@@ -5,7 +5,7 @@ PIL_MODULE_DIR ?= .modules
 ## Edit below
 JSON_REPO = https://github.com/aw/picolisp-json.git
 JSON_DIR = $(PIL_MODULE_DIR)/picolisp-json/HEAD
-JSON_REF ?= v0.6.2
+JSON_REF ?= v1.0.0
 ## Edit above
 
 # Unit testing

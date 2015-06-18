@@ -50,6 +50,10 @@ By default, only the HTTP listener will be launched. If you want to start an HTT
 
 It will launch an `stunnel4` process on port `8443`, so ensure an `enterprise.pem` SSL certificate exists in the same directory as `stunnel.conf`.
 
+### JIDO_STUNNEL_BIN
+
+The full path to the `stunnel4` binary. On CentOS it's `/usr/bin/stunnel`, but on Debian it's `/usr/bin/stunnel4`. Defaults to `/usr/bin/stunnel4`.
+
 # API Endpoints
 
 See the [API Documentation](docs/API.md).

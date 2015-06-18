@@ -10,15 +10,19 @@
   *PR_SET_NAME    15
   *JIDO_API_PORT  (if (sys "JIDO_API_PORT") @ 8080) )
 
-# (native "@" "prctl" NIL *PR_SET_NAME "jido-api")
+(native "@" "prctl" NIL *PR_SET_NAME "jido-api")
 
-(de https-start ()
+[de https-start ()
   (when (sys "JIDO_WITH_SSL")
-    (call '/usr/bin/stunnel4 "stunnel.conf") ) )
+    (if (sys "JIDO_STUNNEL_BIN")
+        (call @ "stunnel.conf")
+        (call '/usr/bin/stunnel4 "stunnel.conf") ]
 
-(de https-stop ()
+[de https-stop ()
   (when (sys "JIDO_WITH_SSL")
-    (call 'killall "stunnel4") ) )
+    (if (sys "JIDO_STUNNEL_BIN")
+        (call 'killall @)
+        (call 'killall "stunnel4") ]
 
 [de api-start ()
   (finally
