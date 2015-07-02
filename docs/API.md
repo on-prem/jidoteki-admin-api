@@ -136,6 +136,7 @@ curl -X POST https://enterprise.vm:8443/api/v1/admin/update?token=yourtoken -F u
 
 HTTP/1.1 202 Accepted
 Location: /api/v1/admin/update
+{"Status":"202 Accepted","Location":"/api/v1/admin/update"}
 ```
 
 ### 7. View the status of a software update
@@ -198,6 +199,7 @@ curl -X POST https://enterprise.vm:8443/api/v1/admin/settings?token=yourtoken -F
 
 HTTP/1.1 202 Accepted
 Location: /api/v1/admin/settings
+{"Status":"202 Accepted","Location":"/api/v1/admin/settings"}
 ```
 
 **Example static settings.json**
@@ -263,4 +265,4 @@ Content-Type: application/json
 }
 ```
 
-[**Copyright notices**](NOTICE)
+**Powered by [Jidoteki](https://jidoteki.com) - [Copyright notices](NOTICE)**

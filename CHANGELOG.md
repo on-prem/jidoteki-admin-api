@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.1.0 (2015-07-03)
+
+  * Return JSON body during POST settings/update
+  * Update documentation
+
 ## 1.0.2 (2015-06-22)
 
   * Disable fips in stunnel config (bug in CentOS 6.6)

@@ -14,7 +14,9 @@
   (unless (fork)
     (exec 'sudo (pack *Admin_path "bin/update_settings.sh") Type) )
 
-  (response-generic 202 NIL NIL NIL '(("Location" . "/api/v1/admin/settings") ]
+  (use Size Date Body
+    (json-string [json~encode (list (cons "Status" (pack 202 " " (http-code 202))) (cons "Location" "/api/v1/admin/settings")])
+    (response-generic 202 Size Date Body '(("Location" . "/api/v1/admin/settings") ("Content-Type" . "application/json")) ]
 
 [de settings-store (Settings)
   (let (App     (cdr (assoc "app" Settings))
