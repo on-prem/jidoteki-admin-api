@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1.1 (2015-07-06)
+
+  * Add endpoint to retrieve compressed logs
+
 ## 1.1.0 (2015-07-03)
 
   * Return JSON body during POST settings/update

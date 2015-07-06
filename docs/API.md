@@ -12,6 +12,7 @@ All API calls are prefixed with `/api/v1/admin`
   8. View the software update log
   9. Update the network and application settings
   10. View the network and application settings
+  11. Retrieve compressed log files
 
 ### 1. Authentication
 
@@ -263,6 +264,24 @@ Content-Type: application/json
         "name": "testapp"
     }
 }
+```
+
+### 11. Retrieve compressed log files
+
+**Endpoint**
+
+```
+GET /api/v1/admin/logs
+```
+
+**Example**
+
+```
+curl -X GET https://enterprise.vm:8443/api/v1/admin/logs?token=yourtoken
+
+HTTP/1.1 200 OK
+Content-Type: application/octet-stream
+Filename: logs.tar.gz
 ```
 
 **Powered by [Jidoteki](https://jidoteki.com) - [Copyright notices](NOTICE)**
