@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1.2 (2015-07-06)
+
+  * Add endpoint to retrieve the version of the appliance
+
 ## 1.1.1 (2015-07-06)
 
   * Add endpoint to retrieve compressed logs

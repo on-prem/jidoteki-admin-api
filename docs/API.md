@@ -13,6 +13,8 @@ All API calls are prefixed with `/api/v1/admin`
   9. Update the network and application settings
   10. View the network and application settings
   11. Retrieve compressed log files
+  12. Retrieve the version of the virtual appliance
+
 
 ### 1. Authentication
 
@@ -282,6 +284,26 @@ curl -X GET https://enterprise.vm:8443/api/v1/admin/logs?token=yourtoken
 HTTP/1.1 200 OK
 Content-Type: application/octet-stream
 Filename: logs.tar.gz
+```
+
+### 12. Retrieve the version of the virtual appliance
+
+**Endpoint**
+
+```
+GET /api/v1/admin/version
+```
+
+**Example**
+
+```
+curl -X GET https://enterprise.vm:8443/api/v1/admin/version?token=yourtoken
+
+HTTP/1.1 200 OK
+Content-Type: application/json
+{
+    "version": "1.0.0"
+}
 ```
 
 **Powered by [Jidoteki](https://jidoteki.com) - [Copyright notices](NOTICE)**
