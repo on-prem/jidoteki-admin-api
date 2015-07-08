@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.1.3 (2015-07-08)
+
+  * Add REPO_PREFIX to 'Makefile' to specify alternate path of git repos
+  * Actually add the code to fetch the API version
+
 ## 1.1.2 (2015-07-06)
 
   * Add endpoint to retrieve the version of the appliance

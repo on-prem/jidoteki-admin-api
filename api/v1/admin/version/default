@@ -1,0 +1,22 @@
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+#
+# Copyright (c) 2015 Alexander Williams, Unscramble <license@unscramble.jp>
+
+[de version-number ()
+  (in (list 'cat (pack *Admin_path "etc/version.txt")) (pack (till "^J") ]
+
+[de version-get ()
+  (if (version-number)
+      (response-json (json~encode (list (cons "version" @))))
+      (http-msg 404) ]
+
+(de version-request ()
+  (if (validate-token (get 'token 'http))
+      (if *Post
+          (http-msg 400)
+          (version-get) )
+      (http-msg 403) ) )
+
+(version-request)

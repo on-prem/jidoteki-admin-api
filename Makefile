@@ -1,15 +1,16 @@
 # Makefile
 
 PIL_MODULE_DIR ?= .modules
+REPO_PREFIX ?= https://github.com/aw
 
 ## Edit below
-JSON_REPO = https://github.com/aw/picolisp-json.git
+JSON_REPO = $(REPO_PREFIX)/picolisp-json.git
 JSON_DIR = $(PIL_MODULE_DIR)/picolisp-json/HEAD
 JSON_REF ?= v1.0.0
 ## Edit above
 
 # Unit testing
-TEST_REPO = https://github.com/aw/picolisp-unit.git
+TEST_REPO = $(REPO_PREFIX)/picolisp-unit.git
 TEST_DIR = $(PIL_MODULE_DIR)/picolisp-unit/HEAD
 
 # Generic
