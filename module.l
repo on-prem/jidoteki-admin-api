@@ -1,6 +1,6 @@
 [de MODULE_INFO
   ("name"       "jidoteki-admin-api")
-  ("version"    "1.1.3")
+  ("version"    "1.1.4")
   ("summary"    "Jidoteki Admin API")
   ("source"     "https://jidoteki.com")
   ("author"     "Alexander Williams")
@@ -9,4 +9,4 @@
   ("install"    "make")
   ("requires"
     ("picolisp-unit"    "v1.0.0"    "https://github.com/aw/picolisp-unit.git")
-    ("picolisp-json"    "v1.0.0"    "https://github.com/aw/picolisp-json.git") ]
+    ("picolisp-json"    "v1.1.0"    "https://github.com/aw/picolisp-json.git") ]

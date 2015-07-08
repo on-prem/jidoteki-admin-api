@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1.4 (2015-07-08)
+
+  * Update dependency versions
+
 ## 1.1.3 (2015-07-08)
 
   * Add REPO_PREFIX to 'Makefile' to specify alternate path of git repos
