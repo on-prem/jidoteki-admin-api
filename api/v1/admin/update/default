@@ -21,7 +21,7 @@
 
 [de update-vm ()
   (unless (fork)
-    (exec 'sudo (pack *Admin_path "bin/update_vm.sh")) )
+    (exec 'nohup "sudo" (pack *Admin_path "bin/update_vm.sh")) )
 
   (use Size Date Body
     (json-string [json~encode (list (cons "Status" (pack 202 " " (http-code 202))) (cons "Location" "/api/v1/admin/update")])

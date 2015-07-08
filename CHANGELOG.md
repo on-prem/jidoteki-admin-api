@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1.5 (2015-07-08)
+
+  * Use 'nohup' when processing vm update, to detach it from the parent
+
 ## 1.1.4 (2015-07-08)
 
   * Update dependency versions
