@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.1.6 (2015-08-21)
+
+  * Add endpoint to retrive the changelog of the appliance
+  * Update API documentation
+
 ## 1.1.5 (2015-07-08)
 
   * Use 'nohup' when processing vm update, to detach it from the parent

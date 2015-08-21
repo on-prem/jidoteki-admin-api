@@ -14,6 +14,7 @@ All API calls are prefixed with `/api/v1/admin`
   10. View the network and application settings
   11. Retrieve compressed log files
   12. Retrieve the version of the virtual appliance
+  13. Retrieve the changelog of the virtual appliance
 
 
 ### 1. Authentication
@@ -304,6 +305,31 @@ Content-Type: application/json
 {
     "version": "1.0.0"
 }
+```
+
+### 13. Retrieve the changelog of the virtual appliance
+
+**Endpoint**
+
+```
+GET /api/v1/admin/changelog
+```
+
+**Example**
+
+```
+curl -X GET https://enterprise.vm:8443/api/v1/admin/changelog?token=yourtoken
+
+HTTP/1.1 200 OK
+Content-Type: text/plain
+# Changelog
+
+## 1.0.9 (2015-08-21)
+
+  * Update app to version 2.1.2
+  * Update nodejs modules
+  * Update system packages
+  * Update API to version 1.1.6
 ```
 
 **Powered by [Jidoteki](https://jidoteki.com) - [Copyright notices](NOTICE)**
