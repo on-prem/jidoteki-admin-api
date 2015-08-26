@@ -11,6 +11,8 @@ In combination with the [jidoteki-admin](https://github.com/unscramble/jidoteki-
   * View the status of a software update
   * View and update network settings
   * View and update application settings
+  * Retrieve compressed log files
+  * Retrieve version and changelog of the appliance
 
 # Requirements
 
@@ -18,7 +20,7 @@ In combination with the [jidoteki-admin](https://github.com/unscramble/jidoteki-
   * Git
   * UNIX/Linux development/build tools (gcc, make/gmake, etc..)
   * Stunnel4 (for HTTPS only)
-  * `jidoteki-admin` deployment in `/opt/jidoteki/admin/`
+  * _(optional)_ `jidoteki-admin` deployment in `/opt/jidoteki/admin/`
 
 # Getting started
 
@@ -30,7 +32,7 @@ In combination with the [jidoteki-admin](https://github.com/unscramble/jidoteki-
 
 The API does not need to run as root.
 
-It requires `sudo` access to commands in `/opt/jidoteki/admin/bin`, write access to `/opt/jidoteki/admin/home/sftp/uploads`, and read access to files in `/opt/jidoteki/admin/etc/`.
+If using the [jidoteki-admin](https://github.com/unscramble/jidoteki-admin), it requires `sudo` access to commands in `/opt/jidoteki/admin/bin`, write access to `/opt/jidoteki/admin/home/sftp/uploads`, and read access to files in `/opt/jidoteki/admin/etc/`.
 
 # Environment variables
 
@@ -53,6 +55,10 @@ It will launch an `stunnel4` process on port `8443`, so ensure an `enterprise.pe
 ### JIDO_STUNNEL_BIN
 
 The full path to the `stunnel4` binary. On CentOS it's `/usr/bin/stunnel`, but on Debian it's `/usr/bin/stunnel4`. Defaults to `/usr/bin/stunnel4`.
+
+### JIDO_ADMIN_PATH
+
+The full path to the Admin application. In most cases it refers to `/opt/jidoteki/admin/`, but it may be different depending on the application.
 
 # API Endpoints
 

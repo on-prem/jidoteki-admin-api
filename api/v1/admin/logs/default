@@ -6,7 +6,7 @@
 
 [de logs-get ()
   (sys "SSH_ORIGINAL_COMMAND" "logs")
-  (if (call '/opt/jidoteki/admin/bin/wrapper.sh)
+  (if (call (pack *Admin_path "bin/wrapper.sh"))
       (httpEcho (pack *Upload_path "logs.tar.gz") "application/octet-stream" 1 T)
       (http-msg 404) ]
 

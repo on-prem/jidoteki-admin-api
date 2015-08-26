@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.1.7 (2015-08-26)
+
+  * Remove hardcoded paths for the Admin_path
+  * Add 'JIDO_ADMIN_PATH' env variable for Admin_path
+  * Update documentation
+
 ## 1.1.6 (2015-08-21)
 
   * Add endpoint to retrive the changelog of the appliance
