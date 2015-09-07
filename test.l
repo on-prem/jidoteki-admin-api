@@ -8,7 +8,6 @@
 (chdir "test/"
   (load "test_app.l" "test_core.l") )
 
-(when *CPU
-  (symbols 'unit) )
+(when symbols (symbols 'unit))
 
 (report)

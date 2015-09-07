@@ -33,8 +33,7 @@
     "{\"Status\":\"202 Accepted\"}"
     "{\"Status\": \"202 Accepted\"}" ]
 
-(when *CPU
-  (symbols 'unit) )
+(when symbols (symbols 'unit 'json 'unit))
 
 [execute
   '(assert-t      (validate-token "testtoken") "Ensure token gets validated")
