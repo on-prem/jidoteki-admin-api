@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.2.0 (2015-09-07)
+
+  * Add support for running on a 32-bit OS
+  * Increase minimum PicoLisp requirement to 3.1.10.2+ (json.l)
+
 ## 1.1.7 (2015-08-26)
 
   * Remove hardcoded paths for the Admin_path
