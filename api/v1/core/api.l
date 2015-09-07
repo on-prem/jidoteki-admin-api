@@ -10,8 +10,6 @@
   *PR_SET_NAME    15
   *JIDO_API_PORT  (if (sys "JIDO_API_PORT") @ 8080) )
 
-(native "@" "prctl" NIL *PR_SET_NAME "jido-api")
-
 [de https-start ()
   (when (sys "JIDO_WITH_SSL")
     (if (sys "JIDO_STUNNEL_BIN")

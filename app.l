@@ -9,7 +9,9 @@
 (load "module.l")
 
 # Load dependencies
-(load ".modules/picolisp-json/HEAD/json.l")
+(if *CPU
+  (and (load ".modules/picolisp-json/HEAD/json.l") (symbols 'json))
+  (load "@lib/json.l") )
 
 (setq
   *API_VERSION  (if (sys "JIDO_API_VERSION") @ 1)

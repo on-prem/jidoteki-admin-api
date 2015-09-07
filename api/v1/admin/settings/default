@@ -5,8 +5,8 @@
 # Copyright (c) 2015 Alexander Williams, Unscramble <license@unscramble.jp>
 
 [de settings-fetch ()
-  (let (App     (json~decode (pack *Admin_path "etc/app.json") T)
-        Network (json~decode (pack *Admin_path "etc/network.json") T) )
+  (let (App     (decode (pack *Admin_path "etc/app.json") T)
+        Network (decode (pack *Admin_path "etc/network.json") T) )
 
     (list (append '("network") Network) (append '("app") App)) ]
 
@@ -15,15 +15,15 @@
     (exec 'sudo (pack *Admin_path "bin/update_settings.sh") Type) )
 
   (use Size Date Body
-    (json-string [json~encode (list (cons "Status" (pack 202 " " (http-code 202))) (cons "Location" "/api/v1/admin/settings")])
+    (json-string [encode (list (cons "Status" (pack 202 " " (http-code 202))) (cons "Location" "/api/v1/admin/settings")])
     (response-generic 202 Size Date Body '(("Location" . "/api/v1/admin/settings") ("Content-Type" . "application/json")) ]
 
 [de settings-store (Settings)
   (let (App     (cdr (assoc "app" Settings))
         Network (cdr (assoc "network" Settings)) )
 
-    (out (pack *Upload_path "app.json") (prinl (json~encode App)))
-    (out (pack *Upload_path "network.json") (prinl (json~encode Network)))
+    (out (pack *Upload_path "app.json") (prinl (encode App)))
+    (out (pack *Upload_path "network.json") (prinl (encode Network)))
 
     (if
       (and
@@ -34,7 +34,7 @@
         (settings-update "dhcp") ]
 
 [de settings-parse (File)
-  (if (json~decode File T)
+  (if (decode File T)
       (settings-store @)
       (http-msg 400) ]
 
@@ -46,7 +46,7 @@
         (http-msg 400) ]
 
 (de settings-get ()
-  (response-json (json~encode (settings-fetch))) )
+  (response-json (encode (settings-fetch))) )
 
 (de settings-request ()
   (if (validate-token (get 'token 'http))
