@@ -15,7 +15,7 @@
   (cdr (assoc Code *Http_codes)) )
 
 (de http-msg (Code)
-  (response-json [json~encode (list (cons "Status" (pack Code " " (http-code Code)] Code) )
+  (response-json [encode (list (cons "Status" (pack Code " " (http-code Code)] Code) )
 
 [de json-file (Json)
   (setq Info (info Json)
@@ -57,3 +57,13 @@
 
 (de http404 ()
   (http-msg 404) )
+
+# Extensions for json.l (32-bit only)
+[unless *CPU
+  (de encode (Value)
+    (pipe (printJson Value) (line T)) )
+
+  (de decode (Value Type)
+    (if Type
+      (in Value (readJson))
+      (parseJson Value) ]

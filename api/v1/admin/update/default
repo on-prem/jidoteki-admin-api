@@ -17,14 +17,14 @@
     (list (append '("status") Status) (append '("log") Log) ]
 
 (de update-get ()
-  (response-json (json~encode (update-process))) )
+  (response-json (encode (update-process))) )
 
 [de update-vm ()
   (unless (fork)
     (exec 'nohup "sudo" (pack *Admin_path "bin/update_vm.sh")) )
 
   (use Size Date Body
-    (json-string [json~encode (list (cons "Status" (pack 202 " " (http-code 202))) (cons "Location" "/api/v1/admin/update")])
+    (json-string [encode (list (cons "Status" (pack 202 " " (http-code 202))) (cons "Location" "/api/v1/admin/update")])
     (response-generic 202 Size Date Body '(("Location" . "/api/v1/admin/update") ("Content-Type" . "application/json")) ]
 
 (de update-store (File)

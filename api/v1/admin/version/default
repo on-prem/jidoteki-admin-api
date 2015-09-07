@@ -9,7 +9,7 @@
 
 [de version-get ()
   (if (version-number)
-      (response-json (json~encode (list (cons "version" @))))
+      (response-json (encode (list (cons "version" @))))
       (http-msg 404) ]
 
 (de version-request ()
