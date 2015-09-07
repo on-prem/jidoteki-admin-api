@@ -2,7 +2,7 @@
 
 (load (pack (car (file)) ".modules/picolisp-unit/HEAD/unit.l"))
 (if *CPU
-  (load (pack (car (file)) ".modules/picolisp-json/HEAD/json.l"))
+  (and (load (pack (car (file)) ".modules/picolisp-json/HEAD/json.l")) (symbols 'json))
   (load "@lib/json.l") )
 
 (chdir "test/"
