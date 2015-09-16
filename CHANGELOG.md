@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.2.1 (2015-09-16)
+
+  * Output network settings to network.conf in 'key=value' format
+
 ## 1.2.0 (2015-09-07)
 
   * Add support for running on a 32-bit OS

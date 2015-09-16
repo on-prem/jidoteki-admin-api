@@ -25,12 +25,22 @@
     (out (pack *Upload_path "app.json") (prinl (encode App)))
     (out (pack *Upload_path "network.json") (prinl (encode Network)))
 
-    (if
-      (and
-        (cdr (assoc "ip_address" Network))
-        (cdr (assoc "netmask" Network))
-        (cdr (assoc "gateway" Network)) )
-        (settings-update "static")
+    (if (and
+          (cdr (assoc "ip_address" Network))
+          (cdr (assoc "netmask" Network))
+          (cdr (assoc "gateway" Network)) )
+        (and
+          (out (pack *Upload_path "network.conf")
+            (prinl "mode=static")
+            (prinl "interface=eth0")
+            (prinl "ip=" (cdr (assoc "ip_address" Network)))
+            (prinl "subnet=" (cdr (assoc "netmask" Network)))
+            (prinl "router=" (cdr (assoc "gateway" Network)))
+            (prin "dns=\"") (when (cdr (assoc "dns1" Network)) (prin @)) (when (cdr (assoc "dns2" Network)) (prin " " @)) (prinl "\"") )
+          (settings-update "static") )
+        (out (pack *Upload_path "network.conf")
+          (prinl "mode=dhcp")
+          (prinl "interface=eth0") )
         (settings-update "dhcp") ]
 
 [de settings-parse (File)
