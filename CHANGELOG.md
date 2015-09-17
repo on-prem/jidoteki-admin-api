@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.2.2 (2015-09-16)
+
+  * Output 'hostname' to network.conf
+
 ## 1.2.1 (2015-09-16)
 
   * Output network settings to network.conf in 'key=value' format
