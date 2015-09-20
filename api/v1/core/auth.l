@@ -12,4 +12,5 @@
 [de update-token (Token)
   (when Token
     (out (pack *Upload_path "api.token") (prinl Token))
-    (call 'sudo (pack *Admin_path "bin/update_token.sh") ]
+    (sys "SSH_ORIGINAL_COMMAND" "token")
+    (call (pack *Admin_path "bin/wrapper.sh") ]

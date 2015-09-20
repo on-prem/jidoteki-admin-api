@@ -21,7 +21,9 @@
 
 [de update-vm ()
   (unless (fork)
-    (exec 'nohup "sudo" (pack *Admin_path "bin/update_vm.sh")) )
+    (sys "SSH_ORIGINAL_COMMAND" "update")
+    # use (exec) because we DONT want the result
+    (exec 'nohup (pack *Admin_path "bin/wrapper.sh")) )
 
   (use Size Date Body
     (json-string [encode (list (cons "Status" (pack 202 " " (http-code 202))) (cons "Location" "/api/v1/admin/update")])

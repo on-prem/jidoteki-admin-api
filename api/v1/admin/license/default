@@ -14,7 +14,8 @@
 
 (de license-update (File)
   (call 'mv "-f" File (pack *Upload_path "license.asc"))
-  (if (call 'sudo (pack *Admin_path "bin/update_license.sh"))
+  (sys "SSH_ORIGINAL_COMMAND" "license")
+  (if (call (pack *Admin_path "bin/wrapper.sh"))
       (license-validate)
       (http-msg 400) ]
 

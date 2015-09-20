@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.3.0 (2015-09-20)
+
+  * Replace 'sudo' commands with calls to 'wrapper.sh'
+
 ## 1.2.2 (2015-09-16)
 
   * Output 'hostname' to network.conf
