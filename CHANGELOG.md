@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.3.1 (2015-09-20)
+
+  * Output 'hostname' in dhcp mode as well
+
 ## 1.3.0 (2015-09-20)
 
   * Replace 'sudo' commands with calls to 'wrapper.sh'

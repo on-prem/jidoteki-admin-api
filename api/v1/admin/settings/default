@@ -42,7 +42,8 @@
           (settings-update "static") )
         (out (pack *Upload_path "network.conf")
           (prinl "mode=dhcp")
-          (prinl "interface=eth0") )
+          (prinl "interface=eth0")
+          (prin "hostname=\"") (when (cdr (assoc "hostname" Network)) (prin @)) (prinl "\"") )
         (settings-update "dhcp") ]
 
 [de settings-parse (File)
