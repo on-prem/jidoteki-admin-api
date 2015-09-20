@@ -10,7 +10,7 @@
 #
 # Borrowed from: https://github.com/unscramble/jidoteki-admin
 
-admin_dir="."
+admin_dir="admin"
 
 case "${SSH_ORIGINAL_COMMAND}" in
   "update")
