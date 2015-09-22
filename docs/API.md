@@ -211,6 +211,7 @@ Location: /api/v1/admin/settings
 ```
 {
     "network": {
+        "interface": "eth0",
         "hostname": "test.host",
         "ip_address": "192.168.1.100",
         "netmask": "255.255.255.0",
@@ -231,6 +232,7 @@ Simply omit the `ip_address, netmask, gateway` fields and the network will be re
 ```
 {
     "network": {
+        "interface": "eth0",
         "hostname": "test.host"
     },
     "app": {
@@ -256,6 +258,7 @@ HTTP/1.1 200 OK
 Content-Type: application/json
 {
     "network": {
+        "interface": "eth0",
         "hostname": "test.host",
         "ip_address": "192.168.1.100",
         "netmask": "255.255.255.0",

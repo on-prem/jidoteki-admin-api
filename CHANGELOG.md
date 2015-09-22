@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.4.0 (2015-09-22)
+
+  * Make network interface configurable by outputting 'interface' to network.conf in static/dhcp mode (defaults to eth0)
+
 ## 1.3.1 (2015-09-20)
 
   * Output 'hostname' in dhcp mode as well

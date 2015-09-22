@@ -54,7 +54,7 @@ It will launch an `stunnel4` process on port `8443`, so ensure an `enterprise.pe
 
 ### JIDO_STUNNEL_BIN
 
-The full path to the `stunnel4` binary. On CentOS it's `/usr/bin/stunnel`, but on Debian it's `/usr/bin/stunnel4`. Defaults to `/usr/bin/stunnel4`.
+The name of the stunnel binary. On CentOS it's `stunnel`, but on Debian it's `stunnel4`. Defaults to `stunnel4`.
 
 ### JIDO_ADMIN_PATH
 

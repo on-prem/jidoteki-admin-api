@@ -19,6 +19,28 @@
     (json-string [encode (list (cons "Status" (pack 202 " " (http-code 202))) (cons "Location" "/api/v1/admin/settings")])
     (response-generic 202 Size Date Body '(("Location" . "/api/v1/admin/settings") ("Content-Type" . "application/json")) ]
 
+(de settings-static (Interface Ip_address Netmask Gateway Dns1 Dns2 Hostname)
+  (out (pack *Upload_path "network.conf")
+    (prinl "mode=static")
+    (if Interface
+        (prinl "interface=" Interface)
+        (prinl "interface=eth0") )
+    (prinl "ip=" Ip_address)
+    (prinl "subnet=" Netmask)
+    (prinl "router=" Gateway)
+    (prin "dns=\"") (when Dns1 (prin @)) (when Dns2 (prin " " @)) (prinl "\"")
+    (prin "hostname=\"") (when Hostname (prin @)) (prinl "\"") )
+  (settings-update "static") )
+
+(de settings-dhcp (Interface Hostname)
+  (out (pack *Upload_path "network.conf")
+    (prinl "mode=dhcp")
+    (if Interface
+        (prinl "interface=" Interface)
+        (prinl "interface=eth0") )
+    (prin "hostname=\"") (when Hostname (prin @)) (prinl "\"") )
+  (settings-update "dhcp") )
+
 [de settings-store (Settings)
   (let (App     (cdr (assoc "app" Settings))
         Network (cdr (assoc "network" Settings)) )
@@ -26,25 +48,17 @@
     (out (pack *Upload_path "app.json") (prinl (encode App)))
     (out (pack *Upload_path "network.json") (prinl (encode Network)))
 
-    (if (and
-          (cdr (assoc "ip_address" Network))
-          (cdr (assoc "netmask" Network))
-          (cdr (assoc "gateway" Network)) )
-        (and
-          (out (pack *Upload_path "network.conf")
-            (prinl "mode=static")
-            (prinl "interface=eth0")
-            (prinl "ip=" (cdr (assoc "ip_address" Network)))
-            (prinl "subnet=" (cdr (assoc "netmask" Network)))
-            (prinl "router=" (cdr (assoc "gateway" Network)))
-            (prin "dns=\"") (when (cdr (assoc "dns1" Network)) (prin @)) (when (cdr (assoc "dns2" Network)) (prin " " @)) (prinl "\"")
-            (prin "hostname=\"") (when (cdr (assoc "hostname" Network)) (prin @)) (prinl "\"") )
-          (settings-update "static") )
-        (out (pack *Upload_path "network.conf")
-          (prinl "mode=dhcp")
-          (prinl "interface=eth0")
-          (prin "hostname=\"") (when (cdr (assoc "hostname" Network)) (prin @)) (prinl "\"") )
-        (settings-update "dhcp") ]
+    (let (Ip_address  (cdr (assoc "ip_address" Network))
+          Netmask     (cdr (assoc "netmask" Network))
+          Gateway     (cdr (assoc "gateway" Network))
+          Interface   (cdr (assoc "interface" Network))
+          Dns1        (cdr (assoc "dns1" Network))
+          Dns2        (cdr (assoc "dns2" Network))
+          Hostname    (cdr (assoc "hostname" Network)) )
+
+      (if (and Ip_address Netmask Gateway)
+          (settings-static Interface Ip_address Netmask Gateway Dns1 Dns2 Hostname)
+          (settings-dhcp Interface Hostname) ]
 
 [de settings-parse (File)
   (if (decode File T)
