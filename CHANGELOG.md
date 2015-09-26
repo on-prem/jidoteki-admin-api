@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.5.0 (2015-09-26)
+
+  * Add endpoint to reboot the system
+  * Update documentation to reflect the API's ability to manage all types of systems
+
 ## 1.4.0 (2015-09-22)
 
   * Make network interface configurable by outputting 'interface' to network.conf in static/dhcp mode (defaults to eth0)

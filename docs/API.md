@@ -7,14 +7,15 @@ All API calls are prefixed with `/api/v1/admin`
   3. Change the API token
   4. Upload a license
   5. View the license details
-  6. Update the virtual appliance
+  6. Update the system
   7. View the status of a software update
   8. View the software update log
   9. Update the network and application settings
   10. View the network and application settings
   11. Retrieve compressed log files
-  12. Retrieve the version of the virtual appliance
-  13. Retrieve the changelog of the virtual appliance
+  12. Retrieve the version of the system
+  13. Retrieve the changelog of the system
+  14. Reboot the system
 
 
 ### 1. Authentication
@@ -121,7 +122,7 @@ Content-Type: application/json
 }
 ```
 
-### 6. Update the virtual appliance
+### 6. Update the system
 
 **Endpoint**
 
@@ -160,7 +161,7 @@ HTTP/1.1 200 OK
 Content-Type: application/json
 {
     "status": "success",
-    "log": "[1432140922][VIRTUAL APPLIANCE] Updating virtual appliance successful"
+    "log": "[1432140922][SYSTEM] Updating system successful"
 }
 ```
 
@@ -179,8 +180,8 @@ curl -X GET https://enterprise.vm:8443/api/v1/admin/update/log?token=yourtoken
 
 HTTP/1.1 200 OK
 Content-Type: text/plain
-[1433080791][VIRTUAL APPLIANCE] Updating virtual appliance. Please wait..
-[1433080791][VIRTUAL APPLIANCE] Updating virtual appliance successful
+[1433080791][SYSTEM] Updating system. Please wait..
+[1433080791][SYSTEM] Updating system successful
 ...
 ```
 
@@ -290,7 +291,7 @@ Content-Type: application/octet-stream
 Filename: logs.tar.gz
 ```
 
-### 12. Retrieve the version of the virtual appliance
+### 12. Retrieve the version of the system
 
 **Endpoint**
 
@@ -310,7 +311,7 @@ Content-Type: application/json
 }
 ```
 
-### 13. Retrieve the changelog of the virtual appliance
+### 13. Retrieve the changelog of the system
 
 **Endpoint**
 
@@ -333,6 +334,24 @@ Content-Type: text/plain
   * Update nodejs modules
   * Update system packages
   * Update API to version 1.1.6
+```
+
+### 14. Reboot the system
+
+**Endpoint**
+
+```
+GET /api/v1/admin/reboot
+```
+
+**Example**
+
+```
+curl -X GET https://enterprise.vm:8443/api/v1/admin/reboot?token=yourtoken
+
+HTTP/1.1 202 Accepted
+Content-Type: application/json
+{"Status": "202 Accepted"}
 ```
 
 **Powered by [Jidoteki](https://jidoteki.com) - [Copyright notices](NOTICE)**

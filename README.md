@@ -2,7 +2,7 @@
 
 [![GitHub release](https://img.shields.io/github/release/unscramble/jidoteki-admin-api.svg)](https://github.com/unscramble/jidoteki-admin-api) [![Build Status](https://travis-ci.org/unscramble/jidoteki-admin-api.svg?branch=master)](https://travis-ci.org/unscramble/jidoteki-admin-api) [![Dependency](https://img.shields.io/badge/[deps] picolisp--json-v1.1.0-ff69b4.svg)](https://github.com/aw/picolisp-json) [![Dependency](https://img.shields.io/badge/[deps] picolisp--unit-v1.0.0-ff69b4.svg)](https://github.com/aw/picolisp-unit.git)
 
-This API enables simple management of a [Jidoteki](https://jidoteki.com) Virtual Appliance.
+This API enables simple management of a [Jidoteki](https://jidoteki.com) system.
 
 In combination with the [jidoteki-admin](https://github.com/unscramble/jidoteki-admin), it is possible to use the REST API to:
 
@@ -12,7 +12,8 @@ In combination with the [jidoteki-admin](https://github.com/unscramble/jidoteki-
   * View and update network settings
   * View and update application settings
   * Retrieve compressed log files
-  * Retrieve version and changelog of the appliance
+  * Retrieve version and changelog of the system
+  * Reboot the system
 
 # Requirements
 
