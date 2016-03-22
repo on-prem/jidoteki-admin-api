@@ -75,4 +75,4 @@ If you want to improve this application, please make a pull-request.
 
 [MPL-2.0 License](LICENSE)
 
-Copyright (c) 2015 Alexander Williams, Unscramble <license@unscramble.jp>
+Copyright (c) 2015-2016 Alexander Williams, Unscramble <license@unscramble.jp>

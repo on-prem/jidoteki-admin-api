@@ -137,7 +137,7 @@ POST /api/v1/admin/update
 **Example**
 
 ```
-curl -X POST https://enterprise.vm:8443/api/v1/admin/update?token=yourtoken -F update=@software_update-v1.2.0.asc
+curl -X POST https://enterprise.vm:8443/api/v1/admin/update?token=yourtoken -F update=@software_update-v1.2.0.enc
 
 HTTP/1.1 202 Accepted
 Location: /api/v1/admin/update

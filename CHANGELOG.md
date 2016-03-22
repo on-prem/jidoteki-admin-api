@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.6.0 (2016-03-22)
+
+  * Use software packages with '.enc' extension instead of '.asc'
+
 ## 1.5.0 (2015-09-26)
 
   * Add endpoint to reboot the system

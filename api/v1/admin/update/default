@@ -2,7 +2,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (c) 2015 Alexander Williams, Unscramble <license@unscramble.jp>
+# Copyright (c) 2015-2016 Alexander Williams, Unscramble <license@unscramble.jp>
 
 [de update-log (Lines)
   (in (list 'tail "-n" Lines (pack *Admin_path "log/update.log")) (pack (replace (till (eof)) "^J" "\\n") ]
@@ -30,7 +30,7 @@
     (response-generic 202 Size Date Body '(("Location" . "/api/v1/admin/update") ("Content-Type" . "application/json")) ]
 
 (de update-store (File)
-  (call 'mv "-f" File (pack *Upload_path "software_package-zzz.asc"))
+  (call 'mv "-f" File (pack *Upload_path "software_package-zzz.enc"))
   (update-vm) )
 
 [de update-post ()
