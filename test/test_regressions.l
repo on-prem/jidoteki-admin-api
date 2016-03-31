@@ -7,8 +7,4 @@
                       "Regression test GH issue #12 - Server cannot start when JIDO_API_PORT env var is set" ]
 
 [unit~execute
-  '(test-gh-issue-12)
-  '(unit~assert-equal 1
-                      *JIDO_API_VERSION
-                      "Ensure JIDO_API_VERSION is an integer. Identical fix as #12")
-]
+  '(test-gh-issue-12) ]
