@@ -8,7 +8,7 @@
 
 (setq
   *PR_SET_NAME    15
-  *JIDO_API_PORT  (if (sys "JIDO_API_PORT") @ 8080) )
+  *JIDO_API_PORT  (if (format (sys "JIDO_API_PORT")) @ 8080) )
 
 [de https-start ()
   (when (sys "JIDO_WITH_SSL")
