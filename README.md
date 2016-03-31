@@ -17,7 +17,7 @@ In combination with the [jidoteki-admin](https://github.com/unscramble/jidoteki-
 
 # Requirements
 
-  * PicoLisp 32-bit or 64-bit v3.1.10.2+
+  * PicoLisp 32-bit or 64-bit v3.1.11+
   * Git
   * UNIX/Linux development/build tools (gcc, make/gmake, etc..)
   * Stunnel4 (for HTTPS only)

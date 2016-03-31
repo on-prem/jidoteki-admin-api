@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.6.1 (2016-03-31)
+
+  * Fix issue #12 - Server cannot start when JIDO_API_PORT env var (patrixl)
+  * Apply identical fix in #12 to JIDO_API_VERSION env var
+
 ## 1.6.0 (2016-03-22)
 
   * Use software packages with '.enc' extension instead of '.asc'

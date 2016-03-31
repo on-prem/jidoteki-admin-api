@@ -14,7 +14,7 @@
   (load "@lib/json.l") )
 
 (setq
-  *API_VERSION  (if (sys "JIDO_API_VERSION") @ 1)
+  *API_VERSION  (if (format (sys "JIDO_API_VERSION")) @ 1)
   *API_PATH     (pack "api/v" *API_VERSION)
   *Admin_path   (if (sys "JIDO_ADMIN_PATH") @ "/opt/jidoteki/admin/")
   *Upload_path  (pack *Admin_path "home/sftp/uploads/") )
