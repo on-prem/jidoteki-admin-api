@@ -33,15 +33,13 @@
     "{\"Status\":\"202 Accepted\"}"
     "{\"Status\": \"202 Accepted\"}" ]
 
-(when symbols (symbols 'unit 'json 'unit))
-
-[execute
-  '(assert-t      (validate-token "testtoken") "Ensure token gets validated")
-  '(assert-nil    (validate-token "badtoken") "Ensure invalid token doesn't get validated")
-  '(assert-t      (test-update-token) "Ensure token gets updated")
-  '(assert-equal  "OK" (http-code 200) "Ensure the HTTP message for 200 is 'OK'")
-  '(assert-equal  (test-202-accepted) (http-msg 202) "Ensure the HTTP message for 202 is returned as JSON")
-  '(assert-t      (test-json-file) "Ensure JSON file is validated")
-  '(assert-t      (test-json-string) "Ensure JSON string is validated")
-  '(assert-t      (test-response-json) "Ensure a generic HTTP response is returned")
+[unit~execute
+  '(unit~assert-t      (validate-token "testtoken") "Ensure token gets validated")
+  '(unit~assert-nil    (validate-token "badtoken") "Ensure invalid token doesn't get validated")
+  '(unit~assert-t      (test-update-token) "Ensure token gets updated")
+  '(unit~assert-equal  "OK" (http-code 200) "Ensure the HTTP message for 200 is 'OK'")
+  '(unit~assert-equal  (test-202-accepted) (http-msg 202) "Ensure the HTTP message for 202 is returned as JSON")
+  '(unit~assert-t      (test-json-file) "Ensure JSON file is validated")
+  '(unit~assert-t      (test-json-string) "Ensure JSON string is validated")
+  '(unit~assert-t      (test-response-json) "Ensure a generic HTTP response is returned")
 ]
