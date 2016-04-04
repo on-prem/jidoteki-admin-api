@@ -1,4 +1,4 @@
-# API Documentation
+# API Documentation v1.7.0
 
 All API calls are prefixed with `/api/v1/admin`
 
@@ -13,9 +13,10 @@ All API calls are prefixed with `/api/v1/admin`
   9. Update the network and application settings
   10. View the network and application settings
   11. Retrieve compressed log files
-  12. Retrieve the version of the system
-  13. Retrieve the changelog of the system
-  14. Reboot the system
+  12. Retrieve an encrypted debug bundle
+  13. Retrieve the version of the system
+  14. Retrieve the changelog of the system
+  15. Reboot the system
 
 
 ### 1. Authentication
@@ -291,7 +292,25 @@ Content-Type: application/octet-stream
 Filename: logs.tar.gz
 ```
 
-### 12. Retrieve the version of the system
+### 12. Retrieve an encrypted debug bundle
+
+**Endpoint**
+
+```
+GET /api/v1/admin/debug
+```
+
+**Example**
+
+```
+curl -X GET https://enterprise.vm:8443/api/v1/admin/debug?token=yourtoken
+
+HTTP/1.1 200 OK
+Content-Type: application/octet-stream
+Filename: debug-bundle.tar
+```
+
+### 13. Retrieve the version of the system
 
 **Endpoint**
 
@@ -311,7 +330,7 @@ Content-Type: application/json
 }
 ```
 
-### 13. Retrieve the changelog of the system
+### 14. Retrieve the changelog of the system
 
 **Endpoint**
 
@@ -336,7 +355,7 @@ Content-Type: text/plain
   * Update API to version 1.1.6
 ```
 
-### 14. Reboot the system
+### 15. Reboot the system
 
 **Endpoint**
 

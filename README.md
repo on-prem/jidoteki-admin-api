@@ -12,6 +12,7 @@ In combination with the [jidoteki-admin](https://github.com/unscramble/jidoteki-
   * View and update network settings
   * View and update application settings
   * Retrieve compressed log files
+  * Retrieve an encrypted debug bundle
   * Retrieve version and changelog of the system
   * Reboot the system
 

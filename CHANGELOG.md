@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.7.0 (2016-04-04)
+
+  * Add endpoint to retrieve an encrypted debug bundle
+
 ## 1.6.1 (2016-03-31)
 
   * Fix issue #12 - Server cannot start when JIDO_API_PORT env var (patrixl)
