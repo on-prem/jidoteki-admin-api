@@ -5,7 +5,7 @@
 # Copyright (c) 2015 Alexander Williams, Unscramble <license@unscramble.jp>
 
 (allowed ("api/v1/admin")
-  reboot newtoken token setup license settings update logs version changelog )
+  debug reboot newtoken token setup license settings update logs version changelog )
 
 (allow "docs/" T)
 
