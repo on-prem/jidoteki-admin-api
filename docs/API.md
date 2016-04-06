@@ -1,4 +1,4 @@
-# API Documentation v1.7.0
+# API Documentation v1.8.0
 
 All API calls are prefixed with `/api/v1/admin`
 
@@ -16,7 +16,9 @@ All API calls are prefixed with `/api/v1/admin`
   12. Retrieve an encrypted debug bundle
   13. Retrieve the version of the system
   14. Retrieve the changelog of the system
-  15. Reboot the system
+  15. Upload and update TLS certificates
+  16. View the status of a TLS certificate update
+  17. Reboot the system
 
 
 ### 1. Authentication
@@ -355,7 +357,51 @@ Content-Type: text/plain
   * Update API to version 1.1.6
 ```
 
-### 15. Reboot the system
+### 15. Upload and update TLS certificates
+
+**Endpoint**
+
+```
+POST /api/v1/admin/certs
+```
+
+**Parameters**
+
+  * **public**: **(required)** Public TLS certificate (PEM format) sent as `multipart/form-data`
+  * **private**: **(required)** Private TLS certificate key (unencrypted RSA format) sent as `multipart/form-data`
+  * **ca**: **(optional)** Intermediate or Root TLS certificate (PEM format) sent as `multipart/form-data`
+
+**Example**
+
+```
+curl -X POST https://enterprise.vm:8443/api/v1/admin/certs?token=yourtoken -F public=@enterprise.vm.pem -F private=@enterprise.vm.key -F ca=@enterprise-ca.pem
+
+HTTP/1.1 202 Accepted
+Location: /api/v1/admin/certs
+{"Status":"202 Accepted","Location":"/api/v1/admin/certs"}
+```
+
+### 16. View the status of a TLS certificate update
+
+**Endpoint**
+
+```
+GET /api/v1/admin/certs
+```
+
+**Example**
+
+```
+curl -X GET https://enterprise.vm:8443/api/v1/admin/certs?token=yourtoken
+
+HTTP/1.1 200 OK
+Content-Type: application/json
+{
+    "log": "[1459884203][SYSTEM] Validating and adding TLS certificates"
+}
+```
+
+### 17. Reboot the system
 
 **Endpoint**
 

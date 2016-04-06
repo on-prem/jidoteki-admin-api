@@ -8,6 +8,7 @@ In combination with the [jidoteki-admin](https://github.com/unscramble/jidoteki-
 
   * Upload and validate a license file
   * Upload a software update package
+  * Upload TLS certificates
   * View the status of a software update
   * View and update network settings
   * View and update application settings
