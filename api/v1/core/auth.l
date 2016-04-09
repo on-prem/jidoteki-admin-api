@@ -4,14 +4,12 @@
 #
 # Copyright (c) 2015-2016 Alexander Williams, Unscramble <license@unscramble.jp>
 
-[de get-sha256 (String)
+[de get-sha256 (String Key)
   # works around output diff between openssl 0.9.8 and 1.0.x
-  (pipe (out '(openssl dgst -sha256) (prin String))
-        (pack (last (split (chop (line T)) " ") ]
-
-[de get-hmac256 (String Key)
-  (pipe (out (list 'openssl "dgst" "-sha256" "-hmac" Key) (prin String))
-        (pack (last (split (chop (line T)) " ") ]
+  (let Hmac
+    (when Key '("-hmac" `Key))
+    (pipe (out (list 'openssl "dgst" "-sha256" Hmac) (prin String))
+          (pack (last (split (chop (line T)) " ") ]
 
 [de get-http-method ()
   (if *Post
@@ -26,7 +24,7 @@
   (let (Path      (pack *Admin_path "etc/api.token")
         Token     (when (num? (car (info Path))) (in Path (line T)))
         Tokenhash (get-sha256 Token)
-        Hmac      (get-hmac256 (pack (get-http-method) "/" (get-http-url)) Tokenhash) )
+        Hmac      (get-sha256 (pack (get-http-method) "/" (get-http-url)) Tokenhash) )
 
     (= Hash Hmac) ]
 
