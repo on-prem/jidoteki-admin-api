@@ -465,4 +465,4 @@ Content-Type: application/json
 {"Status": "202 Accepted"}
 ```
 
-**Powered by [Jidoteki](https://jidoteki.com) - [Copyright notices](NOTICE)**
+**Powered by [Jidoteki](https://jidoteki.com) - [Copyright notices](docs/NOTICE)**
