@@ -1,4 +1,4 @@
-# API Documentation v1.8.0
+# API Documentation v1.9.0
 
 All API calls are prefixed with `/api/v1/admin`
 
@@ -21,11 +21,55 @@ All API calls are prefixed with `/api/v1/admin`
   17. Reboot the system
 
 
-### 1. Authentication
+## 1. Authentication
 
-Each API request requires a valid API token. The API token must be sent on every request as a query parameter: `?token=yourtoken`, except for the initial **setup** API call.
+There are two methods to perform authentication (Token and HMAC).
 
-> *You **MUST** _Set the API token_ prior to making any other API calls.*
+Each API request requires a valid API token or HMAC hash. One must be sent on every request as a query parameter.
+
+> *You **MUST** _Set the API token_ prior to making any API calls.*
+
+### Token-based authentication
+
+Query parameter: `?token=yourtoken`, except for the initial **setup** API call.
+
+### HMAC-based authentication
+
+Query parameter: `?hash=sha256hash`
+
+If using HMAC authentication, you must generate a signature following these steps:
+
+1. Generate an SHA256 hash of your API token, ex:
+
+```
+echo -n "yourtoken" | openssl dgst -sha256
+```
+
+This should return the SHA256 hash, your new _secret key_:
+
+```
+13e2ff941bbc8692cad141c8d293dda2c4f1c1a3c51b93d54f1a1693e1206107
+```
+
+2. Concatenate the **HTTP Method** and **Endpoint**, and generate an SHA256 HMAC hash using your _secret key_, ex:
+
+```
+echo -n "GET/api/v1/admin/version" | openssl dgst -sha256 -hmac 13e2ff941bbc8692cad141c8d293dda2c4f1c1a3c51b93d54f1a1693e1206107
+```
+
+This should return the HMAC hash:
+
+```
+b714a60732e096ccef06e360eefe0f1ba4fa5d16ef7da726612e2026e5523241
+```
+
+3. Append the HMAC hash as a query parameter, ex:
+
+```
+GET /api/v1/admin/version?hash=b714a60732e096ccef06e360eefe0f1ba4fa5d16ef7da726612e2026e5523241
+```
+
+Using HMAC-based authentication, every API request will require a newly generated HMAC hash.
 
 ### 2. Set the API token
 
@@ -56,7 +100,7 @@ Content-Type: application/json
 **Endpoint**
 
 ```
-POST /api/v1/admin/setup?token=yourtoken
+POST /api/v1/admin/setup
 ```
 
 **Parameters**
@@ -324,6 +368,8 @@ GET /api/v1/admin/version
 
 ```
 curl -X GET https://enterprise.vm:8443/api/v1/admin/version?token=yourtoken
+or
+curl -X GET https://enterprise.vm:8443/api/v1/admin/version?hash=b714a60732e096ccef06e360eefe0f1ba4fa5d16ef7da726612e2026e5523241
 
 HTTP/1.1 200 OK
 Content-Type: application/json

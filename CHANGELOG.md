@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.9.0 (2016-04-09)
+
+  * Add HMAC signature-based authentication
+
 ## 1.8.0 (2016-04-06)
 
   * Add endpoint to upload and update TLS certificates
