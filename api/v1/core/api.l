@@ -10,6 +10,8 @@
   *PR_SET_NAME    15
   *JIDO_API_PORT  (if (format (sys "JIDO_API_PORT")) @ 8080) )
 
+(mime "md" "text/markdown; charset=UTF-8" 60)
+
 [de https-start ()
   (when (sys "JIDO_WITH_SSL")
     (if (sys "JIDO_STUNNEL_BIN")
