@@ -6,10 +6,8 @@
 
 [de get-sha256 (String Key)
   # works around output diff between openssl 0.9.8 and 1.0.x
-  (let Hmac
-    (when Key '("-hmac" `Key))
-    (pipe (out (list 'openssl "dgst" "-sha256" Hmac) (prin String))
-          (pack (last (split (chop (line T)) " ") ]
+  (pipe (out (trim (list 'openssl "dgst" "-sha256" (when Key "-hmac") Key)) (prin String))
+        (pack (last (split (chop (line T)) " ") ]
 
 [de get-http-method ()
   (if *Post
