@@ -4,16 +4,4 @@
 #
 # Copyright (c) 2015-2016 Alexander Williams, Unscramble <license@unscramble.jp>
 
-[de log-get ()
-  (use Log Info Size Date Body
-    (setq Log  (pack *Admin_path "log/update.log"))
-    (json-file Log)
-
-    (response-generic 200 Size Date Body '(("Content-Type" . "text/plain") ]
-
-(de log-request ()
-  (if (validate-auth)
-      (unless *Post (log-get))
-      (http-msg 403) ) )
-
-(log-request)
+(load (pack (car (file)) "index.l"))

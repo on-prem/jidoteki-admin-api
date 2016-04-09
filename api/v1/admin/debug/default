@@ -4,17 +4,4 @@
 #
 # Copyright (c) 2015-2016 Alexander Williams, Unscramble <license@unscramble.jp>
 
-[de debug-get ()
-  (sys "SSH_ORIGINAL_COMMAND" "debug")
-  (if (call (pack *Admin_path "bin/wrapper.sh"))
-      (httpEcho (pack *Upload_path "debug-bundle.tar") "application/octet-stream" 1 T)
-      (http-msg 404) ]
-
-(de debug-request ()
-  (if (validate-auth)
-      (if *Post
-          (http-msg 400)
-          (debug-get) )
-      (http-msg 403) ) )
-
-(debug-request)
+(load (pack (car (file)) "index.l"))

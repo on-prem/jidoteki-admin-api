@@ -1,0 +1,85 @@
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+#
+# Copyright (c) 2015-2016 Alexander Williams, Unscramble <license@unscramble.jp>
+
+[de settings-fetch ()
+  (let (App     (decode (pack *Admin_path "etc/app.json") T)
+        Network (decode (pack *Admin_path "etc/network.json") T) )
+
+    (list (append '("network") Network) (append '("app") App)) ]
+
+[de settings-update (Type)
+  (unless (fork)
+    (sys "SSH_ORIGINAL_COMMAND" (pack "settings " Type))
+    (call (pack *Admin_path "bin/wrapper.sh")) )
+
+  (use Size Date Body
+    (json-string [encode (list (cons "Status" (pack 202 " " (http-code 202))) (cons "Location" "/api/v1/admin/settings")])
+    (response-generic 202 Size Date Body '(("Location" . "/api/v1/admin/settings") ("Content-Type" . "application/json")) ]
+
+(de settings-static (Interface Ip_address Netmask Gateway Dns1 Dns2 Hostname)
+  (out (pack *Upload_path "network.conf")
+    (prinl "mode=static")
+    (if Interface
+        (prinl "interface=" Interface)
+        (prinl "interface=eth0") )
+    (prinl "ip=" Ip_address)
+    (prinl "subnet=" Netmask)
+    (prinl "router=" Gateway)
+    (prin "dns=\"") (when Dns1 (prin @)) (when Dns2 (prin " " @)) (prinl "\"")
+    (prin "hostname=\"") (when Hostname (prin @)) (prinl "\"") )
+  (settings-update "static") )
+
+(de settings-dhcp (Interface Hostname)
+  (out (pack *Upload_path "network.conf")
+    (prinl "mode=dhcp")
+    (if Interface
+        (prinl "interface=" Interface)
+        (prinl "interface=eth0") )
+    (prin "hostname=\"") (when Hostname (prin @)) (prinl "\"") )
+  (settings-update "dhcp") )
+
+[de settings-store (Settings)
+  (let (App     (cdr (assoc "app" Settings))
+        Network (cdr (assoc "network" Settings)) )
+
+    (out (pack *Upload_path "app.json") (prinl (encode App)))
+    (out (pack *Upload_path "network.json") (prinl (encode Network)))
+
+    (let (Ip_address  (cdr (assoc "ip_address" Network))
+          Netmask     (cdr (assoc "netmask" Network))
+          Gateway     (cdr (assoc "gateway" Network))
+          Interface   (cdr (assoc "interface" Network))
+          Dns1        (cdr (assoc "dns1" Network))
+          Dns2        (cdr (assoc "dns2" Network))
+          Hostname    (cdr (assoc "hostname" Network)) )
+
+      (if (and Ip_address Netmask Gateway)
+          (settings-static Interface Ip_address Netmask Gateway Dns1 Dns2 Hostname)
+          (settings-dhcp Interface Hostname) ]
+
+[de settings-parse (File)
+  (if (decode File T)
+      (settings-store @)
+      (http-msg 400) ]
+
+[de settings-post ()
+  (let (Data (get 'settings 'http)
+        File (tmp Data) )
+    (if (info File)
+        (settings-parse File)
+        (http-msg 400) ]
+
+(de settings-get ()
+  (response-json (encode (settings-fetch))) )
+
+(de settings-request ()
+  (if (validate-auth)
+      (if *Post
+          (settings-post)
+          (settings-get) )
+      (http-msg 403) ) )
+
+(settings-request)
