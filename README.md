@@ -22,6 +22,7 @@ In combination with the [jidoteki-admin](https://github.com/unscramble/jidoteki-
   * PicoLisp 32-bit or 64-bit v3.1.11+
   * Git
   * UNIX/Linux development/build tools (gcc, make/gmake, etc..)
+  * OpenSSL command line tool (openssl)
   * Stunnel4 (for HTTPS only)
   * _(optional)_ `jidoteki-admin` deployment in `/opt/jidoteki/admin/`
 
