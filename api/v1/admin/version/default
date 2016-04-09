@@ -13,7 +13,7 @@
       (http-msg 404) ]
 
 (de version-request ()
-  (if (validate-token (get 'token 'http))
+  (if (validate-auth)
       (if *Post
           (http-msg 400)
           (version-get) )

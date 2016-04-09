@@ -51,7 +51,7 @@
     (certs-update) ]
 
 (de certs-request ()
-  (if (validate-token (get 'token 'http))
+  (if (validate-auth)
       (if *Post
           (certs-post)
           (certs-get) )

@@ -41,7 +41,7 @@
         (http-msg 400) ]
 
 (de update-request ()
-  (if (validate-token (get 'token 'http))
+  (if (validate-auth)
       (if *Post
           (update-post)
           (update-get) )
