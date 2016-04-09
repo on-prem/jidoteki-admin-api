@@ -7,6 +7,6 @@
 (allowed ("api/v1/admin")
   hash public private ca certs debug reboot newtoken token setup license settings update logs version changelog )
 
-(allow "docs/" T)
+(allow "docs" T)
 
 (allow "index.html")
