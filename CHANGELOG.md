@@ -3,6 +3,9 @@
 ## 1.9.0 (2016-04-09)
 
   * Add HMAC signature-based authentication
+  * Add new text/markdown mime type
+  * Update documentation explaining HMAC authentication
+  * Implement fix to hide source code when calling a /default file directly
 
 ## 1.8.0 (2016-04-06)
 
