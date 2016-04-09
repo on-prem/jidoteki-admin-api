@@ -34,7 +34,7 @@
     "{\"Status\": \"202 Accepted\"}" ]
 
 [de test-hmac-request ()
-  (let *Url "GET/api/v1/admin/version"
+  (let *Url "api/v1/admin/version/index.l"
     (validate-hash "39791be66bfbce4966b6c3feb7bfcb9118c285fa952b030a9af2fcf64f1a67ac") ]
 
 [unit~execute
@@ -46,5 +46,5 @@
   '(unit~assert-t      (test-json-file) "Ensure JSON file is validated")
   '(unit~assert-t      (test-json-string) "Ensure JSON string is validated")
   '(unit~assert-t      (test-response-json) "Ensure a generic HTTP response is returned")
-  '(unit~assert-t      (test-hmac-request) "Ensure token gets validated")
+  '(unit~assert-t      (test-hmac-request) "Ensure HMAC gets validated")
 ]
