@@ -1,0 +1,73 @@
+//- This Source Code Form is subject to the terms of the Mozilla Public
+//- License, v. 2.0. If a copy of the MPL was not distributed with this
+//- file, You can obtain one at http://mozilla.org/MPL/2.0/.
+//- 
+//- Copyright (c) 2015-2016 Alexander Williams, Unscramble <license@unscramble.jp>
+
+// #network container
+#jido-page-network.container-fluid.jido-page-content.jido-page-content-network(style='display:none')
+  .row
+    .col-lg-10.col-md-10.col-sm-10.col-lg-offset-1.col-md-offset-1
+      h1.page-header Network
+  .row
+    .col-lg-10.col-md-10.col-sm-12.col-lg-offset-1.col-md-offset-1
+      .panel.panel-default.jido-panel
+        .panel-heading
+          | Status: 
+          span.label.label-default.jido-data-network-status ...waiting for update
+          .progress(style='display:none; margin-top: 20px')
+            .progress-bar.progress-bar-striped.active(role='progressbar', aria-valuenow='33', aria-valuemin='0', aria-valuemax='100', style='width: 33%')
+              | ...uploading, please wait
+          .alert.alert-dismissible.alert-success.network-alert(style='display:none;')
+  .row
+    .col-lg-10.col-md-10.col-sm-12.col-lg-offset-1.col-md-offset-1
+      .panel.panel-default.jido-panel
+        .panel-heading
+          h3.panel-title
+            i.fa.fa-sitemap
+            |  Network settings
+        .panel-body
+          | Update 
+          em Network settings
+          | , or switch between STATIC to DHCP modes.
+          br
+          br
+          .alert.alert-info
+            | Remove the IP address, Netmask or Gateway to set to DHCP mode.
+          .row
+            form.network-form(role='form')
+              fieldset
+                .col-lg-6.col-md-6.col-sm-6
+                  .form-group.has-success
+                    label.control-label.network-hostname-label(for='hostname-input')
+                      | Hostname
+                    input#hostname-input.form-control(placeholder='Hostname', name='hostname', type='text')
+                  .form-group.has-success
+                    label.control-label.network-interface-label(for='interface-input')
+                      | Interface
+                    input#interface-input.form-control(placeholder='Interface', name='interface', type='text')
+                  .form-group
+                    label.control-label.text-info(for='dns1-input')
+                      em DNS 1 (optional for STATIC)
+                    input#dns1-input.form-control(placeholder='DNS 1', name='dns-1', type='text')
+                  .form-group
+                    label.control-label.text-info(for='dns2-input')
+                      em DNS 2 (optional for STATIC)
+                    input#dns2-input.form-control(placeholder='DNS 2', name='dns-2', type='text')
+                .col-lg-6.col-md-6.col-sm-6
+                  .form-group
+                    label.control-label.text-info(for='ip_address-input')
+                      em IP address (required for STATIC)
+                    input#ip_address-input.form-control(placeholder='IP address', name='ip-address', type='text')
+                  .form-group
+                    label.control-label.text-info(for='netmask-input')
+                      em Netmask (required for STATIC)
+                    input#netmask-input.form-control(placeholder='Netmask', name='netmask', type='text')
+                  .form-group
+                    label.control-label.text-info(for='gateway-input')
+                      em Gateway (required for STATIC)
+                    input#gateway-input.form-control(placeholder='Gateway', name='gateway', type='text')
+                  .form-group
+                    br
+                    input#jido-button-network-upload.btn.btn-lg.btn-primary.btn-block(type='submit', value='Update', onclick='return event.preventDefault();')
+// /#network container

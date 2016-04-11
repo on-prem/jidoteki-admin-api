@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.0.0 (2016-04-17)
+
+  * Add Admin UI for web-based API management
+
 ## 1.9.1 (2016-04-17)
 
   * Fix issue #17 - HMAC auth bypassed when no token is set

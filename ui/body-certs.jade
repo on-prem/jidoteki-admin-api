@@ -1,0 +1,65 @@
+//- This Source Code Form is subject to the terms of the Mozilla Public
+//- License, v. 2.0. If a copy of the MPL was not distributed with this
+//- file, You can obtain one at http://mozilla.org/MPL/2.0/.
+//- 
+//- Copyright (c) 2015-2016 Alexander Williams, Unscramble <license@unscramble.jp>
+
+// #certs container
+#jido-page-certs.container-fluid.jido-page-content.jido-page-content-certs(style='display:none')
+  .row
+    .col-lg-10.col-md-10.col-sm-10.col-lg-offset-1.col-md-offset-1
+      h1.page-header TLS Certificates
+  .row
+    .col-lg-10.col-md-10.col-sm-12.col-lg-offset-1.col-md-offset-1
+      .panel.panel-default.jido-panel
+        .panel-heading
+          | Status: 
+          span.label.label-default.jido-data-certs-status ...fetching
+          .progress(style='display:none; margin-top: 20px')
+            .progress-bar.progress-bar-striped.active(role='progressbar', aria-valuenow='33', aria-valuemin='0', aria-valuemax='100', style='width: 33%')
+              | ...uploading, please wait
+  .row
+    .col-lg-4.col-md-4.col-sm-12.col-lg-offset-1.col-md-offset-1
+      .panel.panel-default.jido-panel
+        .panel-body
+          | Upload 
+          em TLS certificates
+          |  to replace the default self-signed certificates.
+          br
+          br
+          | Ex: enterprise.pem, enterprise.key, enterprise-cacert.pem
+          br
+          br
+          .alert.alert-dismissible.alert-info.certs-alert(style='display:none;')
+            button.close(type='button', data-dismiss='alert') ×
+            | The status and log will update automatically.
+          form.certs-form(role='form')
+            fieldset
+              .form-group
+                label.control-label(for='public-key-input')
+                  | Public Certificate (PEM)
+                  a(href='#', data-toggle='modal', data-target='#jido-modal-certs-pem') 
+                    i.fa.fa-info-circle
+                input#public-key-input.form-control(placeholder='TLS Public Certificate', name='public_key', type='file')
+              .form-group
+                label.control-label(for='private-key-input')
+                  | Private Key (RSA un-encrypted)
+                  a(href='#', data-toggle='modal', data-target='#jido-modal-certs-rsa') 
+                    i.fa.fa-info-circle
+                input#private-key-input.form-control(placeholder='TLS Private Key', name='private_key', type='file')
+              .form-group
+                label.control-label(for='ca-key-input')
+                  em CA Certificate (PEM optional)
+                  a(href='#', data-toggle='modal', data-target='#jido-modal-certs-pem') 
+                    i.fa.fa-info-circle
+                input#ca-key-input.form-control(placeholder='TLS CA Root/Intermediate Certificate', name='ca_key', type='file')
+              input#jido-button-certs-upload.btn.btn-lg.btn-primary.btn-block(type='submit', value='Upload', onclick='return event.preventDefault();')
+    .col-lg-6.col-md-6.col-sm-12
+      .panel.panel-default.jido-panel
+        .panel-heading
+          h3.panel-title
+            i.fa.fa-file-text-o
+            |  TLS Certificates log (last 10 lines)
+        .panel-body
+          pre.jido-info.jido-data-certs-log ...fecthing
+// /#certs container

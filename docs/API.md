@@ -1,4 +1,6 @@
-# API Documentation v1.9.1
+> Return to the [Admin UI](/)
+
+# API Documentation v2.0.0
 
 All API calls are prefixed with `/api/v1/admin`
 

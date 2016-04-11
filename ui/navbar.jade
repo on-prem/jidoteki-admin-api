@@ -1,0 +1,71 @@
+//- This Source Code Form is subject to the terms of the Mozilla Public
+//- License, v. 2.0. If a copy of the MPL was not distributed with this
+//- file, You can obtain one at http://mozilla.org/MPL/2.0/.
+//- 
+//- Copyright (c) 2015-2016 Alexander Williams, Unscramble <license@unscramble.jp>
+
+#jido-page-navbar(style={display: 'none'})
+  //- Menu: Home Update Settings Support
+  nav.navbar.navbar-default.navbar-static-top
+    .container
+      .navbar-header
+        button.navbar-toggle.collapsed(type='button', data-toggle='collapse', data-target='#bs-example-navbar-collapse-1')
+          span.sr-only Toggle navigation
+          span.icon-bar
+          span.icon-bar
+          span.icon-bar
+        a.navbar-brand(href='#') Admin UI
+
+      //- Collect the nav links, forms, and other content for toggling
+      #bs-example-navbar-collapse-1.navbar-collapse.collapse
+        ul.nav.navbar-nav
+          li#jido-button-home.active
+            a(href='#')
+              i.fa.fa-home
+              |  Home
+          li#jido-button-update
+            a(href='#')
+              i.fa.fa-cloud-upload
+              |  Update
+          li.dropdown
+            a.dropdown-toggle(href='#', data-toggle='dropdown', role='button', aria-haspopup='true', aria-expanded='false')
+              i.fa.fa-cogs
+              |  Settings
+              span.caret
+            ul.dropdown-menu
+              li#jido-button-network
+                a(href='#')
+                  i.fa.fa-sitemap
+                  |  Network
+              li#jido-button-certs
+                a(href='#')
+                  i.fa.fa-lock
+                  |  TLS Certificates
+              //- li#jido-button-license
+              //-   a(href='#')
+              //-     i.fa.fa-certificate
+              //-     |  License
+              li#jido-button-token
+                a(href='#')
+                  i.fa.fa-user
+                  |  API Token
+
+          li#jido-button-support
+            a(href='#')
+              i.fa.fa-life-ring
+              |  Support
+
+        ul.nav.navbar-nav.navbar-right
+          li.jido-versions
+            span.badge.jido-data-platform-version ...fetching
+          li
+            a#jido-button-logout(href='#')
+              i.fa.fa-sign-out
+              |  Logout
+          li
+            a#jido-button-restart(href='#', data-toggle='modal', data-target='#jido-modal-restart') 
+              i.fa.fa-power-off
+              |  Restart
+
+.alert.alert-danger.restart-alert(style='display:none;')
+  | System is restarting

@@ -1,3 +1,459 @@
-<html>
-  <meta http-equiv="refresh" content="0; url=/docs/" />
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Admin UI</title>
+    <!-- Bootstrap Core CSS-->
+    <link href="docs/themes/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome CSS-->
+    <link href="docs/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <!-- UI CSS-->
+    <link href="docs/ui.css" rel="stylesheet">
+  </head>
+  <body>
+    <div id="jido-page-navbar" style="display:none">
+      <nav class="navbar navbar-default navbar-static-top">
+        <div class="container">
+          <div class="navbar-header">
+            <button type="button" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" class="navbar-toggle collapsed"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button><a href="#" class="navbar-brand">Admin UI</a>
+          </div>
+          <div id="bs-example-navbar-collapse-1" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+              <li id="jido-button-home" class="active"><a href="#"><i class="fa fa-home"></i> Home</a></li>
+              <li id="jido-button-update"><a href="#"><i class="fa fa-cloud-upload"></i> Update</a></li>
+              <li class="dropdown"><a href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-cogs"></i> Settings<span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                  <li id="jido-button-network"><a href="#"><i class="fa fa-sitemap"></i> Network</a></li>
+                  <li id="jido-button-certs"><a href="#"><i class="fa fa-lock"></i> TLS Certificates</a></li>
+                  <li id="jido-button-token"><a href="#"><i class="fa fa-user"></i> API Token</a></li>
+                </ul>
+              </li>
+              <li id="jido-button-support"><a href="#"><i class="fa fa-life-ring"></i> Support</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+              <li class="jido-versions"><span class="badge jido-data-platform-version">...fetching</span></li>
+              <li><a id="jido-button-logout" href="#"><i class="fa fa-sign-out"></i> Logout</a></li>
+              <li><a id="jido-button-restart" href="#" data-toggle="modal" data-target="#jido-modal-restart"> <i class="fa fa-power-off"></i> Restart</a></li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </div>
+    <div style="display:none;" class="alert alert-danger restart-alert">System is restarting</div>
+    <!-- #login container-->
+    <div id="jido-page-login" style="display:none" class="container-fluid">
+      <div class="row">
+        <div class="col-md-4 col-md-offset-4">
+          <div id="invalid-token" style="display:none" class="alert alert-danger">Missing or invalid API token</div>
+          <div class="login-panel panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-title">Admin UI Login</h3>
+            </div>
+            <div class="panel-body">
+              <form id="login-form" role="form">
+                <fieldset>
+                  <div class="form-group">
+                    <input id="login-password" placeholder="API Token" name="token" type="password" value="" class="form-control">
+                  </div>
+                  <input id="jido-button-login" type="submit" value="Login" onclick="return event.preventDefault();" class="btn btn-lg btn-primary btn-block">
+                  <div class="checkbox">
+                    <label for="login-remember" class="control-label">
+                      <input id="login-remember" type="checkbox" class="form-group"> Stay logged-in for 30 days
+                    </label>
+                  </div>
+                </fieldset>
+              </form>
+            </div>
+          </div><a id="new-token" href="#" class="pull-right"><i class="fa fa-user-plus"></i> API Token Setup</a>
+        </div>
+      </div>
+    </div>
+    <!-- /#login container-->
+    <!-- #dashboard container-->
+    <div id="jido-page-dashboard" style="display:none" class="container-fluid jido-page-content">
+      <div class="row">
+        <div class="col-lg-10 col-md-10 col-sm-10 col-lg-offset-1 col-md-offset-1">
+          <h1 class="page-header">Dashboard</h1>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-5 col-md-5 col-sm-12 col-lg-offset-1 col-md-offset-1">
+          <div class="panel panel-default jido-panel">
+            <div class="panel-heading">
+              <h3 class="panel-title"><i class="fa fa-sitemap"></i> Network details</h3>
+            </div>
+            <div class="panel-body">
+              <ul class="list-group jido-data-network-info">...fetching</ul>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-5 col-md-5 col-sm-12">
+          <div class="panel panel-default jido-panel">
+            <div class="panel-heading">
+              <h3 class="panel-title"><i class="fa fa-file-text-o"></i> Change log</h3>
+            </div>
+            <div class="panel-body">
+              <pre class="jido-info jido-data-changelog">...fetching</pre>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-4 col-md-4 col-sm-12 col-lg-offset-1 col-md-offset-2">
+          <div style="display:none;" class="panel panel-default jido-panel-license">
+            <div class="panel-heading">
+              <h3 class="panel-title"><i class="fa fa-certificate"></i> License</h3>
+            </div>
+            <div class="panel-body">
+              <ul class="list-group jido-data-license-info">...fetching</ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /#dashboard container-->
+    <!-- #update container-->
+    <div id="jido-page-update" style="display:none" class="container-fluid jido-page-content jido-page-content-update">
+      <div class="row">
+        <div class="col-lg-10 col-md-10 col-sm-10 col-lg-offset-1 col-md-offset-1">
+          <h1 class="page-header">Update</h1>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-10 col-md-10 col-sm-12 col-lg-offset-1 col-md-offset-1">
+          <div class="panel panel-default jido-panel">
+            <div class="panel-heading">Status: <span class="label label-default jido-data-update-status">...fetching</span>
+              <div style="display:none; margin-top: 20px" class="progress">
+                <div role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width: 33%" class="progress-bar progress-bar-striped active">...uploading, please wait</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-4 col-md-4 col-sm-12 col-lg-offset-1 col-md-offset-1">
+          <div class="panel panel-default jido-panel">
+            <div class="panel-body">Upload a <em>software update package</em> to keep the system up-to-date.<br><br>Ex: software_package-v1.2.3.enc<br><br>
+              <div style="display:none;" class="alert alert-dismissible alert-info update-alert">
+                <button type="button" data-dismiss="alert" class="close">×</button>The status and log will update automatically.
+              </div>
+              <form role="form" class="update-form">
+                <fieldset>
+                  <div class="form-group">
+                    <input id="update-input" placeholder="Software Update Package" name="update" type="file" class="form-control">
+                  </div>
+                  <input id="jido-button-update-upload" type="submit" value="Update" onclick="return event.preventDefault();" class="btn btn-lg btn-primary btn-block">
+                </fieldset>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-12">
+          <div class="panel panel-default jido-panel">
+            <div class="panel-heading">
+              <h3 class="panel-title"><i class="fa fa-file-text-o"></i> Update log (last 10 lines)</h3>
+            </div>
+            <div class="panel-body">
+              <pre class="jido-info jido-data-update-log">...fecthing</pre>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-10 col-md-10 col-sm-12 col-lg-offset-1 col-md-offset-1">
+          <div class="panel panel-default jido-panel">
+            <div class="list-group"><a id="jido-button-update-fulllog" href="#" class="list-group-item"><i class="fa fa-file-text-o"></i> Show full update log <i class="fa fa-arrow-circle-right pull-right"></i></a></div>
+            <div style="display:none" class="panel-body">
+              <pre class="jido-info jido-data-update-full-log"> </pre>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /#update container-->
+    <!-- #network container-->
+    <div id="jido-page-network" style="display:none" class="container-fluid jido-page-content jido-page-content-network">
+      <div class="row">
+        <div class="col-lg-10 col-md-10 col-sm-10 col-lg-offset-1 col-md-offset-1">
+          <h1 class="page-header">Network</h1>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-10 col-md-10 col-sm-12 col-lg-offset-1 col-md-offset-1">
+          <div class="panel panel-default jido-panel">
+            <div class="panel-heading">Status: <span class="label label-default jido-data-network-status">...waiting for update</span>
+              <div style="display:none; margin-top: 20px" class="progress">
+                <div role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width: 33%" class="progress-bar progress-bar-striped active">...uploading, please wait</div>
+              </div>
+              <div style="display:none;" class="alert alert-dismissible alert-success network-alert"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-10 col-md-10 col-sm-12 col-lg-offset-1 col-md-offset-1">
+          <div class="panel panel-default jido-panel">
+            <div class="panel-heading">
+              <h3 class="panel-title"><i class="fa fa-sitemap"></i> Network settings</h3>
+            </div>
+            <div class="panel-body">Update <em>Network settings</em>, or switch between STATIC to DHCP modes.<br><br>
+              <div class="alert alert-info">Remove the IP address, Netmask or Gateway to set to DHCP mode.</div>
+              <div class="row">
+                <form role="form" class="network-form">
+                  <fieldset>
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                      <div class="form-group has-success">
+                        <label for="hostname-input" class="control-label network-hostname-label">Hostname</label>
+                        <input id="hostname-input" placeholder="Hostname" name="hostname" type="text" class="form-control">
+                      </div>
+                      <div class="form-group has-success">
+                        <label for="interface-input" class="control-label network-interface-label">Interface</label>
+                        <input id="interface-input" placeholder="Interface" name="interface" type="text" class="form-control">
+                      </div>
+                      <div class="form-group">
+                        <label for="dns1-input" class="control-label text-info"><em>DNS 1 (optional for STATIC)</em></label>
+                        <input id="dns1-input" placeholder="DNS 1" name="dns-1" type="text" class="form-control">
+                      </div>
+                      <div class="form-group">
+                        <label for="dns2-input" class="control-label text-info"><em>DNS 2 (optional for STATIC)</em></label>
+                        <input id="dns2-input" placeholder="DNS 2" name="dns-2" type="text" class="form-control">
+                      </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                      <div class="form-group">
+                        <label for="ip_address-input" class="control-label text-info"><em>IP address (required for STATIC)</em></label>
+                        <input id="ip_address-input" placeholder="IP address" name="ip-address" type="text" class="form-control">
+                      </div>
+                      <div class="form-group">
+                        <label for="netmask-input" class="control-label text-info"><em>Netmask (required for STATIC)</em></label>
+                        <input id="netmask-input" placeholder="Netmask" name="netmask" type="text" class="form-control">
+                      </div>
+                      <div class="form-group">
+                        <label for="gateway-input" class="control-label text-info"><em>Gateway (required for STATIC)</em></label>
+                        <input id="gateway-input" placeholder="Gateway" name="gateway" type="text" class="form-control">
+                      </div>
+                      <div class="form-group"><br>
+                        <input id="jido-button-network-upload" type="submit" value="Update" onclick="return event.preventDefault();" class="btn btn-lg btn-primary btn-block">
+                      </div>
+                    </div>
+                  </fieldset>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /#network container-->
+    <!-- #certs container-->
+    <div id="jido-page-certs" style="display:none" class="container-fluid jido-page-content jido-page-content-certs">
+      <div class="row">
+        <div class="col-lg-10 col-md-10 col-sm-10 col-lg-offset-1 col-md-offset-1">
+          <h1 class="page-header">TLS Certificates</h1>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-10 col-md-10 col-sm-12 col-lg-offset-1 col-md-offset-1">
+          <div class="panel panel-default jido-panel">
+            <div class="panel-heading">Status: <span class="label label-default jido-data-certs-status">...fetching</span>
+              <div style="display:none; margin-top: 20px" class="progress">
+                <div role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width: 33%" class="progress-bar progress-bar-striped active">...uploading, please wait</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-4 col-md-4 col-sm-12 col-lg-offset-1 col-md-offset-1">
+          <div class="panel panel-default jido-panel">
+            <div class="panel-body">Upload <em>TLS certificates</em> to replace the default self-signed certificates.<br><br>Ex: enterprise.pem, enterprise.key, enterprise-cacert.pem<br><br>
+              <div style="display:none;" class="alert alert-dismissible alert-info certs-alert">
+                <button type="button" data-dismiss="alert" class="close">×</button>The status and log will update automatically.
+              </div>
+              <form role="form" class="certs-form">
+                <fieldset>
+                  <div class="form-group">
+                    <label for="public-key-input" class="control-label">Public Certificate (PEM)<a href="#" data-toggle="modal" data-target="#jido-modal-certs-pem"> <i class="fa fa-info-circle"></i></a></label>
+                    <input id="public-key-input" placeholder="TLS Public Certificate" name="public_key" type="file" class="form-control">
+                  </div>
+                  <div class="form-group">
+                    <label for="private-key-input" class="control-label">Private Key (RSA un-encrypted)<a href="#" data-toggle="modal" data-target="#jido-modal-certs-rsa"> <i class="fa fa-info-circle"></i></a></label>
+                    <input id="private-key-input" placeholder="TLS Private Key" name="private_key" type="file" class="form-control">
+                  </div>
+                  <div class="form-group">
+                    <label for="ca-key-input" class="control-label"><em>CA Certificate (PEM optional)</em><a href="#" data-toggle="modal" data-target="#jido-modal-certs-pem"> <i class="fa fa-info-circle"></i></a></label>
+                    <input id="ca-key-input" placeholder="TLS CA Root/Intermediate Certificate" name="ca_key" type="file" class="form-control">
+                  </div>
+                  <input id="jido-button-certs-upload" type="submit" value="Upload" onclick="return event.preventDefault();" class="btn btn-lg btn-primary btn-block">
+                </fieldset>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-12">
+          <div class="panel panel-default jido-panel">
+            <div class="panel-heading">
+              <h3 class="panel-title"><i class="fa fa-file-text-o"></i> TLS Certificates log (last 10 lines)</h3>
+            </div>
+            <div class="panel-body">
+              <pre class="jido-info jido-data-certs-log">...fecthing</pre>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /#certs container-->
+    <!-- #token container-->
+    <div id="jido-page-token" style="display:none" class="container-fluid jido-page-content jido-page-content-token">
+      <div class="row">
+        <div class="col-lg-10 col-md-10 col-sm-10 col-lg-offset-1 col-md-offset-1">
+          <h1 class="page-header">API Token</h1>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-12 col-lg-offset-3 col-md-offset-3">
+          <div class="panel panel-default jido-panel">
+            <div class="panel-heading">Status: <span class="label label-default jido-data-token-status">...waiting for update</span>
+              <div style="display:none; margin-top: 20px" class="progress">
+                <div role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width: 33%" class="progress-bar progress-bar-striped active">...uploading, please wait</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-12 col-lg-offset-3 col-md-offset-3">
+          <div class="panel panel-default jido-panel jido-panel-network">
+            <div class="panel-body">Set your new<em> API Token</em> below.<br><br>
+              <div style="display:none;" class="alert alert-danger token-alert">API Token mismatch. Please verify the API Token.</div>
+              <div class="row">
+                <form role="form" class="token-form">
+                  <fieldset>
+                    <div class="col-lg-8 col-md-8 col-sm-8 col-md-offset-2">
+                      <div class="form-group has-success">
+                        <label for="token1-input" class="control-label token-token1-label">API Token</label>
+                        <input id="token1-input" placeholder="API Token" name="token1" type="password" class="form-control">
+                      </div>
+                      <div class="form-group has-success">
+                        <label for="token2-input" class="control-label token-token2-label">Confirm API Token</label>
+                        <input id="token2-input" placeholder="Confirm API Token" name="token2" type="password" class="form-control">
+                      </div>
+                      <div class="form-group"><br>
+                        <input id="jido-button-token-upload" type="submit" value="Update" onclick="return event.preventDefault();" class="btn btn-lg btn-primary btn-block">
+                      </div>
+                    </div>
+                  </fieldset>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /#token container-->
+    <!-- #support container-->
+    <div id="jido-page-support" style="display:none" class="container-fluid jido-page-content">
+      <div class="row">
+        <div class="col-lg-10 col-md-10 col-sm-10 col-lg-offset-1 col-md-offset-1">
+          <h1 class="page-header">Support</h1>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-10 col-md-10 col-sm-12 col-lg-offset-1 col-md-offset-1">
+          <div class="list-group"><a id="jido-data-logs-files" href="#" class="list-group-item">
+              <h4 class="list-group-item-heading"><i class="fa fa-file-archive-o"></i> Download log files (logs.tar.gz)</h4>
+              <p class="list-group-item-text">Server activity and log files to help troubleshoot various issues.</p></a><a id="jido-data-debug-files" href="#" class="list-group-item">
+              <h4 class="list-group-item-heading"><i class="fa fa-bug"></i> Download debug files (debug-bundle.tar)</h4>
+              <p class="list-group-item-text">Encrypted logs and system debugging information. Send this to the application developpers for additional support and troubleshooting.</p></a><a href="/docs" class="list-group-item">
+              <h4 class="list-group-item-heading"><i class="fa fa-question-circle"></i> View Admin API documentation</h4>
+              <p class="list-group-item-text">Provides information on using the Admin API for console and programmable access.</p></a></div>
+        </div>
+      </div>
+    </div>
+    <!-- /#support container-->
+    <div id="jido-modal-certs-pem" class="modal">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" data-dismiss="modal" aria-hidden="true" class="close">&times;</button>
+                <h4 class="modal-title">PEM certificate example</h4>
+              </div>
+              <div class="modal-body">
+                <p>The PEM certificate should look like this:</p>
+                    <pre>-----BEGIN CERTIFICATE-----
+MIIDXTCCAkWgAwIBAgIJAJC1HiIAZAiIMA0GCSqGSIb3Df
+BAYTAkFVMRMwEQYDVQQIDApTb21lLVN0YXRlMSEwHwYDVx
+aWRnaXRzIFB0eSBMdGQwHhcNMTExMjMxMDg1OTQ0WhcNMT
+A .... MANY LINES LIKE THAT ....
+JjyzfN746vaInA1KxYEeI1Rx5KXY8zIdj6a7hhphpj2E04
+C3Fayua4DRHyZOLmlvQ6tIChY0ClXXuefbmVSDeUHwc8Yu
+B7xxt8BVc69rLeHV15A0qyx77CLSj3tCx2IUXVqRs5mlSb
+vA==
+-----END CERTIFICATE-----
+</pre>
+              </div>
+              <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default">Close</button>
+              </div>
+            </div>
+          </div>
+    </div>
+    <div id="jido-modal-certs-rsa" class="modal">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" data-dismiss="modal" aria-hidden="true" class="close">&times;</button>
+                <h4 class="modal-title">RSA private key (un-encrypted) example</h4>
+              </div>
+              <div class="modal-body">
+                <p>The RSA private key (un-encrypted) should look like this:</p>
+                    <pre>-----BEGIN RSA PRIVATE KEY-----
+MIIFDjBABgkqhkiG9w0BBQ0wMzAbBgkqhkiG9w0BBQwwDg
+MBQGCCqGSIb3DQMHBAgD1kGN4ZslJgSCBMi1xk9jhlPxPc
+9g73NQbtqZwI+9X5OhpSg/2ALxlCCjbqvzgSu8gfFZ4yo+
+A .... MANY LINES LIKE THAT ....
+X0R+meOaudPTBxoSgCCM51poFgaqt4l6VlTN4FRpj+c/Wc
+blK948UAda/bWVmZjXfY4Tztah0CuqlAldOQBzu8TwE7WD
+H0ga/iLNvWYexG7FHLRiq5hTj0g9mUPEbeTXuPtOkTEb/0
+GEs=
+-----END RSA PRIVATE KEY-----
+</pre>
+              </div>
+              <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default">Close</button>
+              </div>
+            </div>
+          </div>
+    </div>
+    <div id="jido-modal-restart" class="modal">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" data-dismiss="modal" aria-hidden="true" class="close">&times;</button>
+            <h4 class="modal-title"><i class="fa fa-exclamation-triangle"></i> Are you sure you want to restart?</h4>
+          </div>
+          <div class="modal-body">
+            <pre>Choose Yes to immediately restart the system.</pre>
+          </div>
+          <div class="modal-footer">
+            <button id="jido-button-restart-confirm" type="button" data-dismiss="modal" class="btn btn-default"><i class="fa fa-thumbs-up"></i> Yes</button>
+            <button type="button" data-dismiss="modal" class="btn btn-default"><i class="fa fa-thumbs-down"></i> No</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="docs/jquery/jquery.min.js"></script>
+    <script src="docs/forge/forge.min.js"></script>
+    <script src="docs/themes/bootstrap.min.js"></script>
+    <script src="docs/ui.js"></script>
+    <!-- This Source Code Form is subject to the terms of the Mozilla Public-->
+    <!-- License, v. 2.0. If a copy of the MPL was not distributed with this-->
+    <!-- file, You can obtain one at http://mozilla.org/MPL/2.0/.-->
+    <!-- -->
+    <!-- Copyright (c) 2015-2016 Alexander Williams, Unscramble <license@unscramble.jp>-->
+  </body>
 </html>

@@ -17,6 +17,10 @@ In combination with the [jidoteki-admin](https://github.com/unscramble/jidoteki-
   * Retrieve version and changelog of the system
   * Reboot the system
 
+An Admin UI is included, and enables simpler management through a web-based interface:
+
+![Admin UI](https://cloud.githubusercontent.com/assets/153401/14586204/326e8ae0-0480-11e6-957e-214637e8a355.gif)
+
 # Requirements
 
   * PicoLisp 32-bit or 64-bit v3.1.11+
@@ -73,6 +77,18 @@ See the [API Documentation](docs/API.md).
 If you find any bugs or issues, please [create an issue](https://github.com/unscramble/jidoteki-admin-api/issues/new).
 
 If you want to improve this application, please make a pull-request.
+
+## HTML and JavaScript
+
+The HTML and JavaScript files are written in CoffeeScript and Jade, respectively.
+
+`npm install -g jade coffeescript`
+
+To compile the HTML, type: `make html`
+
+To compile the JavaScript, type: `make javascript`
+
+To compile both, type: `make ui`
 
 # License
 

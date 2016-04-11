@@ -1,0 +1,32 @@
+//- This Source Code Form is subject to the terms of the Mozilla Public
+//- License, v. 2.0. If a copy of the MPL was not distributed with this
+//- file, You can obtain one at http://mozilla.org/MPL/2.0/.
+//- 
+//- Copyright (c) 2015-2016 Alexander Williams, Unscramble <license@unscramble.jp>
+
+// #support container
+#jido-page-support.container-fluid.jido-page-content(style='display:none')
+  .row
+    .col-lg-10.col-md-10.col-sm-10.col-lg-offset-1.col-md-offset-1
+      h1.page-header Support
+  .row
+    .col-lg-10.col-md-10.col-sm-12.col-lg-offset-1.col-md-offset-1
+      .list-group
+        a#jido-data-logs-files.list-group-item(href='#')
+          h4.list-group-item-heading
+            i.fa.fa-file-archive-o
+            |  Download log files (logs.tar.gz)
+          p.list-group-item-text
+            | Server activity and log files to help troubleshoot various issues.
+        a#jido-data-debug-files.list-group-item(href='#')
+          h4.list-group-item-heading
+            i.fa.fa-bug
+            |  Download debug files (debug-bundle.tar)
+          p.list-group-item-text
+            | Encrypted logs and system debugging information. Send this to the application developpers for additional support and troubleshooting.
+        a.list-group-item(href='/docs')
+          h4.list-group-item-heading
+            i.fa.fa-question-circle
+            |  View Admin API documentation
+          p.list-group-item-text Provides information on using the Admin API for console and programmable access.
+// /#support container

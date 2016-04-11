@@ -34,5 +34,18 @@ check: all $(TEST_DIR) run-tests
 run-tests:
 		./test.l
 
+html:
+		jade -o . -P -E html ui/index.jade
+
+javascript:
+		coffee --no-header -c -o docs/ ui/ui.coffee
+
+js: javascript
+
+minify:
+		minify docs/ui.js > docs/ui.min.js
+
+ui: html javascript
+
 clean:
 		rm -rf $(JSON_DIR) $(TEST_DIR)
