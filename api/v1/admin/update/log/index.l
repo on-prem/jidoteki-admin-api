@@ -7,7 +7,9 @@
 [de log-get ()
   (use Log Info Size Date Body
     (setq Log  (pack *Admin_path "log/update.log"))
-    (json-file Log)
+    (if (info Log)
+        (json-file Log)
+        (http-msg 404) )
 
     (response-generic 200 Size Date Body '(("Content-Type" . "text/plain") ]
 

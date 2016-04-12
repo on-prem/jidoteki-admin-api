@@ -7,9 +7,14 @@
 [de certs-log (Lines)
   (in (list 'tail "-n" Lines (pack *Admin_path "log/update_certs.log")) (pack (replace (till (eof)) "^J" "\\n") ]
 
+[de certs-status ()
+  (in (list 'cat (pack *Admin_path "etc/status_certs.txt")) (pack (till "^J") ]
+
 [de certs-process ()
-  (let (Log     (certs-log 10))
-    (list (append '("log") Log) ]
+  (let (Log     (certs-log 10)
+        Status  (certs-status) )
+
+    (list (append '("status") Status) (append '("log") Log) ]
 
 (de certs-get ()
   (response-json (encode (certs-process))) )
