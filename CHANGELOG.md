@@ -1,11 +1,13 @@
 # Changelog
 
-## 1.9.0 (2016-04-09)
+## 1.9.0 (2016-04-12)
 
   * Add HMAC signature-based authentication
   * Add new text/markdown mime type
   * Update documentation explaining HMAC authentication
   * Implement fix to hide source code when calling a /default file directly
+  * Fix issue #15 - Admin API crashes when 'update.log' is missing
+  * Fix issue #16 - Missing certs status
 
 ## 1.8.0 (2016-04-06)
 
