@@ -361,16 +361,17 @@ networkButtonListener = ->
     if $('#dns1-input').val() then json.network.dns1 = $('#dns1-input').val()
     if $('#dns2-input').val() then json.network.dns2 = $('#dns2-input').val()
 
-    unless json.network.hostname
+    # Validations
+    unless json.network.hostname and validator.isFQDN(json.network.hostname, {require_tld: false})
       $('.network-form .network-hostname-label').parent().addClass 'has-error'
       $('.network-form .network-hostname-label').html 'Hostname (required)'
       $('.network-form .network-hostname-label').focus()
-    unless json.network.interface
+      return
+
+    unless json.network.interface and validator.isAlphanumeric(json.network.interface)
       $('.network-form .network-interface-label').parent().addClass 'has-error'
       $('.network-form .network-interface-label').html 'Interface (required)'
       $('.network-form .network-interface-label').focus()
-
-    unless json.network.hostname and json.network.interface
       return
 
     $('.jido-data-network-status').removeClass 'label-danger'
@@ -378,6 +379,32 @@ networkButtonListener = ->
     $('.jido-data-network-status').removeClass 'label-default'
 
     if json.network.ip_address and json.network.netmask and json.network.gateway
+      unless validator.isIP(json.network.ip_address)
+        $('.network-form .network-ip_address-label').parent().addClass 'has-error'
+        $('.network-form .network-ip_address-label').focus()
+        return
+
+      unless validator.isIP(json.network.netmask)
+        unless validator.isInt(json.network.netmask.replace('/',''), { min: 1, max: 128 })
+          $('.network-form .network-netmask-label').parent().addClass 'has-error'
+          $('.network-form .network-netmask-label').focus()
+          return
+
+      unless validator.isIP(json.network.gateway)
+        $('.network-form .network-gateway-label').parent().addClass 'has-error'
+        $('.network-form .network-gateway-label').focus()
+        return
+
+      unless validator.isIP(json.network.dns1)
+        $('.network-form .network-dns1-label').parent().addClass 'has-error'
+        $('.network-form .network-dns1-label').focus()
+        return
+
+      unless validator.isIP(json.network.dns2)
+        $('.network-form .network-dns2-label').parent().addClass 'has-error'
+        $('.network-form .network-dns2-label').focus()
+        return
+
       $('.jido-data-network-status').html 'STATIC'
       $('.jido-data-network-status').addClass 'label-success'
     else
@@ -402,7 +429,8 @@ networkButtonListener = ->
           successUpload 'network'
 
           if json.network.ip_address
-            newUrl = "#{window.location.protocol}//#{json.network.ip_address}#{(if window.location.port? then ':' + window.location.port else '')}"
+            newIP = if validator.isIP(json.network.ip_address, 4) then json.network.ip_address else "[#{json.network.ip_address}]"
+            newUrl = "#{window.location.protocol}//#{newIP}#{(if window.location.port? then ':' + window.location.port else '')}"
             $(".network-alert").html "Redirecting to <a href=\"#{newUrl}\">#{newUrl}</a> in 5 seconds"
             $(".network-alert").show()
             redirectUrl newUrl
@@ -504,8 +532,6 @@ debugButtonListener = ->
 
 restartButtonListener = ->
   $('#jido-button-restart-confirm').click ->
-    console.log "restart clicked"
-
     fetchData "/api/v1/admin/reboot", (err) ->
       unless err
         $(".restart-alert").show()

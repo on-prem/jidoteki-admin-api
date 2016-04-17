@@ -455,23 +455,54 @@
       if ($('#dns2-input').val()) {
         json.network.dns2 = $('#dns2-input').val();
       }
-      if (!json.network.hostname) {
+      if (!(json.network.hostname && validator.isFQDN(json.network.hostname, {
+        require_tld: false
+      }))) {
         $('.network-form .network-hostname-label').parent().addClass('has-error');
         $('.network-form .network-hostname-label').html('Hostname (required)');
         $('.network-form .network-hostname-label').focus();
+        return;
       }
-      if (!json.network["interface"]) {
+      if (!(json.network["interface"] && validator.isAlphanumeric(json.network["interface"]))) {
         $('.network-form .network-interface-label').parent().addClass('has-error');
         $('.network-form .network-interface-label').html('Interface (required)');
         $('.network-form .network-interface-label').focus();
-      }
-      if (!(json.network.hostname && json.network["interface"])) {
         return;
       }
       $('.jido-data-network-status').removeClass('label-danger');
       $('.jido-data-network-status').removeClass('label-success');
       $('.jido-data-network-status').removeClass('label-default');
       if (json.network.ip_address && json.network.netmask && json.network.gateway) {
+        if (!validator.isIP(json.network.ip_address)) {
+          $('.network-form .network-ip_address-label').parent().addClass('has-error');
+          $('.network-form .network-ip_address-label').focus();
+          return;
+        }
+        if (!validator.isIP(json.network.netmask)) {
+          if (!validator.isInt(json.network.netmask.replace('/', ''), {
+            min: 1,
+            max: 128
+          })) {
+            $('.network-form .network-netmask-label').parent().addClass('has-error');
+            $('.network-form .network-netmask-label').focus();
+            return;
+          }
+        }
+        if (!validator.isIP(json.network.gateway)) {
+          $('.network-form .network-gateway-label').parent().addClass('has-error');
+          $('.network-form .network-gateway-label').focus();
+          return;
+        }
+        if (!validator.isIP(json.network.dns1)) {
+          $('.network-form .network-dns1-label').parent().addClass('has-error');
+          $('.network-form .network-dns1-label').focus();
+          return;
+        }
+        if (!validator.isIP(json.network.dns2)) {
+          $('.network-form .network-dns2-label').parent().addClass('has-error');
+          $('.network-form .network-dns2-label').focus();
+          return;
+        }
         $('.jido-data-network-status').html('STATIC');
         $('.jido-data-network-status').addClass('label-success');
       } else {
@@ -492,11 +523,12 @@
       formData.append('settings', blob, 'settings.json');
       if (formData) {
         return putFile('network', '/api/v1/admin/settings', formData, function(err, result) {
-          var newUrl;
+          var newIP, newUrl;
           if (!err) {
             successUpload('network');
             if (json.network.ip_address) {
-              newUrl = window.location.protocol + "//" + json.network.ip_address + (window.location.port != null ? ':' + window.location.port : '');
+              newIP = validator.isIP(json.network.ip_address, 4) ? json.network.ip_address : "[" + json.network.ip_address + "]";
+              newUrl = window.location.protocol + "//" + newIP + (window.location.port != null ? ':' + window.location.port : '');
               $(".network-alert").html("Redirecting to <a href=\"" + newUrl + "\">" + newUrl + "</a> in 5 seconds");
               $(".network-alert").show();
               return redirectUrl(newUrl);
@@ -627,7 +659,6 @@
 
   restartButtonListener = function() {
     return $('#jido-button-restart-confirm').click(function() {
-      console.log("restart clicked");
       return fetchData("/api/v1/admin/reboot", function(err) {
         if (!err) {
           $(".restart-alert").show();

@@ -47,24 +47,24 @@
                       | Interface
                     input#interface-input.form-control(placeholder='Interface', name='interface', type='text')
                   .form-group
-                    label.control-label.text-info(for='dns1-input')
+                    label.control-label.network-dns1-label.text-info(for='dns1-input')
                       em DNS 1 (optional for STATIC)
                     input#dns1-input.form-control(placeholder='DNS 1', name='dns-1', type='text')
                   .form-group
-                    label.control-label.text-info(for='dns2-input')
+                    label.control-label.network-dns2-label.text-info(for='dns2-input')
                       em DNS 2 (optional for STATIC)
                     input#dns2-input.form-control(placeholder='DNS 2', name='dns-2', type='text')
                 .col-lg-6.col-md-6.col-sm-6
                   .form-group
-                    label.control-label.text-info(for='ip_address-input')
+                    label.control-label.network-ip_address-label.text-info(for='ip_address-input')
                       em IP address (required for STATIC)
                     input#ip_address-input.form-control(placeholder='IP address', name='ip-address', type='text')
                   .form-group
-                    label.control-label.text-info(for='netmask-input')
-                      em Netmask (required for STATIC)
-                    input#netmask-input.form-control(placeholder='Netmask', name='netmask', type='text')
+                    label.control-label.network-netmask-label.text-info(for='netmask-input')
+                      em Netmask / Prefix (ex: /64) (required for STATIC)
+                    input#netmask-input.form-control(placeholder='Netmask / Prefix (ex: /64)', name='netmask', type='text')
                   .form-group
-                    label.control-label.text-info(for='gateway-input')
+                    label.control-label.network-gateway-label.text-info(for='gateway-input')
                       em Gateway (required for STATIC)
                     input#gateway-input.form-control(placeholder='Gateway', name='gateway', type='text')
                   .form-group

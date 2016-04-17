@@ -36,6 +36,10 @@ API Documentation and UI licensing:
   Copyright (c) 2010, Digital Bazaar, Inc.
   https://github.com/digitalbazaar/forge
 
+* 'Validator.js' is licensed under the MIT License and
+  Copyright (c) 2016 Chris O'Hara <cohara87@gmail.com>
+  https://github.com/chriso/validator.js
+
 * 'API Documentation and UI' licensed under the MPL-2.0 License and
   Copyright (c) 2015-2016 Alexander Williams, Unscramble
   https://github.com/unscramble/jidoteki-admin-api.git

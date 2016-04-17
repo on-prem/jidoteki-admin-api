@@ -215,25 +215,25 @@
                         <input id="interface-input" placeholder="Interface" name="interface" type="text" class="form-control">
                       </div>
                       <div class="form-group">
-                        <label for="dns1-input" class="control-label text-info"><em>DNS 1 (optional for STATIC)</em></label>
+                        <label for="dns1-input" class="control-label network-dns1-label text-info"><em>DNS 1 (optional for STATIC)</em></label>
                         <input id="dns1-input" placeholder="DNS 1" name="dns-1" type="text" class="form-control">
                       </div>
                       <div class="form-group">
-                        <label for="dns2-input" class="control-label text-info"><em>DNS 2 (optional for STATIC)</em></label>
+                        <label for="dns2-input" class="control-label network-dns2-label text-info"><em>DNS 2 (optional for STATIC)</em></label>
                         <input id="dns2-input" placeholder="DNS 2" name="dns-2" type="text" class="form-control">
                       </div>
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-6">
                       <div class="form-group">
-                        <label for="ip_address-input" class="control-label text-info"><em>IP address (required for STATIC)</em></label>
+                        <label for="ip_address-input" class="control-label network-ip_address-label text-info"><em>IP address (required for STATIC)</em></label>
                         <input id="ip_address-input" placeholder="IP address" name="ip-address" type="text" class="form-control">
                       </div>
                       <div class="form-group">
-                        <label for="netmask-input" class="control-label text-info"><em>Netmask (required for STATIC)</em></label>
-                        <input id="netmask-input" placeholder="Netmask" name="netmask" type="text" class="form-control">
+                        <label for="netmask-input" class="control-label network-netmask-label text-info"><em>Netmask / Prefix (ex: /64) (required for STATIC)</em></label>
+                        <input id="netmask-input" placeholder="Netmask / Prefix (ex: /64)" name="netmask" type="text" class="form-control">
                       </div>
                       <div class="form-group">
-                        <label for="gateway-input" class="control-label text-info"><em>Gateway (required for STATIC)</em></label>
+                        <label for="gateway-input" class="control-label network-gateway-label text-info"><em>Gateway (required for STATIC)</em></label>
                         <input id="gateway-input" placeholder="Gateway" name="gateway" type="text" class="form-control">
                       </div>
                       <div class="form-group"><br>
@@ -448,6 +448,7 @@ GEs=
     </div>
     <script src="docs/jquery/jquery.min.js"></script>
     <script src="docs/forge/forge.min.js"></script>
+    <script src="docs/validator/validator.min.js"></script>
     <script src="docs/themes/bootstrap.min.js"></script>
     <script src="docs/ui.js"></script>
     <!-- This Source Code Form is subject to the terms of the Mozilla Public-->
