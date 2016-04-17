@@ -1,6 +1,6 @@
 # Changelog
 
-## 2.0.0 (2016-04-17)
+## 1.10.0 (2016-04-17)
 
   * Add Admin UI for web-based API management
 
