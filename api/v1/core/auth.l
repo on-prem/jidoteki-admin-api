@@ -21,10 +21,10 @@
 [de validate-hash (Hash)
   (let (Path      (pack *Admin_path "etc/api.token")
         Token     (when (num? (car (info Path))) (in Path (line T)))
-        Tokenhash (get-sha256 Token)
-        Hmac      (get-sha256 (pack (get-http-method) "/" (get-http-url)) Tokenhash) )
+        Tokenhash (when Token (get-sha256 Token))
+        Hmac      (when Tokenhash (get-sha256 (pack (get-http-method) "/" (get-http-url)) Tokenhash)) )
 
-    (= Hash Hmac) ]
+    (when Hmac (= Hash Hmac)) ]
 
 [de validate-token (Token)
   (let Path (pack *Admin_path "etc/api.token")

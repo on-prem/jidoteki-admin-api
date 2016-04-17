@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.9.1 (2016-04-17)
+
+  * Fix issue #17 - HMAC auth bypassed when no token is set
+
 ## 1.9.0 (2016-04-12)
 
   * Add HMAC signature-based authentication
