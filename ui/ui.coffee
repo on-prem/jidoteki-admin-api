@@ -70,21 +70,6 @@ fetchFile = (endpoint, callback) ->
   else
     callback new Error "Missing or invalid API token"
 
-putData = (endpoint, data, callback) ->
-  sha256 = getToken()
-  if sha256?
-    hmac = getHmac "POST#{endpoint}", sha256
-
-    $.post "#{apiServer}#{endpoint}?hash=#{hmac}", data
-
-    .done (response) ->
-      callback null, response
-
-    .fail (err) ->
-      callback new Error err
-  else
-    callback new Error "Missing or invalid API token"
-
 putFile = (msg, endpoint, file, callback) ->
   sha256 = getToken()
   if sha256?

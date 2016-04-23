@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.10.1 (2016-04-23)
+
+  * Replace original FontAwesome fonts with smaller Fontello/FA font files
+
 ## 1.10.0 (2016-04-17)
 
   * Add Admin UI for web-based API management

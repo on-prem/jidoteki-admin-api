@@ -57,14 +57,14 @@ mixin certModals(title)
       .modal-header
         button.close(type='button', data-dismiss='modal', aria-hidden='true') &times;
         h4.modal-title
-          i.fa.fa-exclamation-triangle
+          i.fa.icon-attention
           |  Are you sure you want to restart?
       .modal-body
         pre Choose Yes to immediately restart the system.
       .modal-footer
         button#jido-button-restart-confirm.btn.btn-default(type='button', data-dismiss='modal')
-          i.fa.fa-thumbs-up
+          i.fa.icon-thumbs-up-alt
           |  Yes
         button.btn.btn-default(type='button', data-dismiss='modal')
-          i.fa.fa-thumbs-down
+          i.fa.icon-thumbs-down-alt
           |  No

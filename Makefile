@@ -43,9 +43,10 @@ javascript:
 js: javascript
 
 minify:
-		minify docs/ui.js > docs/ui.min.js
+		head -n 8 docs/ui.js > docs/ui.min.js
+		minify docs/ui.js >> docs/ui.min.js
 
-ui: html javascript
+ui: html javascript minify
 
 clean:
 		rm -rf $(JSON_DIR) $(TEST_DIR)

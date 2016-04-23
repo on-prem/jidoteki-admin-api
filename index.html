@@ -9,8 +9,8 @@
     <title>Admin UI</title>
     <!-- Bootstrap Core CSS-->
     <link href="docs/themes/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome CSS-->
-    <link href="docs/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <!-- Fontello / Font Awesome CSS-->
+    <link href="docs/font-awesome/css/fontello.min.css" rel="stylesheet" type="text/css">
     <!-- UI CSS-->
     <link href="docs/ui.css" rel="stylesheet">
   </head>
@@ -23,21 +23,21 @@
           </div>
           <div id="bs-example-navbar-collapse-1" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-              <li id="jido-button-home" class="active"><a href="#"><i class="fa fa-home"></i> Home</a></li>
-              <li id="jido-button-update"><a href="#"><i class="fa fa-cloud-upload"></i> Update</a></li>
-              <li class="dropdown"><a href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-cogs"></i> Settings<span class="caret"></span></a>
+              <li id="jido-button-home" class="active"><a href="#"><i class="fa icon-home"></i> Home</a></li>
+              <li id="jido-button-update"><a href="#"><i class="fa icon-upload-cloud"></i> Update</a></li>
+              <li class="dropdown"><a href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" class="dropdown-toggle"><i class="fa icon-cog-alt"></i> Settings<span class="caret"></span></a>
                 <ul class="dropdown-menu">
-                  <li id="jido-button-network"><a href="#"><i class="fa fa-sitemap"></i> Network</a></li>
-                  <li id="jido-button-certs"><a href="#"><i class="fa fa-lock"></i> TLS Certificates</a></li>
-                  <li id="jido-button-token"><a href="#"><i class="fa fa-user"></i> API Token</a></li>
+                  <li id="jido-button-network"><a href="#"><i class="fa icon-sitemap"></i> Network</a></li>
+                  <li id="jido-button-certs"><a href="#"><i class="fa icon-lock"></i> TLS Certificates</a></li>
+                  <li id="jido-button-token"><a href="#"><i class="fa icon-user"></i> API Token</a></li>
                 </ul>
               </li>
-              <li id="jido-button-support"><a href="#"><i class="fa fa-life-ring"></i> Support</a></li>
+              <li id="jido-button-support"><a href="#"><i class="fa icon-lifebuoy"></i> Support</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
               <li class="jido-versions"><span class="badge jido-data-platform-version">...fetching</span></li>
-              <li><a id="jido-button-logout" href="#"><i class="fa fa-sign-out"></i> Logout</a></li>
-              <li><a id="jido-button-restart" href="#" data-toggle="modal" data-target="#jido-modal-restart"> <i class="fa fa-power-off"></i> Restart</a></li>
+              <li><a id="jido-button-logout" href="#"><i class="fa icon-logout"></i> Logout</a></li>
+              <li><a id="jido-button-restart" href="#" data-toggle="modal" data-target="#jido-modal-restart"> <i class="fa icon-off"></i> Restart</a></li>
             </ul>
           </div>
         </div>
@@ -68,7 +68,7 @@
                 </fieldset>
               </form>
             </div>
-          </div><a id="new-token" href="#" class="pull-right"><i class="fa fa-user-plus"></i> API Token Setup</a>
+          </div><a id="new-token" href="#" class="pull-right"><i class="fa icon-user-plus"></i> API Token Setup</a>
         </div>
       </div>
     </div>
@@ -84,7 +84,7 @@
         <div class="col-lg-5 col-md-5 col-sm-12 col-lg-offset-1 col-md-offset-1">
           <div class="panel panel-default jido-panel">
             <div class="panel-heading">
-              <h3 class="panel-title"><i class="fa fa-sitemap"></i> Network details</h3>
+              <h3 class="panel-title"><i class="fa icon-sitemap"></i> Network details</h3>
             </div>
             <div class="panel-body">
               <ul class="list-group jido-data-network-info">...fetching</ul>
@@ -94,7 +94,7 @@
         <div class="col-lg-5 col-md-5 col-sm-12">
           <div class="panel panel-default jido-panel">
             <div class="panel-heading">
-              <h3 class="panel-title"><i class="fa fa-file-text-o"></i> Change log</h3>
+              <h3 class="panel-title"><i class="fa icon-doc-text"></i> Change log</h3>
             </div>
             <div class="panel-body">
               <pre class="jido-info jido-data-changelog">...fetching</pre>
@@ -106,7 +106,7 @@
         <div class="col-lg-4 col-md-4 col-sm-12 col-lg-offset-1 col-md-offset-2">
           <div style="display:none;" class="panel panel-default jido-panel-license">
             <div class="panel-heading">
-              <h3 class="panel-title"><i class="fa fa-certificate"></i> License</h3>
+              <h3 class="panel-title"><i class="fa icon-certificate"></i> License</h3>
             </div>
             <div class="panel-body">
               <ul class="list-group jido-data-license-info">...fetching</ul>
@@ -155,7 +155,7 @@
         <div class="col-lg-6 col-md-6 col-sm-12">
           <div class="panel panel-default jido-panel">
             <div class="panel-heading">
-              <h3 class="panel-title"><i class="fa fa-file-text-o"></i> Update log (last 10 lines)</h3>
+              <h3 class="panel-title"><i class="fa icon-doc-text"></i> Update log (last 10 lines)</h3>
             </div>
             <div class="panel-body">
               <pre class="jido-info jido-data-update-log">...fecthing</pre>
@@ -166,7 +166,7 @@
       <div class="row">
         <div class="col-lg-10 col-md-10 col-sm-12 col-lg-offset-1 col-md-offset-1">
           <div class="panel panel-default jido-panel">
-            <div class="list-group"><a id="jido-button-update-fulllog" href="#" class="list-group-item"><i class="fa fa-file-text-o"></i> Show full update log <i class="fa fa-arrow-circle-right pull-right"></i></a></div>
+            <div class="list-group"><a id="jido-button-update-fulllog" href="#" class="list-group-item"><i class="fa icon-doc-text"></i> Show full update log <i class="fa icon-right-circled pull-right"></i></a></div>
             <div style="display:none" class="panel-body">
               <pre class="jido-info jido-data-update-full-log"> </pre>
             </div>
@@ -198,7 +198,7 @@
         <div class="col-lg-10 col-md-10 col-sm-12 col-lg-offset-1 col-md-offset-1">
           <div class="panel panel-default jido-panel">
             <div class="panel-heading">
-              <h3 class="panel-title"><i class="fa fa-sitemap"></i> Network settings</h3>
+              <h3 class="panel-title"><i class="fa icon-sitemap"></i> Network settings</h3>
             </div>
             <div class="panel-body">Update <em>Network settings</em>, or switch between STATIC to DHCP modes.<br><br>
               <div class="alert alert-info">Remove the IP address, Netmask or Gateway to set to DHCP mode.</div>
@@ -277,15 +277,15 @@
               <form role="form" class="certs-form">
                 <fieldset>
                   <div class="form-group">
-                    <label for="public-key-input" class="control-label">Public Certificate (PEM)<a href="#" data-toggle="modal" data-target="#jido-modal-certs-pem"> <i class="fa fa-info-circle"></i></a></label>
+                    <label for="public-key-input" class="control-label">Public Certificate (PEM) <a href="#" data-toggle="modal" data-target="#jido-modal-certs-pem"><i class="fa icon-info-circled"></i></a></label>
                     <input id="public-key-input" placeholder="TLS Public Certificate" name="public_key" type="file" class="form-control">
                   </div>
                   <div class="form-group">
-                    <label for="private-key-input" class="control-label">Private Key (RSA un-encrypted)<a href="#" data-toggle="modal" data-target="#jido-modal-certs-rsa"> <i class="fa fa-info-circle"></i></a></label>
+                    <label for="private-key-input" class="control-label">Private Key (RSA un-encrypted) <a href="#" data-toggle="modal" data-target="#jido-modal-certs-rsa"><i class="fa icon-info-circled"></i></a></label>
                     <input id="private-key-input" placeholder="TLS Private Key" name="private_key" type="file" class="form-control">
                   </div>
                   <div class="form-group">
-                    <label for="ca-key-input" class="control-label"><em>CA Certificate (PEM optional)</em><a href="#" data-toggle="modal" data-target="#jido-modal-certs-pem"> <i class="fa fa-info-circle"></i></a></label>
+                    <label for="ca-key-input" class="control-label"><em>CA Certificate (PEM optional) </em><a href="#" data-toggle="modal" data-target="#jido-modal-certs-pem"><i class="fa icon-info-circled"></i></a></label>
                     <input id="ca-key-input" placeholder="TLS CA Root/Intermediate Certificate" name="ca_key" type="file" class="form-control">
                   </div>
                   <input id="jido-button-certs-upload" type="submit" value="Upload" onclick="return event.preventDefault();" class="btn btn-lg btn-primary btn-block">
@@ -297,7 +297,7 @@
         <div class="col-lg-6 col-md-6 col-sm-12">
           <div class="panel panel-default jido-panel">
             <div class="panel-heading">
-              <h3 class="panel-title"><i class="fa fa-file-text-o"></i> TLS Certificates log (last 10 lines)</h3>
+              <h3 class="panel-title"><i class="fa icon-doc-text"></i> TLS Certificates log (last 10 lines)</h3>
             </div>
             <div class="panel-body">
               <pre class="jido-info jido-data-certs-log">...fecthing</pre>
@@ -365,11 +365,11 @@
       <div class="row">
         <div class="col-lg-10 col-md-10 col-sm-12 col-lg-offset-1 col-md-offset-1">
           <div class="list-group"><a id="jido-data-logs-files" href="#" class="list-group-item">
-              <h4 class="list-group-item-heading"><i class="fa fa-file-archive-o"></i> Download log files (logs.tar.gz)</h4>
+              <h4 class="list-group-item-heading"><i class="fa icon-file-archive"></i> Download log files (logs.tar.gz)</h4>
               <p class="list-group-item-text">Server activity and log files to help troubleshoot various issues.</p></a><a id="jido-data-debug-files" href="#" class="list-group-item">
-              <h4 class="list-group-item-heading"><i class="fa fa-bug"></i> Download debug files (debug-bundle.tar)</h4>
+              <h4 class="list-group-item-heading"><i class="fa icon-bug"></i> Download debug files (debug-bundle.tar)</h4>
               <p class="list-group-item-text">Encrypted logs and system debugging information. Send this to the application developpers for additional support and troubleshooting.</p></a><a href="/docs" class="list-group-item">
-              <h4 class="list-group-item-heading"><i class="fa fa-question-circle"></i> View Admin API documentation</h4>
+              <h4 class="list-group-item-heading"><i class="fa icon-help-circled"></i> View Admin API documentation</h4>
               <p class="list-group-item-text">Provides information on using the Admin API for console and programmable access.</p></a></div>
         </div>
       </div>
@@ -434,14 +434,14 @@ GEs=
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" data-dismiss="modal" aria-hidden="true" class="close">&times;</button>
-            <h4 class="modal-title"><i class="fa fa-exclamation-triangle"></i> Are you sure you want to restart?</h4>
+            <h4 class="modal-title"><i class="fa icon-attention"></i> Are you sure you want to restart?</h4>
           </div>
           <div class="modal-body">
             <pre>Choose Yes to immediately restart the system.</pre>
           </div>
           <div class="modal-footer">
-            <button id="jido-button-restart-confirm" type="button" data-dismiss="modal" class="btn btn-default"><i class="fa fa-thumbs-up"></i> Yes</button>
-            <button type="button" data-dismiss="modal" class="btn btn-default"><i class="fa fa-thumbs-down"></i> No</button>
+            <button id="jido-button-restart-confirm" type="button" data-dismiss="modal" class="btn btn-default"><i class="fa icon-thumbs-up-alt"></i> Yes</button>
+            <button type="button" data-dismiss="modal" class="btn btn-default"><i class="fa icon-thumbs-down-alt"></i> No</button>
           </div>
         </div>
       </div>
@@ -450,7 +450,7 @@ GEs=
     <script src="docs/forge/forge.min.js"></script>
     <script src="docs/validator/validator.min.js"></script>
     <script src="docs/themes/bootstrap.min.js"></script>
-    <script src="docs/ui.js"></script>
+    <script src="docs/ui.min.js"></script>
     <!-- This Source Code Form is subject to the terms of the Mozilla Public-->
     <!-- License, v. 2.0. If a copy of the MPL was not distributed with this-->
     <!-- file, You can obtain one at http://mozilla.org/MPL/2.0/.-->

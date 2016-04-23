@@ -9,7 +9,7 @@
 
 (function() {
   'use strict';
-  var apiServer, authenticate, capitalize, certsButtonListener, clearToken, debugButtonListener, failedUpload, fetchData, fetchFile, getHmac, getSha256, getStatus, getToken, loadHome, loadLogin, loadNetwork, loadSetup, loadSupport, loadToken, loadUpdateCerts, loginButtonListener, logoutButtonListener, logsButtonListener, navbarListener, networkButtonListener, newTokenButtonListener, pollStatus, putData, putFile, putToken, redirectUrl, restartButtonListener, runningUpload, successUpload, tokenButtonListener, updateButtonListener, updateCertsButtonListener;
+  var apiServer, authenticate, capitalize, certsButtonListener, clearToken, debugButtonListener, failedUpload, fetchData, fetchFile, getHmac, getSha256, getStatus, getToken, loadHome, loadLogin, loadNetwork, loadSetup, loadSupport, loadToken, loadUpdateCerts, loginButtonListener, logoutButtonListener, logsButtonListener, navbarListener, networkButtonListener, newTokenButtonListener, pollStatus, putFile, putToken, redirectUrl, restartButtonListener, runningUpload, successUpload, tokenButtonListener, updateButtonListener, updateCertsButtonListener;
 
   apiServer = window.location.origin != null ? window.location.origin : window.location.protocol + "//" + window.location.hostname + (window.location.port != null ? ':' + window.location.port : '');
 
@@ -77,21 +77,6 @@
     if (sha256 != null) {
       hmac = getHmac("GET" + endpoint, sha256);
       return $(location).attr('href', "" + apiServer + endpoint + "?hash=" + hmac);
-    } else {
-      return callback(new Error("Missing or invalid API token"));
-    }
-  };
-
-  putData = function(endpoint, data, callback) {
-    var hmac, sha256;
-    sha256 = getToken();
-    if (sha256 != null) {
-      hmac = getHmac("POST" + endpoint, sha256);
-      return $.post("" + apiServer + endpoint + "?hash=" + hmac, data).done(function(response) {
-        return callback(null, response);
-      }).fail(function(err) {
-        return callback(new Error(err));
-      });
     } else {
       return callback(new Error("Missing or invalid API token"));
     }

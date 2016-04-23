@@ -37,28 +37,28 @@
             fieldset
               .form-group
                 label.control-label(for='public-key-input')
-                  | Public Certificate (PEM)
-                  a(href='#', data-toggle='modal', data-target='#jido-modal-certs-pem') 
-                    i.fa.fa-info-circle
+                  | Public Certificate (PEM) 
+                  a(href='#', data-toggle='modal', data-target='#jido-modal-certs-pem')
+                    i.fa.icon-info-circled
                 input#public-key-input.form-control(placeholder='TLS Public Certificate', name='public_key', type='file')
               .form-group
                 label.control-label(for='private-key-input')
-                  | Private Key (RSA un-encrypted)
-                  a(href='#', data-toggle='modal', data-target='#jido-modal-certs-rsa') 
-                    i.fa.fa-info-circle
+                  | Private Key (RSA un-encrypted) 
+                  a(href='#', data-toggle='modal', data-target='#jido-modal-certs-rsa')
+                    i.fa.icon-info-circled
                 input#private-key-input.form-control(placeholder='TLS Private Key', name='private_key', type='file')
               .form-group
                 label.control-label(for='ca-key-input')
-                  em CA Certificate (PEM optional)
-                  a(href='#', data-toggle='modal', data-target='#jido-modal-certs-pem') 
-                    i.fa.fa-info-circle
+                  em CA Certificate (PEM optional) 
+                  a(href='#', data-toggle='modal', data-target='#jido-modal-certs-pem')
+                    i.fa.icon-info-circled
                 input#ca-key-input.form-control(placeholder='TLS CA Root/Intermediate Certificate', name='ca_key', type='file')
               input#jido-button-certs-upload.btn.btn-lg.btn-primary.btn-block(type='submit', value='Upload', onclick='return event.preventDefault();')
     .col-lg-6.col-md-6.col-sm-12
       .panel.panel-default.jido-panel
         .panel-heading
           h3.panel-title
-            i.fa.fa-file-text-o
+            i.fa.icon-doc-text
             |  TLS Certificates log (last 10 lines)
         .panel-body
           pre.jido-info.jido-data-certs-log ...fecthing

@@ -21,38 +21,38 @@
         ul.nav.navbar-nav
           li#jido-button-home.active
             a(href='#')
-              i.fa.fa-home
+              i.fa.icon-home
               |  Home
           li#jido-button-update
             a(href='#')
-              i.fa.fa-cloud-upload
+              i.fa.icon-upload-cloud
               |  Update
           li.dropdown
             a.dropdown-toggle(href='#', data-toggle='dropdown', role='button', aria-haspopup='true', aria-expanded='false')
-              i.fa.fa-cogs
+              i.fa.icon-cog-alt
               |  Settings
               span.caret
             ul.dropdown-menu
               li#jido-button-network
                 a(href='#')
-                  i.fa.fa-sitemap
+                  i.fa.icon-sitemap
                   |  Network
               li#jido-button-certs
                 a(href='#')
-                  i.fa.fa-lock
+                  i.fa.icon-lock
                   |  TLS Certificates
               //- li#jido-button-license
               //-   a(href='#')
-              //-     i.fa.fa-certificate
+              //-     i.fa.icon-certificate
               //-     |  License
               li#jido-button-token
                 a(href='#')
-                  i.fa.fa-user
+                  i.fa.icon-user
                   |  API Token
 
           li#jido-button-support
             a(href='#')
-              i.fa.fa-life-ring
+              i.fa.icon-lifebuoy
               |  Support
 
         ul.nav.navbar-nav.navbar-right
@@ -60,11 +60,11 @@
             span.badge.jido-data-platform-version ...fetching
           li
             a#jido-button-logout(href='#')
-              i.fa.fa-sign-out
+              i.fa.icon-logout
               |  Logout
           li
             a#jido-button-restart(href='#', data-toggle='modal', data-target='#jido-modal-restart') 
-              i.fa.fa-power-off
+              i.fa.icon-off
               |  Restart
 
 .alert.alert-danger.restart-alert(style='display:none;')

@@ -82,13 +82,15 @@ If you want to improve this application, please make a pull-request.
 
 The HTML and JavaScript files are written in CoffeeScript and Jade, respectively.
 
-`npm install -g jade coffeescript`
+`npm install -g jade coffeescript minify`
 
 To compile the HTML, type: `make html`
 
 To compile the JavaScript, type: `make javascript`
 
-To compile both, type: `make ui`
+To minify the JavaScript, type: `make minify`
+
+To do everything at once, type: `make ui`
 
 # License
 
