@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.10.2 (2016-04-30)
+
+  * Update API Documentation to be much more clear and better organized
+
 ## 1.10.1 (2016-04-23)
 
   * Replace original FontAwesome fonts with smaller Fontello/FA font files
