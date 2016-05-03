@@ -695,7 +695,7 @@ Location: /api/v1/admin/certs
 
 If the certificates update API call fails, `400 Bad Request` will be returned.
 
-### Viewing the system update status
+### Viewing the TLS certificates update status
 
 This API endpoint will return the status of the certificates update, and the last 10 lines of the certificates update log. It can be polled repeatedly until the update is complete.
 
