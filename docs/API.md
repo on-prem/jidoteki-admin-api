@@ -884,4 +884,4 @@ Content-Type: application/json
 
 ----
 
-**Powered by [Jidoteki](https://jidoteki.com) - [Copyright notices](docs/NOTICE) - `v1.10.2`**
+**Powered by [Jidoteki](https://jidoteki.com) - [Copyright notices](NOTICE) - `v1.10.2`**
