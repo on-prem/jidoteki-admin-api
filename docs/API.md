@@ -33,6 +33,10 @@ Individual API endpoints are documented in separate sections listed below.
 
 Before using the API, it is necessary to perform the **initial setup** of the `API token`. This procedure is only required once.
 
+**Since**
+
+`>= v1.0.0`
+
 **HTTP Method**
 
 ```
@@ -87,9 +91,17 @@ Once the `token` is set, it is recommended to only use `hash` authentication, to
 
 ## API token authentication
 
+**Since**
+
+`>= v1.0.0`
+
 Query parameter: `?token=[yourtoken]`
 
 ## HMAC hash authentication
+
+**Since**
+
+`>= v1.9.0`
 
 Query parameter: `?hash=[sha256hmachash]`
 
@@ -128,6 +140,10 @@ Authentication errors always return `403 Forbidden`, except in situations which 
 ## Change the API token
 
 Changing the API token is similar to the [initial setup](#setup) procedure, except the API call requires [authentication](#authentication).
+
+**Since**
+
+`>= v1.0.0`
 
 **HTTP Method**
 
@@ -181,6 +197,10 @@ If changing the API token fails, `400 Bad Request` will be returned.
 
 Updating the system is an asynchronous procedure. The API will return a response immediately while the system updates itself in the background. Only one update can run at any given time.
 
+**Since**
+
+`>= v1.0.0`
+
 **HTTP Method**
 
 ```
@@ -228,6 +248,10 @@ If the system update API call fails, `400 Bad Request` will be returned.
 
 This API endpoint will return the status of the system update, and the last 10 lines of the update log. It can be polled repeatedly until the update is complete.
 
+**Since**
+
+`>= v1.0.0`
+
 **HTTP Method**
 
 ```
@@ -268,6 +292,10 @@ Content-Type: application/json
 ### Viewing the system update log
 
 This API endpoint will return the full system update log in plain text format.
+
+**Since**
+
+`>= v1.0.0`
 
 **HTTP Method**
 
@@ -314,6 +342,10 @@ If the log file doesn't exist, `404 Not Found` will be returned.
 Updating the network/application settings is an asynchronous procedure. The API will return a response immediately while the settings are updated in the background. Only one update can run at any given time.
 
 Network settings can be set to `DHCP` or `STATIC` by uploading a _settings.json_ file.
+
+**Since**
+
+`>= v1.0.0`
 
 **HTTP Method**
 
@@ -397,6 +429,10 @@ If the network/application settings update API call fails, `400 Bad Request` wil
 
 This API endpoint will return the network/application settings. It can be polled repeatedly to monitor changes to the network settings.
 
+**Since**
+
+`>= v1.0.0`
+
 **HTTP Method**
 
 ```
@@ -448,6 +484,10 @@ Content-Type: application/json
 
 The system's version can be used to determine if an update can be applied. It can only be changed during the [updates](#updates) procedure.
 
+**Since**
+
+`>= v1.1.3`
+
 **HTTP Method**
 
 ```
@@ -485,6 +525,10 @@ If the version file doesn't exist, `404 Not Found` will be returned.
 ### Viewing the system's changelog
 
 This API endpoint will return the system's changelog since the last update, in plain text format. It can only be changed during the [updates](#updates) procedure.
+
+**Since**
+
+`>= v1.1.6`
 
 **HTTP Method**
 
@@ -535,6 +579,10 @@ If the changelog file doesn't exist, `404 Not Found` will be returned.
 
 Retrieving compressed log files can help troubleshoot issues with the system. The log files generally don't contain sensitive information, therefore they are not encrypted. This will start a download of `logs.tar.gz`.
 
+**Since**
+
+`>= v1.1.1`
+
 **HTTP Method**
 
 ```
@@ -572,6 +620,10 @@ If an error occurs when compressing the logs, `400 Bad Request` will be returned
 ### Retrieve a debug bundle
 
 Retrieving a debug bundle can help the system developpers troubleshoot issues with the system. The debug bundle can contain sensitive information, therefore it is encrypted. This will start a download of `debug-bundle.tar`.
+
+**Since**
+
+`>= v1.7.0`
 
 **HTTP Method**
 
@@ -618,6 +670,10 @@ If an error occurs when creating the debug bundle, `400 Bad Request` will be ret
 Update TLS certificates to replace the default self-signed certificates.
 
 Updating the TLS certificates is an asynchronous procedure. The API will return a response immediately while the system updates the certificates in the background. Only one update can run at any given time.
+
+**Since**
+
+`>= v1.8.0`
 
 **HTTP Method**
 
@@ -699,6 +755,10 @@ If the certificates update API call fails, `400 Bad Request` will be returned.
 
 This API endpoint will return the status of the certificates update, and the last 10 lines of the certificates update log. It can be polled repeatedly until the update is complete.
 
+**Since**
+
+`>= v1.8.0`
+
 **HTTP Method**
 
 ```
@@ -747,6 +807,10 @@ Content-Type: application/json
 ### Changing the system license
 
 This API endpoint can be used to change the system license supplied by the system developpers.
+
+**Since**
+
+`>= v1.0.0`
 
 **HTTP Method**
 
@@ -802,6 +866,10 @@ If an error occurs when changing the license, `400 Bad Request` will be returned
 
 This API endpoint will return the details of the license.
 
+**Since**
+
+`>= v1.0.0`
+
 **HTTP Method**
 
 ```
@@ -851,6 +919,10 @@ If the license file doesn't exist, `404 Not Found` will be returned.
 This API endpoint will reboot the system immediately after performing a system backup.
 
 The API will return a response immediately while the system reboots in the background.
+
+**Since**
+
+`>= v1.5.0`
 
 **HTTP Method**
 
