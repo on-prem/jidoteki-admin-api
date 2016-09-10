@@ -8,7 +8,7 @@
   (use Size Date Body
     (let (Pre (pack (in "docs/strapdown-prefix.html" (till (eof))))
           Suf (pack (in "docs/strapdown-suffix.html" (till (eof))))
-          Doc (pack (in "docs/API.md" (till (eof)))) )
+          Doc (pack (in *API_DOC (till (eof)))) )
 
       (json-string (pack Pre "^J" Doc "^J" Suf))
       (response-generic 200 Size Date Body '(("Content-Type" . "text/html") ]

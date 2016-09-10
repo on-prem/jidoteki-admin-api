@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.11.0 (2016-08-29)
+
+  * Add 'JIDO_API_CUSTOM' env variable for loading custom API code, docs, html
+
 ## 1.10.2 (2016-04-30)
 
   * Update API Documentation to be much more clear and better organized

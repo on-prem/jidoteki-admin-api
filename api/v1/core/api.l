@@ -8,7 +8,8 @@
 
 (setq
   *PR_SET_NAME    15
-  *JIDO_API_PORT  (if (format (sys "JIDO_API_PORT")) @ 8080) )
+  *JIDO_API_PORT  (if (format (sys "JIDO_API_PORT")) @ 8080)
+  *JIDO_API_FILE  (if (sys "JIDO_API_CUSTOM") (pack @ "/index.html") "index.html") )
 
 (mime "md" "text/markdown; charset=UTF-8" 60)
 
@@ -29,7 +30,7 @@
     (api-stop)
     (https-start)
     (prinl "HTTP listening on port: " *JIDO_API_PORT)
-    (server *JIDO_API_PORT "index.html") ]
+    (server *JIDO_API_PORT *JIDO_API_FILE) ]
 
 (de api-stop ()
   (https-stop) )

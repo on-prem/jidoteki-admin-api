@@ -1,4 +1,3 @@
-
 /*
   This Source Code Form is subject to the terms of the Mozilla Public
   License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -9,7 +8,7 @@
 
 (function() {
   'use strict';
-  var apiServer, authenticate, capitalize, certsButtonListener, clearToken, debugButtonListener, failedUpload, fetchData, fetchFile, getHmac, getSha256, getStatus, getToken, loadHome, loadLogin, loadNetwork, loadSetup, loadSupport, loadToken, loadUpdateCerts, loginButtonListener, logoutButtonListener, logsButtonListener, navbarListener, networkButtonListener, newTokenButtonListener, pollStatus, putFile, putToken, redirectUrl, restartButtonListener, runningUpload, successUpload, tokenButtonListener, updateButtonListener, updateCertsButtonListener;
+  var apiServer, apiType, authenticate, capitalize, certsButtonListener, clearToken, debugButtonListener, failedUpload, fetchData, fetchFile, getHmac, getSha256, getStatus, getToken, loadHome, loadLogin, loadNetwork, loadSetup, loadSupport, loadToken, loadUpdateCerts, loginButtonListener, logoutButtonListener, logsButtonListener, navbarListener, networkButtonListener, newTokenButtonListener, pollStatus, putFile, putToken, redirectUrl, restartButtonListener, runningUpload, successUpload, tokenButtonListener, updateButtonListener, updateCertsButtonListener;
 
   apiServer = window.location.origin != null ? window.location.origin : window.location.protocol + "//" + window.location.hostname + (window.location.port != null ? ':' + window.location.port : '');
 
@@ -143,7 +142,7 @@
   };
 
   getStatus = function(msg, callback) {
-    return fetchData("/api/v1/admin/" + msg, function(err, result) {
+    return fetchData("/api/v1/" + apiType + "/" + msg, function(err, result) {
       var label;
       if (!err) {
         $(".jido-data-" + msg + "-status").html(result.status);
@@ -207,6 +206,158 @@
       }
     });
   };
+
+
+  /* generic content functions */
+
+  loadToken = function() {
+    $('#jido-page-login').hide();
+    $('.jido-page-content').hide();
+    $('#jido-page-navbar .navbar-nav li').removeClass('active');
+    $('#jido-button-token').addClass('active');
+    $('#jido-page-navbar').show();
+    $('#jido-page-token').show();
+    $('.jido-page-content-token .jido-panel-network').show();
+    $('.token-form .token-token1-label').focus();
+    return $('.token-form input.form-control').val('');
+  };
+
+  loadSetup = function() {
+    $('#jido-page-login').hide();
+    $('.jido-page-content').hide();
+    $('#jido-page-navbar').hide();
+    $('#jido-page-token').show();
+    $('.jido-page-content-token .jido-panel-network').show();
+    $('.token-form .token-token1-label').focus();
+    return $('.token-form input.form-control').val('');
+  };
+
+  loadLogin = function() {
+    $('.jido-page-content').hide();
+    $('#jido-page-navbar').hide();
+    $('#jido-page-login').show();
+    return $('#login-password').focus();
+  };
+
+
+  /* generic onclick listeners */
+
+  logoutButtonListener = function() {
+    return $('#jido-button-logout').click(function() {
+      clearToken();
+      return loadLogin();
+    });
+  };
+
+  loginButtonListener = function() {
+    return $('#jido-button-login').click(function() {
+      var pass, sha256;
+      pass = $('#login-password').val();
+      if (pass.length >= 8 && pass.length <= 64) {
+        sha256 = getSha256(pass);
+      }
+      if (sha256 != null) {
+        putToken(sha256);
+        return authenticate(function(err) {
+          if (err) {
+            $('#invalid-token').show();
+            return $('#login-password').focus();
+          } else {
+            $('#login-password').val('');
+            $('#invalid-token').hide();
+            return loadHome();
+          }
+        });
+      } else {
+        $('#invalid-token').show();
+        return $('#login-password').focus();
+      }
+    });
+  };
+
+  newTokenButtonListener = function() {
+    return $('#new-token').click(function() {
+      return loadSetup();
+    });
+  };
+
+  tokenButtonListener = function() {
+    return $('#jido-button-token-upload').click(function() {
+      var formData, pass1, pass2, sha256;
+      pass1 = $('#token1-input').val();
+      pass2 = $('#token2-input').val();
+      if (!pass1) {
+        $('.token-form .token-token1-label').parent().addClass('has-error');
+        $('.token-form .token-token1-label').html('API Token (required)');
+        $('.token-form .token-token1-label').focus();
+        return;
+      }
+      if (!pass2) {
+        $('.token-form .token-token2-label').parent().addClass('has-error');
+        $('.token-form .token-token2-label').html('Confirm API Token (required)');
+        $('.token-form .token-token2-label').focus();
+        return;
+      }
+      if (pass1 !== pass2) {
+        $('.token-alert').html('API Token mismatch. Please verify the API Token.');
+        $(".token-alert").show();
+        return;
+      }
+      if (pass1.length >= 8 && pass1.length <= 64) {
+        sha256 = getSha256(pass1);
+      }
+      if (sha256 == null) {
+        $(".token-alert").html('Invalid API Token. Must be between 8 and 64 characters');
+        $(".token-alert").show();
+        $('.token-form .token-token1-label').parent().addClass('has-error');
+        $('.token-form .token-token1-label').html('API Token (required)');
+        $('.token-form .token-token2-label').parent().addClass('has-error');
+        $('.token-form .token-token2-label').html('Confirm API Token (required)');
+        $('.token-form .token-token1-label').focus();
+        return;
+      }
+      formData = new FormData();
+      formData.append('newtoken', pass1);
+      if (formData) {
+        return putFile('token', '/api/v1/admin/setup', formData, function(err, result) {
+          if (err) {
+            $('.jido-data-token-status').html('failed');
+            $('.jido-data-token-status').removeClass('label-danger');
+            $('.jido-data-token-status').removeClass('label-success');
+            $('.jido-data-token-status').removeClass('label-default');
+            $('.jido-data-token-status').addClass('label-danger');
+            return failedUpload('token');
+          } else {
+            $('.jido-data-token-status').html('changed');
+            $('.jido-data-token-status').removeClass('label-danger');
+            $('.jido-data-token-status').removeClass('label-success');
+            $('.jido-data-token-status').removeClass('label-default');
+            $('.jido-data-token-status').addClass('label-success');
+            $(".token-alert").hide();
+            putToken(sha256);
+            successUpload('token');
+            $('#token1-input').val('');
+            $('#token2-input').val('');
+            $('.jido-page-content-token .jido-panel-network').hide();
+            return loadToken();
+          }
+        });
+      }
+    });
+  };
+
+
+  /* generic start here */
+
+  logoutButtonListener();
+
+  loginButtonListener();
+
+  newTokenButtonListener();
+
+  tokenButtonListener();
+
+  apiType = 'admin';
 
 
   /* content functions */
@@ -318,33 +469,6 @@
     });
   };
 
-  loadToken = function() {
-    $('#jido-page-login').hide();
-    $('.jido-page-content').hide();
-    $('#jido-page-navbar .navbar-nav li').removeClass('active');
-    $('#jido-button-token').addClass('active');
-    $('#jido-page-navbar').show();
-    $('#jido-page-token').show();
-    $('.jido-page-content-token .jido-panel-network').show();
-    $('.token-form .token-token1-label').focus();
-    fetchData("/api/v1/admin/version", function(err, result) {
-      if (!err) {
-        return $('.jido-data-platform-version').html(result.version);
-      }
-    });
-    return $('.token-form input.form-control').val('');
-  };
-
-  loadSetup = function() {
-    $('#jido-page-login').hide();
-    $('.jido-page-content').hide();
-    $('#jido-page-navbar').hide();
-    $('#jido-page-token').show();
-    $('.jido-page-content-token .jido-panel-network').show();
-    $('.token-form .token-token1-label').focus();
-    return $('.token-form input.form-control').val('');
-  };
-
   loadSupport = function() {
     $('#jido-page-login').hide();
     $('.jido-page-content').hide();
@@ -359,54 +483,8 @@
     });
   };
 
-  loadLogin = function() {
-    $('.jido-page-content').hide();
-    $('#jido-page-navbar').hide();
-    $('#jido-page-login').show();
-    return $('#login-password').focus();
-  };
-
 
   /* onclick listeners */
-
-  logoutButtonListener = function() {
-    return $('#jido-button-logout').click(function() {
-      clearToken();
-      return loadLogin();
-    });
-  };
-
-  loginButtonListener = function() {
-    return $('#jido-button-login').click(function() {
-      var pass, sha256;
-      pass = $('#login-password').val();
-      if (pass.length >= 8 && pass.length <= 64) {
-        sha256 = getSha256(pass);
-      }
-      if (sha256 != null) {
-        putToken(sha256);
-        return authenticate(function(err) {
-          if (err) {
-            $('#invalid-token').show();
-            return $('#login-password').focus();
-          } else {
-            $('#login-password').val('');
-            $('#invalid-token').hide();
-            return loadHome();
-          }
-        });
-      } else {
-        $('#invalid-token').show();
-        return $('#login-password').focus();
-      }
-    });
-  };
-
-  newTokenButtonListener = function() {
-    return $('#new-token').click(function() {
-      return loadSetup();
-    });
-  };
 
   updateButtonListener = function() {
     return $('#jido-button-update-upload').click(function() {
@@ -557,71 +635,6 @@
     });
   };
 
-  tokenButtonListener = function() {
-    return $('#jido-button-token-upload').click(function() {
-      var formData, pass1, pass2, sha256;
-      pass1 = $('#token1-input').val();
-      pass2 = $('#token2-input').val();
-      if (!pass1) {
-        $('.token-form .token-token1-label').parent().addClass('has-error');
-        $('.token-form .token-token1-label').html('API Token (required)');
-        $('.token-form .token-token1-label').focus();
-        return;
-      }
-      if (!pass2) {
-        $('.token-form .token-token2-label').parent().addClass('has-error');
-        $('.token-form .token-token2-label').html('Confirm API Token (required)');
-        $('.token-form .token-token2-label').focus();
-        return;
-      }
-      if (pass1 !== pass2) {
-        $('.token-alert').html('API Token mismatch. Please verify the API Token.');
-        $(".token-alert").show();
-        return;
-      }
-      if (pass1.length >= 8 && pass1.length <= 64) {
-        sha256 = getSha256(pass1);
-      }
-      if (sha256 == null) {
-        $(".token-alert").html('Invalid API Token. Must be between 8 and 64 characters');
-        $(".token-alert").show();
-        $('.token-form .token-token1-label').parent().addClass('has-error');
-        $('.token-form .token-token1-label').html('API Token (required)');
-        $('.token-form .token-token2-label').parent().addClass('has-error');
-        $('.token-form .token-token2-label').html('Confirm API Token (required)');
-        $('.token-form .token-token1-label').focus();
-        return;
-      }
-      formData = new FormData();
-      formData.append('newtoken', pass1);
-      if (formData) {
-        return putFile('token', '/api/v1/admin/setup', formData, function(err, result) {
-          if (err) {
-            $('.jido-data-token-status').html('failed');
-            $('.jido-data-token-status').removeClass('label-danger');
-            $('.jido-data-token-status').removeClass('label-success');
-            $('.jido-data-token-status').removeClass('label-default');
-            $('.jido-data-token-status').addClass('label-danger');
-            return failedUpload('token');
-          } else {
-            $('.jido-data-token-status').html('changed');
-            $('.jido-data-token-status').removeClass('label-danger');
-            $('.jido-data-token-status').removeClass('label-success');
-            $('.jido-data-token-status').removeClass('label-default');
-            $('.jido-data-token-status').addClass('label-success');
-            $(".token-alert").hide();
-            putToken(sha256);
-            successUpload('token');
-            $('#token1-input').val('');
-            $('#token2-input').val('');
-            $('.jido-page-content-token .jido-panel-network').hide();
-            return loadToken();
-          }
-        });
-      }
-    });
-  };
-
   logsButtonListener = function() {
     return $('#jido-data-logs-files').click(function() {
       return fetchFile("/api/v1/admin/logs", function(err) {
@@ -678,19 +691,11 @@
 
   /* start here */
 
-  logoutButtonListener();
-
-  loginButtonListener();
-
-  newTokenButtonListener();
-
   updateButtonListener();
 
   networkButtonListener();
 
   certsButtonListener();
-
-  tokenButtonListener();
 
   updateCertsButtonListener('update');
 

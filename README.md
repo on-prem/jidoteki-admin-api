@@ -68,6 +68,10 @@ The name of the stunnel binary. On CentOS it's `stunnel`, but on Debian it's `st
 
 The full path to the Admin application. In most cases it refers to `/opt/jidoteki/admin/`, but it may be different depending on the application.
 
+### JIDO_API_CUSTOM
+
+When this is set (ex: `JIDO_API_CUSTOM=yourapp`), the API will load `custom.l` from the `yourapp/api/v1/core/` directory.
+
 # API Endpoints
 
 See the [API Documentation](docs/API.md).
@@ -80,7 +84,7 @@ If you want to improve this application, please make a pull-request.
 
 ## HTML and JavaScript
 
-The HTML and JavaScript files are written in CoffeeScript and Jade, respectively.
+The HTML and JavaScript files are written in Jade and CoffeeScript, respectively.
 
 `npm install -g jade coffeescript minify`
 

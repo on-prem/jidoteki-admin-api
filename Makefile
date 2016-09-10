@@ -38,7 +38,7 @@ html:
 		jade -o . -P -E html ui/index.jade
 
 javascript:
-		coffee --no-header -c -o docs/ ui/ui.coffee
+		cat ui/license.coffee ui/generic.coffee ui/ui.coffee | coffee --no-header -c -s > docs/ui.js
 
 js: javascript
 
