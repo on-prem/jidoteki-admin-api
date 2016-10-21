@@ -8,7 +8,7 @@
 
 (function() {
   'use strict';
-  var apiServer, apiType, authenticate, capitalize, certsButtonListener, clearToken, debugButtonListener, failedUpload, fetchData, fetchFile, getHmac, getSha256, getStatus, getToken, loadHome, loadLogin, loadNetwork, loadSetup, loadSupport, loadToken, loadUpdateCerts, loginButtonListener, logoutButtonListener, logsButtonListener, navbarListener, networkButtonListener, newTokenButtonListener, pollStatus, putFile, putToken, redirectUrl, restartButtonListener, runningUpload, successUpload, tokenButtonListener, updateButtonListener, updateCertsButtonListener;
+  var apiServer, apiType, authenticate, capitalize, certsButtonListener, clearToken, debugButtonListener, drawGraphs, failedUpload, fetchData, fetchFile, getHmac, getSha256, getStatus, getToken, loadHome, loadLogin, loadMonitor, loadNetwork, loadSetup, loadSupport, loadToken, loadUpdateCerts, loginButtonListener, logoutButtonListener, logsButtonListener, monitorButtonListener, monitorClick, navbarListener, networkButtonListener, newTokenButtonListener, pollStatus, putFile, putToken, redirectUrl, restartButtonListener, runningUpload, successUpload, tokenButtonListener, updateButtonListener, updateCertsButtonListener;
 
   apiServer = window.location.origin != null ? window.location.origin : window.location.protocol + "//" + window.location.hostname + (window.location.port != null ? ':' + window.location.port : '');
 
@@ -128,7 +128,9 @@
     $(".jido-page-content-" + msg + " .progress .progress-bar").addClass('progress-bar-success');
     $(".jido-page-content-" + msg + " .progress .progress-bar").attr('aria-valuenow', 100);
     $(".jido-page-content-" + msg + " .progress .progress-bar").html('done');
-    return $(".jido-page-content-" + msg + " .progress .progress-bar").attr('style', 'width: 100%');
+    $(".jido-page-content-" + msg + " .progress .progress-bar").attr('style', 'width: 100%');
+    $("." + msg + "-form").show();
+    return $("." + msg + "-alert").hide();
   };
 
   failedUpload = function(msg, message) {
@@ -160,6 +162,20 @@
               return "label-default";
           }
         })();
+        if (result.status === 'failed') {
+          $(".jido-page-content-" + msg + " .alert.jido-panel").addClass("alert-danger");
+          $(".jido-page-content-" + msg + " .jido-page-content-" + msg + "-panel").attr('style', 'background-color: none');
+        } else {
+          $(".jido-page-content-" + msg + " .alert.jido-panel").removeClass("alert-danger");
+          $(".jido-page-content-" + msg + " .jido-page-content-" + msg + "-panel").attr('style', 'background-color: #EEEEEE');
+        }
+        if (result['error-code'] && result['error-message'] && result.status === 'failed') {
+          $(".jido-data-" + msg + "-status-error").show();
+          $(".jido-data-" + msg + "-status-error-message").html(result['error-code'] + ": " + result['error-message']);
+        } else {
+          $(".jido-data-" + msg + "-status-error").hide();
+          $(".jido-data-" + msg + "-status-error-message").html('');
+        }
         $(".jido-data-" + msg + "-status").removeClass("label-danger");
         $(".jido-data-" + msg + "-status").removeClass("label-success");
         $(".jido-data-" + msg + "-status").removeClass("label-default");
@@ -374,12 +390,7 @@
         return $('.jido-data-platform-version').html(result.version);
       }
     });
-    fetchData("/api/v1/admin/changelog", function(err, result) {
-      if (!err) {
-        return $('.jido-data-changelog').html(result);
-      }
-    });
-    return fetchData("/api/v1/admin/settings", function(err, result) {
+    fetchData("/api/v1/admin/settings", function(err, result) {
       var key, networkSettings, value;
       if (!err) {
         networkSettings = (function() {
@@ -402,6 +413,30 @@
           return results;
         })();
         return $('.jido-data-network-info').html(networkSettings);
+      }
+    });
+    fetchData("/api/v1/admin/changelog", function(err, result) {
+      if (!err) {
+        return $('.jido-data-changelog').html(result);
+      }
+    });
+    return fetchData("/api/v1/admin/services", function(err, result) {
+      var i, key, len, ref, service, servicesStatus, value;
+      if (!err) {
+        servicesStatus = "";
+        ref = result.services;
+        for (i = 0, len = ref.length; i < len; i++) {
+          service = ref[i];
+          for (key in service) {
+            value = service[key];
+            if (value === 'running') {
+              servicesStatus = servicesStatus + ("<li class=\"list-group-item\"><i class=\"fa icon-ok-circled text-success\"></i> " + key + " <span class=\"pull-right text-success\">" + value + "</span></li>");
+            } else {
+              servicesStatus = servicesStatus + ("<li class=\"list-group-item\"><i class=\"fa icon-cancel-circled text-danger\"></i> " + key + " <span class=\"pull-right text-danger\">" + value + "</span></li>");
+            }
+          }
+        }
+        return $('.jido-data-services-info').html(servicesStatus);
       }
     });
   };
@@ -481,6 +516,59 @@
         return $('.jido-data-platform-version').html(result.version);
       }
     });
+  };
+
+  loadMonitor = function() {
+    $('#jido-page-login').hide();
+    $('.jido-page-content').hide();
+    $('#jido-page-navbar .navbar-nav li').removeClass('active');
+    $('#jido-button-monitor').addClass('active');
+    $('#jido-page-navbar').show();
+    $('#jido-page-monitor').show();
+    return fetchData("/api/v1/admin/version", function(err, result) {
+      if (!err) {
+        $('.jido-data-platform-version').html(result.version);
+        return monitorClick('1h');
+      }
+    });
+  };
+
+
+  /* generic functions */
+
+  monitorClick = function(result) {
+    var makeGraph;
+    makeGraph = function(clicked) {
+      switch (clicked) {
+        case '1h':
+          return drawGraphs('-1h');
+        case '1d':
+          return drawGraphs('-1d');
+        case '1w':
+          return drawGraphs('-1w');
+        case '1m':
+          return drawGraphs('-1m');
+        case '1y':
+          return drawGraphs('-1y');
+        default:
+          return drawGraphs('-1d');
+      }
+    };
+    $('#jido-monitor-duration li').removeClass('active');
+    $(".jido-duration-" + result).addClass('active');
+    return $('#jido-page-monitor p .jido-monitor-msg').fadeIn(500, function() {
+      return makeGraph(result);
+    });
+  };
+
+  drawGraphs = function(result) {
+    var duration;
+    duration = "-s " + result;
+    draw('svgcpu', 'cpu', duration);
+    draw('svgload', 'load', duration);
+    draw('svgmemory', 'memory', duration);
+    draw('svgnetwork', 'if_octets', duration);
+    return $('#jido-page-monitor p .jido-monitor-msg').fadeOut(2000);
   };
 
 
@@ -665,6 +753,14 @@
     });
   };
 
+  monitorButtonListener = function() {
+    return $('#jido-monitor-duration li a').click(function() {
+      var clicked;
+      clicked = $(this).attr('duration');
+      return monitorClick(clicked);
+    });
+  };
+
   navbarListener = function() {
     return $('#jido-page-navbar .navbar-nav li a').click(function() {
       var clicked;
@@ -684,6 +780,8 @@
           return loadToken();
         case "jido-button-support":
           return loadSupport();
+        case "jido-button-monitor":
+          return loadMonitor();
       }
     });
   };
@@ -704,6 +802,8 @@
   debugButtonListener();
 
   restartButtonListener();
+
+  monitorButtonListener();
 
   navbarListener();
 

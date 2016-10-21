@@ -19,7 +19,7 @@ In combination with the [jidoteki-admin](https://github.com/unscramble/jidoteki-
 
 An Admin UI is included, and enables simpler management through a web-based interface:
 
-![Admin UI](https://cloud.githubusercontent.com/assets/153401/14586204/326e8ae0-0480-11e6-957e-214637e8a355.gif)
+![Admin UI](https://cloud.githubusercontent.com/assets/153401/19772513/044ed2f0-9c56-11e6-90d5-cb235dc088ef.gif)
 
 # Requirements
 

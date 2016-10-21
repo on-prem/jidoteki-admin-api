@@ -1,0 +1,65 @@
+//- This Source Code Form is subject to the terms of the Mozilla Public
+//- License, v. 2.0. If a copy of the MPL was not distributed with this
+//- file, You can obtain one at http://mozilla.org/MPL/2.0/.
+//- 
+//- Copyright (c) 2015-2016 Alexander Williams, Unscramble <license@unscramble.jp>
+
+// #monitor container
+#jido-page-monitor.container-fluid.jido-page-content(style='display:none')
+  .row
+    .col-lg-10.col-md-10.col-sm-12.col-lg-offset-1.col-md-offset-1
+      .page-header
+        h1(style='display:inline;') Monitor system health
+        .pull-right(style='display:inline;')
+          ul.pagination.pagination-md#jido-monitor-duration
+            li.jido-duration-1h.active
+              a(href="#", duration='1h') 1 hour
+            li.jido-duration-1d
+              a(href="#", duration='1d') 1 day
+            li.jido-duration-1w
+              a(href="#", duration='1w') 1 week
+            li.jido-duration-1m
+              a(href="#", duration='1m') 1 month
+            li.jido-duration-1y
+              a(href="#", duration='1y') 1 year
+          p.text-right
+            span.jido-monitor-msg Loading graphs, please wait...
+            span &nbsp;
+        br
+        br
+
+  .row
+    .col-lg-5.col-md-5.col-sm-12.col-lg-offset-1.col-md-offset-1
+      .panel.panel-default.jido-panel
+        .panel-heading
+          h3.panel-title
+            |  CPU usage
+        .panel-body.jido-monitor
+          canvas#svgcpu
+
+    .col-lg-5.col-md-5.col-sm-12
+      .panel.panel-default.jido-panel
+        .panel-heading
+          h3.panel-title
+            |  Recent CPU load
+        .panel-body.jido-monitor
+          canvas#svgload
+
+  .row
+    .col-lg-5.col-md-5.col-sm-12.col-lg-offset-1.col-md-offset-1
+      .panel.panel-default.jido-panel
+        .panel-heading
+          h3.panel-title
+            |  Memory usage
+        .panel-body.jido-monitor
+          canvas#svgmemory
+
+    .col-lg-5.col-md-5.col-sm-12
+      .panel.panel-default.jido-panel
+        .panel-heading
+          h3.panel-title
+            |  Network traffic
+        .panel-body.jido-monitor
+          canvas#svgnetwork
+
+// /#monitor container

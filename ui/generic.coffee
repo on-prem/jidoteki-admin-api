@@ -111,6 +111,8 @@ successUpload = (msg) ->
   $(".jido-page-content-#{msg} .progress .progress-bar").attr 'aria-valuenow', 100
   $(".jido-page-content-#{msg} .progress .progress-bar").html 'done'
   $(".jido-page-content-#{msg} .progress .progress-bar").attr 'style', 'width: 100%'
+  $(".#{msg}-form").show()
+  $(".#{msg}-alert").hide()
 
 failedUpload = (msg, message) ->
   $(".jido-page-content-#{msg} .progress .progress-bar").removeClass 'progress-bar-striped'
@@ -134,6 +136,20 @@ getStatus = (msg, callback) ->
         else
           $(".jido-data-#{msg}-status").html "waiting for #{msg}"
           "label-default"
+
+      if result.status == 'failed'
+        $(".jido-page-content-#{msg} .alert.jido-panel").addClass "alert-danger"
+        $(".jido-page-content-#{msg} .jido-page-content-#{msg}-panel").attr 'style', 'background-color: none'
+      else
+        $(".jido-page-content-#{msg} .alert.jido-panel").removeClass "alert-danger"
+        $(".jido-page-content-#{msg} .jido-page-content-#{msg}-panel").attr 'style', 'background-color: #EEEEEE'
+
+      if result['error-code'] and result['error-message'] and result.status == 'failed'
+        $(".jido-data-#{msg}-status-error").show()
+        $(".jido-data-#{msg}-status-error-message").html "#{result['error-code']}: #{result['error-message']}"
+      else
+        $(".jido-data-#{msg}-status-error").hide()
+        $(".jido-data-#{msg}-status-error-message").html ''
 
       $(".jido-data-#{msg}-status").removeClass("label-danger")
       $(".jido-data-#{msg}-status").removeClass("label-success")

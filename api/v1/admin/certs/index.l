@@ -37,7 +37,8 @@
       ("ca_key"       "ca.pem") )
 
     (if (info File)
-        (call 'mv "-f" File (pack *Upload_path Filename))
+        (unless (call 'mv "-f" File (pack *Upload_path Filename))
+                (http-msg 400) )
         (http-msg 400) ]
 
 [de certs-post ()
@@ -45,15 +46,12 @@
         Private (get 'private 'http)
         Ca      (get 'ca 'http) )
 
-    (if Public
-        (certs-store (tmp Public) "public_key")
-        (http-msg 400) )
-    (if Private
-        (certs-store (tmp Private) "private_key")
-        (http-msg 400) )
-    (when Ca (certs-store (tmp Ca) "ca_key"))
-
-    (certs-update) ]
+    (if (and Public Private)
+        (or (certs-store (tmp Public) "public_key")
+            (certs-store (tmp Private) "private_key")
+            (when Ca (certs-store (tmp Ca) "ca_key"))
+            (certs-update) )
+        (http-msg 400) ]
 
 (de certs-request ()
   (if (validate-auth)

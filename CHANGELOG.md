@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.12.0 (2016-10-27)
+
+  * Display RRD graphs in 'Monitor' (new) section
+  * Fix '/certs' validation bypass. #22
+  * Add '/services' endpoint. #11
+  * Add 'error-message' and 'error-code' to update status responses. #23
+  * Various minor fixes
+
 ## 1.11.0 (2016-08-29)
 
   * Add 'JIDO_API_CUSTOM' env variable for loading custom API code, docs, html

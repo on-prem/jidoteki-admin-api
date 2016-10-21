@@ -18,6 +18,8 @@
 .jido-data-certs-log { white-space:pre; overflow-x:auto; word-wrap: normal;}
 .jido-button-fulllog { display: block;}
 .jido-data-network-info li span { font-weight: normal;}
+.jido-monitor { padding: 10px; margin: 0; background-color: #F2F2F2; text-align: center;}
+
 #jido-modal-restart.modal .modal-content { background-color: #CC2417;}
 #jido-modal-restart.modal .modal-title { color: #FFF;}
 #jido-button-restart { color: #272727;}

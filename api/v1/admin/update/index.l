@@ -10,11 +10,19 @@
 [de update-status ()
   (in (list 'cat (pack *Admin_path "etc/status_update.txt")) (pack (till "^J") ]
 
+[de update-error-message ()
+  (in (list 'cat (pack *Admin_path "etc/status_error_message.txt")) (pack (till "^J") ]
+
+[de update-error-code ()
+  (in (list 'cat (pack *Admin_path "etc/status_error_code.txt")) (pack (till "^J") ]
+
 [de update-process ()
   (let (Log     (update-log 10)
-        Status  (update-status) )
+        Status  (update-status)
+        Message (when (info (pack *Admin_path "etc/status_error_message.txt")) (update-error-message))
+        Code    (when (info (pack *Admin_path "etc/status_error_code.txt")) (update-error-code)) )
 
-    (list (append '("status") Status) (append '("log") Log) ]
+    (make (link (cons "status" Status)) (link (cons "log" Log)) (when Message (link (cons "error-message" Message))) (when Code (link (cons "error-code" Code) ]
 
 (de update-get ()
   (response-json (encode (update-process))) )

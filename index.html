@@ -32,6 +32,7 @@
                   <li id="jido-button-token"><a href="#"><i class="fa icon-user"></i> API Token</a></li>
                 </ul>
               </li>
+              <li id="jido-button-monitor"><a href="#"><i class="fa icon-gauge"></i> Monitor</a></li>
               <li id="jido-button-support"><a href="#"><i class="fa icon-lifebuoy"></i> Support</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
@@ -94,6 +95,18 @@
         <div class="col-lg-5 col-md-5 col-sm-12">
           <div class="panel panel-default jido-panel">
             <div class="panel-heading">
+              <h3 class="panel-title"><i class="fa icon-attention"></i> Service status</h3>
+            </div>
+            <div class="panel-body">
+              <ul class="list-group jido-data-services-info"></ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-10 col-md-10 col-sm-12 col-lg-offset-1 col-md-offset-1">
+          <div class="panel panel-default jido-panel">
+            <div class="panel-heading">
               <h3 class="panel-title"><i class="fa icon-doc-text"></i> Change log</h3>
             </div>
             <div class="panel-body">
@@ -125,11 +138,11 @@
       </div>
       <div class="row">
         <div class="col-lg-10 col-md-10 col-sm-12 col-lg-offset-1 col-md-offset-1">
-          <div class="panel panel-default jido-panel">
-            <div class="panel-heading">Status: <span class="label label-default jido-data-update-status">...fetching</span>
-              <div style="display:none; margin-top: 20px" class="progress">
-                <div role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width: 33%" class="progress-bar progress-bar-striped active">...uploading, please wait</div>
-              </div>
+          <div class="alert jido-panel jido-page-content-update-panel">
+            <div class="label label-default jido-data-update-status">...fetching</div><span style="display:none;" class="pull-right jido-data-update-status-error">
+              <div class="jido-data-update-status-error-message"></div></span>
+            <div style="display:none; margin-top: 20px; margin-bottom:0;" class="progress">
+              <div role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width: 33%" class="progress-bar progress-bar-striped active">...uploading, please wait</div>
             </div>
           </div>
         </div>
@@ -138,9 +151,7 @@
         <div class="col-lg-4 col-md-4 col-sm-12 col-lg-offset-1 col-md-offset-1">
           <div class="panel panel-default jido-panel">
             <div class="panel-body">Upload a <em>software update package</em> to keep the system up-to-date.<br><br>Ex: software_package-v1.2.3.enc<br><br>
-              <div style="display:none;" class="alert alert-dismissible alert-info update-alert">
-                <button type="button" data-dismiss="alert" class="close">×</button>The status and log will update automatically.
-              </div>
+              <div style="display:none;" class="alert alert-info update-alert">The status and log will update automatically.</div>
               <form role="form" class="update-form">
                 <fieldset>
                   <div class="form-group">
@@ -375,6 +386,71 @@
       </div>
     </div>
     <!-- /#support container-->
+    <!-- #monitor container-->
+    <div id="jido-page-monitor" style="display:none" class="container-fluid jido-page-content">
+      <div class="row">
+        <div class="col-lg-10 col-md-10 col-sm-12 col-lg-offset-1 col-md-offset-1">
+          <div class="page-header">
+            <h1 style="display:inline;">Monitor system health</h1>
+            <div style="display:inline;" class="pull-right">
+              <ul id="jido-monitor-duration" class="pagination pagination-md">
+                <li class="jido-duration-1h active"><a href="#" duration="1h">1 hour</a></li>
+                <li class="jido-duration-1d"><a href="#" duration="1d">1 day</a></li>
+                <li class="jido-duration-1w"><a href="#" duration="1w">1 week</a></li>
+                <li class="jido-duration-1m"><a href="#" duration="1m">1 month</a></li>
+                <li class="jido-duration-1y"><a href="#" duration="1y">1 year</a></li>
+              </ul>
+              <p class="text-right"><span class="jido-monitor-msg">Loading graphs, please wait...</span><span>&nbsp;</span></p>
+            </div><br><br>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-5 col-md-5 col-sm-12 col-lg-offset-1 col-md-offset-1">
+          <div class="panel panel-default jido-panel">
+            <div class="panel-heading">
+              <h3 class="panel-title"> CPU usage</h3>
+            </div>
+            <div class="panel-body jido-monitor">
+              <canvas id="svgcpu"></canvas>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-5 col-md-5 col-sm-12">
+          <div class="panel panel-default jido-panel">
+            <div class="panel-heading">
+              <h3 class="panel-title"> Recent CPU load</h3>
+            </div>
+            <div class="panel-body jido-monitor">
+              <canvas id="svgload"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-5 col-md-5 col-sm-12 col-lg-offset-1 col-md-offset-1">
+          <div class="panel panel-default jido-panel">
+            <div class="panel-heading">
+              <h3 class="panel-title"> Memory usage</h3>
+            </div>
+            <div class="panel-body jido-monitor">
+              <canvas id="svgmemory"></canvas>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-5 col-md-5 col-sm-12">
+          <div class="panel panel-default jido-panel">
+            <div class="panel-heading">
+              <h3 class="panel-title"> Network traffic</h3>
+            </div>
+            <div class="panel-body jido-monitor">
+              <canvas id="svgnetwork"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /#monitor container-->
     <div id="jido-modal-certs-pem" class="modal">
           <div class="modal-dialog">
             <div class="modal-content">
@@ -450,6 +526,17 @@ GEs=
     <script src="docs/forge/forge.min.js"></script>
     <script src="docs/validator/validator.min.js"></script>
     <script src="docs/themes/bootstrap.min.js"></script>
+    <script src="docs/jsrrdgraph/binaryxhr.js"></script>
+    <script src="docs/jsrrdgraph/rrdcmdline.js"></script>
+    <script src="docs/jsrrdgraph/rrddatafile.js"></script>
+    <script src="docs/jsrrdgraph/rrdfile.js"></script>
+    <script src="docs/jsrrdgraph/rrdgfxcanvas.js"></script>
+    <script src="docs/jsrrdgraph/rrdgraph.min.js"></script>
+    <script src="docs/jsrrdgraph/rrdrpn.js"></script>
+    <script src="docs/jsrrdgraph/rrdtime.js"></script>
+    <script src="docs/jsrrdgraph/sprintf.js"></script>
+    <script src="docs/jsrrdgraph/strftime.js"></script>
+    <script src="docs/jsrrdgraph/draw.js"></script>
     <script src="docs/ui.min.js"></script>
     <!-- This Source Code Form is subject to the terms of the Mozilla Public-->
     <!-- License, v. 2.0. If a copy of the MPL was not distributed with this-->

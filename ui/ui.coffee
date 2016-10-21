@@ -20,10 +20,6 @@ loadHome = ->
     unless err
       $('.jido-data-platform-version').html result.version
 
-  fetchData "/api/v1/admin/changelog", (err, result) ->
-    unless err
-      $('.jido-data-changelog').html result
-
   fetchData "/api/v1/admin/settings", (err, result) ->
     unless err
       networkSettings = for key, value of result.network
@@ -34,6 +30,22 @@ loadHome = ->
         "<li class=\"list-group-item\">#{capitalize key} <span class=\"pull-right text-primary\">#{value}</span></li>"
 
       $('.jido-data-network-info').html networkSettings
+
+  fetchData "/api/v1/admin/changelog", (err, result) ->
+    unless err
+      $('.jido-data-changelog').html result
+
+  fetchData "/api/v1/admin/services", (err, result) ->
+    unless err
+      servicesStatus = ""
+      for service in result.services
+        for key, value of service
+          if value == 'running'
+            servicesStatus = servicesStatus + "<li class=\"list-group-item\"><i class=\"fa icon-ok-circled text-success\"></i> #{key} <span class=\"pull-right text-success\">#{value}</span></li>"
+          else
+            servicesStatus = servicesStatus + "<li class=\"list-group-item\"><i class=\"fa icon-cancel-circled text-danger\"></i> #{key} <span class=\"pull-right text-danger\">#{value}</span></li>"
+
+      $('.jido-data-services-info').html servicesStatus
 
 loadUpdateCerts = (msg) ->
   $('#jido-page-login').hide()
@@ -92,6 +104,45 @@ loadSupport = ->
   fetchData "/api/v1/admin/version", (err, result) ->
     unless err
       $('.jido-data-platform-version').html result.version
+
+loadMonitor = ->
+  $('#jido-page-login').hide()
+  $('.jido-page-content').hide()
+  $('#jido-page-navbar .navbar-nav li').removeClass('active')
+  $('#jido-button-monitor').addClass('active')
+  $('#jido-page-navbar').show()
+  $('#jido-page-monitor').show()
+
+  fetchData "/api/v1/admin/version", (err, result) ->
+    unless err
+      $('.jido-data-platform-version').html result.version
+
+      monitorClick '1h'
+
+### generic functions ###
+monitorClick = (result) ->
+  makeGraph = (clicked) ->
+    switch clicked
+      when '1h'   then drawGraphs '-1h'
+      when '1d'   then drawGraphs '-1d'
+      when '1w'   then drawGraphs '-1w'
+      when '1m'   then drawGraphs '-1m'
+      when '1y'   then drawGraphs '-1y'
+      else drawGraphs '-1d'
+
+  $('#jido-monitor-duration li').removeClass 'active'
+  $(".jido-duration-#{result}").addClass 'active'
+  $('#jido-page-monitor p .jido-monitor-msg').fadeIn 500, ->
+    makeGraph result
+
+drawGraphs = (result) ->
+  duration = "-s #{result}"
+
+  draw('svgcpu', 'cpu', duration)
+  draw('svgload', 'load', duration)
+  draw('svgmemory', 'memory', duration)
+  draw('svgnetwork', 'if_octets', duration)
+  $('#jido-page-monitor p .jido-monitor-msg').fadeOut 2000
 
 ### onclick listeners ###
 
@@ -234,6 +285,12 @@ restartButtonListener = ->
         $(".restart-alert").show()
         return
 
+monitorButtonListener = ->
+  $('#jido-monitor-duration li a').click ->
+    clicked = $(this).attr 'duration'
+
+    monitorClick clicked
+
 navbarListener = ->
   $('#jido-page-navbar .navbar-nav li a').click ->
     clicked = $(this).parent().attr 'id'
@@ -245,6 +302,7 @@ navbarListener = ->
       when "jido-button-license"  then loadLicense()
       when "jido-button-token"    then loadToken()
       when "jido-button-support"  then loadSupport()
+      when "jido-button-monitor"  then loadMonitor()
 
 ### start here ###
 
@@ -256,6 +314,7 @@ updateCertsButtonListener 'update'
 logsButtonListener()
 debugButtonListener()
 restartButtonListener()
+monitorButtonListener()
 navbarListener()
 
 authenticate (err) ->
