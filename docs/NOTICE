@@ -40,11 +40,11 @@ API Documentation and UI licensing:
   Copyright (c) 2016 Chris O'Hara <cohara87@gmail.com>
   https://github.com/chriso/validator.js
 
-* 'jsrrdgraph' is licensed under the MIT License and
+* 'Validator.js' is licensed under the MIT License and GPL
   Copyright (c) 2016 Chris O'Hara <cohara87@gmail.com>
   https://github.com/chriso/validator.js
 
-* 'Validator.js' is licensed under the MIT License and GPL
+* 'jsrrdgraph' is licensed under the MIT License and
   Copyright (c) 2013  Frank Wuerthwein, fkw@ucsd.edu, Igor Sfiligoi, isfiligoi@ucsd.edu
   Copyright (c) 2008 Jacob Seidelin, cupboy@gmail.com, http://blog.nihilogic.dk/
   RRDtool 1.4.5  Copyright by Tobi Oetiker, 1997-2010
