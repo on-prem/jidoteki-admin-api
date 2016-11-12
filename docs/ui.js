@@ -564,10 +564,10 @@
   drawGraphs = function(result) {
     var duration;
     duration = "-s " + result;
-    draw('svgcpu', 'cpu', duration);
     draw('svgload', 'load', duration);
     draw('svgmemory', 'memory', duration);
     draw('svgnetwork', 'if_octets', duration);
+    draw('svgdisk', 'disk', duration);
     return $('#jido-page-monitor p .jido-monitor-msg').fadeOut(2000);
   };
 

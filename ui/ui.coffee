@@ -138,10 +138,10 @@ monitorClick = (result) ->
 drawGraphs = (result) ->
   duration = "-s #{result}"
 
-  draw('svgcpu', 'cpu', duration)
   draw('svgload', 'load', duration)
   draw('svgmemory', 'memory', duration)
   draw('svgnetwork', 'if_octets', duration)
+  draw('svgdisk', 'disk', duration)
   $('#jido-page-monitor p .jido-monitor-msg').fadeOut 2000
 
 ### onclick listeners ###

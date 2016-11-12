@@ -33,20 +33,11 @@
       .panel.panel-default.jido-panel
         .panel-heading
           h3.panel-title
-            |  CPU usage
-        .panel-body.jido-monitor
-          canvas#svgcpu
-
-    .col-lg-5.col-md-5.col-sm-12
-      .panel.panel-default.jido-panel
-        .panel-heading
-          h3.panel-title
-            |  Recent CPU load
+            |  CPU load
         .panel-body.jido-monitor
           canvas#svgload
 
-  .row
-    .col-lg-5.col-md-5.col-sm-12.col-lg-offset-1.col-md-offset-1
+    .col-lg-5.col-md-5.col-sm-12
       .panel.panel-default.jido-panel
         .panel-heading
           h3.panel-title
@@ -54,12 +45,21 @@
         .panel-body.jido-monitor
           canvas#svgmemory
 
-    .col-lg-5.col-md-5.col-sm-12
+  .row
+    .col-lg-5.col-md-5.col-sm-12.col-lg-offset-1.col-md-offset-1
       .panel.panel-default.jido-panel
         .panel-heading
           h3.panel-title
             |  Network traffic
         .panel-body.jido-monitor
           canvas#svgnetwork
+
+    .col-lg-5.col-md-5.col-sm-12
+      .panel.panel-default.jido-panel
+        .panel-heading
+          h3.panel-title
+            |  Disk usage
+        .panel-body.jido-monitor
+          canvas#svgdisk
 
 // /#monitor container
