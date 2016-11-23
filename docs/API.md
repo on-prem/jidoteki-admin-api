@@ -28,6 +28,7 @@ Individual API endpoints are documented in separate sections listed below.
 | 7. [TLS](#tls) | `POST /certs` <br/> `GET /certs` | Updating the system's TLS certificates to replace the default self-signed certificates. |
 | 8. [License](#license) | `POST /license` <br/> `GET /license` | Viewing and changing the system license. |
 | 9. [Administration](#administration) | `GET /reboot` | System administration, such as rebooting the system. |
+| 10. [Services](#services) | `GET /services` | Retrieving the status of system services. |
 
 # <a name="setup"></a>1. Setup
 
@@ -283,11 +284,33 @@ Content-Type: application/json
 }
 ```
 
+**Error response**
+
+```
+HTTP/1.1 200 OK
+Content-Type: application/json
+{
+    "status": "failed",
+    "log": "[1432140922][SYSTEM] Failed updating...",
+    "error-message": "Missing update package",
+    "error-code": "E1003"
+}
+```
+
 **Status values**
 
 * `running`: The system update is currently running.
 * `success`: The system update completed successfully.
 * `failed`: The system update failed.
+
+**Error codes**
+
+* `E1000`: There was a scripting error in the update script.
+* `E1001`: There was a version error in the update package.
+* `E1002`: There was an error during the update process.
+* `E1003`: The update package was missing.
+* `E1004`: The update process was already running.
+* `E1005`: The update package couldn't be decrypted or extracted.
 
 ### Viewing the system update log
 
@@ -956,4 +979,54 @@ Content-Type: application/json
 
 ----
 
-**Powered by [Jidoteki](https://jidoteki.com) - [Copyright notices](/docs/NOTICE) - `v1.11.0`**
+# <a name="services"></a>10. Services
+
+### Retrieving service status
+
+This API endpoint will retrieve the status of various system services.
+
+The API will return a response immediately.
+
+**Since**
+
+`>= v1.12.0`
+
+**HTTP Method**
+
+```
+GET
+```
+
+**Endpoint**
+
+```
+/services
+```
+
+**Example**
+
+```
+curl -X GET https://[hostname]:8443/api/v1/admin/services?hash=[sha256hmachash]
+or
+curl -X GET https://[hostname]:8443/api/v1/admin/services?token=[yourtoken]
+```
+
+**Success response**
+
+```
+HTTP/1.1 200 OK
+Content-Type: application/json
+{
+    "services": [{
+        "openssh": "running"
+    }, {
+        "jidoteki-admin-api": "running"
+    }]
+}
+```
+
+[^ return to menu](#menu)
+
+----
+
+**Powered by [Jidoteki](https://jidoteki.com) - [Copyright notices](/docs/NOTICE) - `v1.12.0`**

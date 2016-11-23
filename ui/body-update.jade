@@ -11,13 +11,14 @@
       h1.page-header Update
   .row
     .col-lg-10.col-md-10.col-sm-12.col-lg-offset-1.col-md-offset-1
-      .panel.panel-default.jido-panel
-        .panel-heading
-          | Status: 
-          span.label.label-default.jido-data-update-status ...fetching
-          .progress(style='display:none; margin-top: 20px')
-            .progress-bar.progress-bar-striped.active(role='progressbar', aria-valuenow='33', aria-valuemin='0', aria-valuemax='100', style='width: 33%')
-              | ...uploading, please wait
+      .alert.jido-panel.jido-page-content-update-panel
+        .label.label-default.jido-data-update-status ...fetching
+        span.pull-right.jido-data-update-status-error(style='display:none;')
+          .jido-data-update-status-error-message
+        .progress(style='display:none; margin-top: 20px; margin-bottom:0;')
+          .progress-bar.progress-bar-striped.active(role='progressbar', aria-valuenow='33', aria-valuemin='0', aria-valuemax='100', style='width: 33%')
+            | ...uploading, please wait
+
   .row
     .col-lg-4.col-md-4.col-sm-12.col-lg-offset-1.col-md-offset-1
       .panel.panel-default.jido-panel
@@ -30,8 +31,7 @@
           | Ex: software_package-v1.2.3.enc
           br
           br
-          .alert.alert-dismissible.alert-info.update-alert(style='display:none;')
-            button.close(type='button', data-dismiss='alert') ×
+          .alert.alert-info.update-alert(style='display:none;')
             | The status and log will update automatically.
           form.update-form(role='form')
             fieldset

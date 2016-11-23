@@ -5,7 +5,7 @@
 # Copyright (c) 2015 Alexander Williams, Unscramble <license@unscramble.jp>
 
 (allowed ("api/v1/admin")
-  v hash public private ca certs debug reboot newtoken token setup license settings update logs version changelog )
+  v hash public private ca certs debug reboot newtoken token setup license settings update logs version changelog services )
 
 (allow "docs" T)
 
