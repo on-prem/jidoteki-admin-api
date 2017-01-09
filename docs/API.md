@@ -52,7 +52,7 @@ POST
 
 **Parameters**
 
-* `newtoken` **(required)**: New API token
+* `newtoken` **(required)**: New API token, between 1 and 255 characters
 
 **Content-type**
 

@@ -319,11 +319,11 @@
         $(".token-alert").show();
         return;
       }
-      if (pass1.length >= 8 && pass1.length <= 64) {
+      if (pass1.length >= 0 && pass1.length <= 255) {
         sha256 = getSha256(pass1);
       }
       if (sha256 == null) {
-        $(".token-alert").html('Invalid API Token. Must be between 8 and 64 characters');
+        $(".token-alert").html('Invalid API Token. Must be between 1 and 255 characters');
         $(".token-alert").show();
         $('.token-form .token-token1-label').parent().addClass('has-error');
         $('.token-form .token-token1-label').html('API Token (required)');

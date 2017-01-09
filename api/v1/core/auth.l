@@ -39,7 +39,9 @@
         (validate-token Token) ]
 
 [de update-token (Token)
-  (when Token
-    (out (pack *Upload_path "api.token") (prinl Token))
-    (sys "SSH_ORIGINAL_COMMAND" "token")
-    (call (pack *Admin_path "bin/wrapper.sh") ]
+  (if (and Token (> (length Token) 0) (<= (length Token) 255))
+      (prog
+        (out (pack *Upload_path "api.token") (prinl Token))
+        (sys "SSH_ORIGINAL_COMMAND" "token")
+        (call (pack *Admin_path "bin/wrapper.sh")) )
+      (http-msg 400) ]
