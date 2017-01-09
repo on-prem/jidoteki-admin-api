@@ -93,6 +93,34 @@ loadNetwork = ->
 
       $('.jido-data-network-info').html networkSettings
 
+loadStorage = ->
+  $('#jido-page-login').hide()
+  $('.jido-page-content').hide()
+  $('#jido-page-navbar .navbar-nav li').removeClass('active')
+  $('#jido-button-storage').addClass('active')
+  $('#jido-page-navbar').show()
+  $('#jido-page-storage').show()
+
+  fetchData "/api/v1/admin/version", (err, result) ->
+    unless err
+      $('.jido-data-platform-version').html result.version
+
+  fetchData "/api/v1/admin/storage", (err, result) ->
+    unless err
+      $('.storage-form input.form-control').val '' # reset all storage input fields
+
+      if result.storage.type
+        $("#storage-name-select option[value=#{result.storage.type}]").attr 'selected', true
+        $("#storage-#{result.storage.type}").show()
+
+        switch result.storage.type
+          when "nfs"
+            $("#storage-#{result.storage.type} .mount-input").val result.storage.mount_options
+            $("#storage-#{result.storage.type} .ip-input").val result.storage.ip
+            $("#storage-#{result.storage.type} .share-input").val result.storage.share
+      else
+        $("#storage-name-select option[value=local]").attr 'selected', true
+
 loadSupport = ->
   $('#jido-page-login').hide()
   $('.jido-page-content').hide()
@@ -291,6 +319,60 @@ monitorButtonListener = ->
 
     monitorClick clicked
 
+storageButtonListener = ->
+  $('#jido-button-storage-upload').click ->
+
+    json = new Object()
+    json.storage = {}
+    json.storage.type = $('#storage-name-select').val()
+
+    # Validations
+    switch json.storage.type
+      when "nfs"
+        json.storage.ip = $("#storage-#{json.storage.type} .ip-input").val()
+        json.storage.mount_options = $("#storage-#{json.storage.type} .mount-input").val()
+        json.storage.share = $("#storage-#{json.storage.type} .share-input").val()
+
+        unless json.storage.ip and validator.isIP(json.storage.ip)
+          $("#storage-#{json.storage.type} .storage-ip-label").parent().addClass 'has-error'
+          $("#storage-#{json.storage.type} .storage-ip-label").html 'IP address (required)'
+          $("#storage-#{json.storage.type} .ip-input").focus()
+          return
+
+        unless json.storage.mount_options
+          $("#storage-#{json.storage.type} .storage-mount-label").parent().addClass 'has-error'
+          $("#storage-#{json.storage.type} .storage-mount-label").html 'Mount options (required)'
+          $("#storage-#{json.storage.type} .mount-input").focus()
+          return
+
+        unless json.storage.share
+          $("#storage-#{json.storage.type} .storage-share-label").parent().addClass 'has-error'
+          $("#storage-#{json.storage.type} .storage-share-label").html 'Share path (required)'
+          $("#storage-#{json.storage.type} .share-input").focus()
+          return
+
+    formData = new FormData()
+    encoded = JSON.stringify json
+    blob = new Blob [encoded], {type: 'application/json'}
+    blob.lastModifiedDate = new Date()
+
+    formData.append 'settings', blob, 'settings.json'
+
+    if formData
+      putFile 'storage', '/api/v1/admin/storage', formData, (err, result) ->
+        $('.jido-panel').show()
+        unless err
+          successUpload 'storage'
+
+          $(".storage-alert").html "Please Restart to apply storage settings."
+          $(".storage-alert").show()
+
+storageSelectListener = () ->
+  $('#storage-name-select').change ->
+    option = $(this).val()
+    $('.storage-form-options').hide()
+    $("#storage-#{option}").show()
+
 navbarListener = ->
   $('#jido-page-navbar .navbar-nav li a').click ->
     clicked = $(this).parent().attr 'id'
@@ -300,6 +382,7 @@ navbarListener = ->
       when "jido-button-network"  then loadNetwork()
       when "jido-button-certs"    then loadUpdateCerts 'certs'
       when "jido-button-license"  then loadLicense()
+      when "jido-button-storage"  then loadStorage()
       when "jido-button-token"    then loadToken()
       when "jido-button-support"  then loadSupport()
       when "jido-button-monitor"  then loadMonitor()
@@ -315,6 +398,8 @@ logsButtonListener()
 debugButtonListener()
 restartButtonListener()
 monitorButtonListener()
+storageButtonListener()
+storageSelectListener()
 navbarListener()
 
 authenticate (err) ->

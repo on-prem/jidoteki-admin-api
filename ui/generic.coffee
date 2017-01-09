@@ -268,7 +268,7 @@ tokenButtonListener = ->
       $(".token-alert").show()
       return
 
-    sha256 = getSha256 pass1 if pass1.length >= 0 && pass1.length <= 255
+    sha256 = getSha256 pass1 if pass1.length > 0 && pass1.length <= 255
     unless sha256?
       $(".token-alert").html 'Invalid API Token. Must be between 1 and 255 characters'
       $(".token-alert").show()

@@ -8,7 +8,7 @@
 
 (function() {
   'use strict';
-  var apiServer, apiType, authenticate, capitalize, certsButtonListener, clearToken, debugButtonListener, drawGraphs, failedUpload, fetchData, fetchFile, getHmac, getSha256, getStatus, getToken, loadHome, loadLogin, loadMonitor, loadNetwork, loadSetup, loadSupport, loadToken, loadUpdateCerts, loginButtonListener, logoutButtonListener, logsButtonListener, monitorButtonListener, monitorClick, navbarListener, networkButtonListener, newTokenButtonListener, pollStatus, putFile, putToken, redirectUrl, restartButtonListener, runningUpload, successUpload, tokenButtonListener, updateButtonListener, updateCertsButtonListener;
+  var apiServer, apiType, authenticate, capitalize, certsButtonListener, clearToken, debugButtonListener, drawGraphs, failedUpload, fetchData, fetchFile, getHmac, getSha256, getStatus, getToken, loadHome, loadLogin, loadMonitor, loadNetwork, loadSetup, loadStorage, loadSupport, loadToken, loadUpdateCerts, loginButtonListener, logoutButtonListener, logsButtonListener, monitorButtonListener, monitorClick, navbarListener, networkButtonListener, newTokenButtonListener, pollStatus, putFile, putToken, redirectUrl, restartButtonListener, runningUpload, storageButtonListener, storageSelectListener, successUpload, tokenButtonListener, updateButtonListener, updateCertsButtonListener;
 
   apiServer = window.location.origin != null ? window.location.origin : window.location.protocol + "//" + window.location.hostname + (window.location.port != null ? ':' + window.location.port : '');
 
@@ -319,7 +319,7 @@
         $(".token-alert").show();
         return;
       }
-      if (pass1.length >= 0 && pass1.length <= 255) {
+      if (pass1.length > 0 && pass1.length <= 255) {
         sha256 = getSha256(pass1);
       }
       if (sha256 == null) {
@@ -500,6 +500,37 @@
           return results;
         })();
         return $('.jido-data-network-info').html(networkSettings);
+      }
+    });
+  };
+
+  loadStorage = function() {
+    $('#jido-page-login').hide();
+    $('.jido-page-content').hide();
+    $('#jido-page-navbar .navbar-nav li').removeClass('active');
+    $('#jido-button-storage').addClass('active');
+    $('#jido-page-navbar').show();
+    $('#jido-page-storage').show();
+    fetchData("/api/v1/admin/version", function(err, result) {
+      if (!err) {
+        return $('.jido-data-platform-version').html(result.version);
+      }
+    });
+    return fetchData("/api/v1/admin/storage", function(err, result) {
+      if (!err) {
+        $('.storage-form input.form-control').val('');
+        if (result.storage.type) {
+          $("#storage-name-select option[value=" + result.storage.type + "]").attr('selected', true);
+          $("#storage-" + result.storage.type).show();
+          switch (result.storage.type) {
+            case "nfs":
+              $("#storage-" + result.storage.type + " .mount-input").val(result.storage.mount_options);
+              $("#storage-" + result.storage.type + " .ip-input").val(result.storage.ip);
+              return $("#storage-" + result.storage.type + " .share-input").val(result.storage.share);
+          }
+        } else {
+          return $("#storage-name-select option[value=local]").attr('selected', true);
+        }
       }
     });
   };
@@ -761,6 +792,65 @@
     });
   };
 
+  storageButtonListener = function() {
+    return $('#jido-button-storage-upload').click(function() {
+      var blob, encoded, formData, json;
+      json = new Object();
+      json.storage = {};
+      json.storage.type = $('#storage-name-select').val();
+      switch (json.storage.type) {
+        case "nfs":
+          json.storage.ip = $("#storage-" + json.storage.type + " .ip-input").val();
+          json.storage.mount_options = $("#storage-" + json.storage.type + " .mount-input").val();
+          json.storage.share = $("#storage-" + json.storage.type + " .share-input").val();
+          if (!(json.storage.ip && validator.isIP(json.storage.ip))) {
+            $("#storage-" + json.storage.type + " .storage-ip-label").parent().addClass('has-error');
+            $("#storage-" + json.storage.type + " .storage-ip-label").html('IP address (required)');
+            $("#storage-" + json.storage.type + " .ip-input").focus();
+            return;
+          }
+          if (!json.storage.mount_options) {
+            $("#storage-" + json.storage.type + " .storage-mount-label").parent().addClass('has-error');
+            $("#storage-" + json.storage.type + " .storage-mount-label").html('Mount options (required)');
+            $("#storage-" + json.storage.type + " .mount-input").focus();
+            return;
+          }
+          if (!json.storage.share) {
+            $("#storage-" + json.storage.type + " .storage-share-label").parent().addClass('has-error');
+            $("#storage-" + json.storage.type + " .storage-share-label").html('Share path (required)');
+            $("#storage-" + json.storage.type + " .share-input").focus();
+            return;
+          }
+      }
+      formData = new FormData();
+      encoded = JSON.stringify(json);
+      blob = new Blob([encoded], {
+        type: 'application/json'
+      });
+      blob.lastModifiedDate = new Date();
+      formData.append('settings', blob, 'settings.json');
+      if (formData) {
+        return putFile('storage', '/api/v1/admin/storage', formData, function(err, result) {
+          $('.jido-panel').show();
+          if (!err) {
+            successUpload('storage');
+            $(".storage-alert").html("Please Restart to apply storage settings.");
+            return $(".storage-alert").show();
+          }
+        });
+      }
+    });
+  };
+
+  storageSelectListener = function() {
+    return $('#storage-name-select').change(function() {
+      var option;
+      option = $(this).val();
+      $('.storage-form-options').hide();
+      return $("#storage-" + option).show();
+    });
+  };
+
   navbarListener = function() {
     return $('#jido-page-navbar .navbar-nav li a').click(function() {
       var clicked;
@@ -776,6 +866,8 @@
           return loadUpdateCerts('certs');
         case "jido-button-license":
           return loadLicense();
+        case "jido-button-storage":
+          return loadStorage();
         case "jido-button-token":
           return loadToken();
         case "jido-button-support":
@@ -804,6 +896,10 @@
   restartButtonListener();
 
   monitorButtonListener();
+
+  storageButtonListener();
+
+  storageSelectListener();
 
   navbarListener();
 

@@ -29,6 +29,7 @@ Individual API endpoints are documented in separate sections listed below.
 | 8. [License](#license) | `POST /license` <br/> `GET /license` | Viewing and changing the system license. |
 | 9. [Administration](#administration) | `GET /reboot` | System administration, such as rebooting the system. |
 | 10. [Services](#services) | `GET /services` | Retrieving the status of system services. |
+| 11. [Storage](#storage) | `POST /storage` <br/> `GET /storage` | Viewing and changing persistent storage options. |
 
 # <a name="setup"></a>1. Setup
 
@@ -1029,4 +1030,129 @@ Content-Type: application/json
 
 ----
 
-**Powered by [Jidoteki](https://jidoteki.com) - [Copyright notices](/docs/NOTICE) - `v1.12.0`**
+### Changing persistent storage options
+
+Changing the storage options is an asynchronous procedure. The API will return a response immediately while the settings are updated in the background. Only one update can run at any given time.
+
+Storage type can be set to `local`, `nfs` by uploading a _settings.json_ file.
+
+Settings are only applied after a reboot.
+
+**Since**
+
+`>= v1.13.0`
+
+**HTTP Method**
+
+```
+POST
+```
+
+**Endpoint**
+
+```
+/storage
+```
+
+**Parameters**
+
+* `settings` **(required)**: JSON settings file
+
+**Content-type**
+
+```
+multipart/form-data
+```
+
+**Example `local` _settings.json_ file (Local Disk)**
+
+```
+{
+    "storage": {
+        "type": "local"
+    }
+}
+```
+
+**Example `nfs` _settings.json_ file (Network File System)**
+
+```
+{
+    "storage": {
+        "type": "nfs",
+        "mount_options": "noacl,async",
+        "ip": "192.168.1.100",
+        "share": "/nfs/storage"
+    }
+}
+```
+
+**Example**
+
+```
+curl -X POST https://[hostname]:8443/api/v1/admin/storage?hash=[sha256hmachash] -F settings=@[settings.json]
+or
+curl -X POST https://[hostname]:8443/api/v1/admin/storage?token=[yourtoken] -F settings=@[settings.json]
+```
+
+**Success response**
+
+```
+HTTP/1.1 202 Accepted
+Location: /api/v1/admin/storage
+Content-Type: application/json
+{"Status":"202 Accepted","Location":"/api/v1/admin/storage"}
+```
+
+**Error response**
+
+If the storage settings update API call fails, `400 Bad Request` will be returned.
+
+### Viewing the persistent storage settings
+
+This API endpoint will return the storage options.
+
+**Since**
+
+`>= v1.13.0`
+
+**HTTP Method**
+
+```
+GET
+```
+
+**Endpoint**
+
+```
+/storage
+```
+
+**Example**
+
+```
+curl -X GET https://[hostname]:8443/api/v1/admin/storage?hash=[sha256hmachash]
+or
+curl -X GET https://[hostname]:8443/api/v1/admin/storage?token=[yourtoken]
+```
+
+**Success response**
+
+```
+HTTP/1.1 200 OK
+Content-Type: application/json
+{
+    "storage": {
+        "type": "nfs",
+        "mount_options": "noacl,async",
+        "ip": "192.168.1.100",
+        "share": "/nfs/storage"
+    }
+}
+```
+
+[^ return to menu](#menu)
+
+----
+
+**Powered by [Jidoteki](https://jidoteki.com) - [Copyright notices](/docs/NOTICE) - `v1.13.0`**

@@ -12,10 +12,12 @@ In combination with the [jidoteki-admin](https://github.com/unscramble/jidoteki-
   * View the status of a software update
   * View and update network settings
   * View and update application settings
+  * View the status of system services
   * Retrieve compressed log files
   * Retrieve an encrypted debug bundle
   * Retrieve version and changelog of the system
   * Reboot the system
+  * View and update persistent storage options
 
 An Admin UI is included, and enables simpler management through a web-based interface:
 

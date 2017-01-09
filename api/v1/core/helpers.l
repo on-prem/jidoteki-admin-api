@@ -28,7 +28,7 @@
         Date '(httpDate (date T) (time T))
         Body Json ]
 
-[de response-json (Json Code Flg)
+[de response-json-generic (Json Code Flg Headers)
   (default Code 200)
   (use Info Size Date Body
     (if Flg
@@ -36,7 +36,13 @@
         (json-string Json) )
     (ifn  Size
           (http-msg 404)
-          (response-generic Code Size Date Body '(("Content-Type" . "application/json") ]
+          (response-generic Code Size Date Body Headers) ]
+
+[de response-json (Json Code Flg)
+  (response-json-generic Json Code Flg '(("Content-Type" . "application/json") ]
+
+[de response-json-nocache (Json Code Flg)
+  (response-json-generic Json Code Flg '(("Content-Type" . "application/json") ("Cache-Control" . "no-cache") ]
 
 [de response-generic (Code Size Date Body Headers)
   (prinl "HTTP/1.1 " Code " " (http-code Code) "^M")

@@ -1,0 +1,87 @@
+//- This Source Code Form is subject to the terms of the Mozilla Public
+//- License, v. 2.0. If a copy of the MPL was not distributed with this
+//- file, You can obtain one at http://mozilla.org/MPL/2.0/.
+//- 
+//- Copyright (c) 2015-2016 Alexander Williams, Unscramble <license@unscramble.jp>
+
+mixin getNFS()
+  #storage-nfs.storage-form-options(style='display:none;')
+    .form-group
+      label.control-label.storage-ip-label(for='ip-input')
+        | IP address (ex: 192.168.1.100)
+      input.ip-input.form-control(placeholder='IP address', name='ip', type='text')
+    .form-group
+      label.control-label.storage-mount-label(for='mount-input')
+        | Mount options (ex: noacl,async)
+      input.mount-input.form-control(placeholder='Mount options', name='mount_options', type='text')
+    .form-group
+      label.control-label.storage-share-label(for='share-input')
+        | Share path (ex: /nfs/storage)
+      input.share-input.form-control(placeholder='Share path', name='share', type='text')
+
+mixin helpLOCAL()
+  h4 Local (disk)
+  p This is the default setting.
+  p Data is stored locally on the 2nd disk, in an LVM partition mounted to 
+    code  /data
+    | .
+
+mixin helpNFS()
+  h4 NFS
+  p Network File System (NFS) storage provides a multitude of configuration options.
+  p NFS 
+    code Mount options
+    |  are fully listed and described in the 
+    a(href="https://linux.die.net/man/5/nfs") nfs(5)
+    |  man page (external link).
+
+// #storage container
+#jido-page-storage.container-fluid.jido-page-content.jido-page-content-storage(style='display:none')
+  .row
+    .col-lg-4.col-md-4.col-sm-12.col-lg-offset-1.col-md-offset-1
+      h1.page-header Storage
+  .row
+    .col-lg-4.col-md-4.col-sm-12.col-lg-offset-1.col-md-offset-1
+      .panel.panel-default.jido-panel(style='display:none;')
+        .panel-heading
+          .progress(style='margin-top: 20px')
+            .progress-bar.progress-bar-striped.active(role='progressbar', aria-valuenow='33', aria-valuemin='0', aria-valuemax='100', style='width: 33%')
+              | ...uploading, please wait
+          .alert.alert-dismissible.alert-success.storage-alert(style='display:none;')
+  .row
+    .col-lg-4.col-md-4.col-sm-12.col-lg-offset-1.col-md-offset-1
+      .panel.panel-default.jido-panel
+        .panel-heading
+          h3.panel-title
+            i.fa.icon-database
+            |  Storage settings
+        .panel-body
+          .alert.alert-info
+            | All form fields are required
+          .row
+            form.storage-form(role='form')
+              fieldset
+                .col-lg-12.col-md-12.col-sm-12
+                  .form-group
+                    label.control-label.storage-type-label(for='type-input')
+                      | Storage type
+                    select#storage-name-select.form-control(tabindex='21')
+                      option(value='local') Local (disk)
+                      option(value='nfs') NFS
+                  div#storageForms
+                    mixin getNFS()
+                  .form-group
+                    br
+                    input#jido-button-storage-upload.btn.btn-lg.btn-primary.btn-block(type='submit', value='Update', onclick='return event.preventDefault();')
+
+    .col-lg-6.col-md-6.col-sm-12
+      .panel.panel-default.jido-panel
+        .panel-heading
+          h3.panel-title
+            i.fa.icon-info-circled
+            |  Information
+        .panel-body#storageHelp
+          mixin helpLOCAL()
+          mixin helpNFS()
+
+// /#storage container

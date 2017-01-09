@@ -2,6 +2,7 @@
 
 ## 1.13.0 (2017-01-09)
 
+  * Add endpoint to upload and update persistent Storage options
   * Fix short auth token issue by limiting Token to 1-255 chars #25
 
 ## 1.12.0 (2016-10-27)
