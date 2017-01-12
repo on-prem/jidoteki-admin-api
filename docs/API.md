@@ -1030,6 +1030,8 @@ Content-Type: application/json
 
 ----
 
+# <a name="storage"></a>11. Storage
+
 ### Changing persistent storage options
 
 Changing the storage options is an asynchronous procedure. The API will return a response immediately while the settings are updated in the background. Only one update can run at any given time.
