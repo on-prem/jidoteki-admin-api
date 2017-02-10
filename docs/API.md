@@ -23,7 +23,7 @@ Individual API endpoints are documented in separate sections listed below.
 | 2. [Authentication](#authentication) | `POST /setup` | How to authenticate to the API, and change the API token. |
 | 3. [Updates](#updates) | `POST /update` <br/> `GET /update` <br/> `GET /update/log` | Updating the system using encrypted software update packages, and viewing the status of an update. |
 | 4. [Network](#network) | `POST /settings` <br/> `GET /settings` | Viewing and changing network/application settings. |
-| 5. [Information](#information) | `GET /version` <br/> `GET /changelog` | Viewing system information, such as the version and changelog. |
+| 5. [Information](#information) | `GET /version` <br/> `GET /changelog` <br/> `GET /build` | Viewing system information, such as the version, changelog, and build. |
 | 6. [Support](#support) | `GET /logs` <br/> `GET /debug` | Retrieving log files and debug bundles to help troubleshoot various issues. |
 | 7. [TLS](#tls) | `POST /certs` <br/> `GET /certs` | Updating the system's TLS certificates to replace the default self-signed certificates. |
 | 8. [License](#license) | `POST /license` <br/> `GET /license` | Viewing and changing the system license. |
@@ -593,6 +593,48 @@ Content-Type: text/plain
 
 If the changelog file doesn't exist, `404 Not Found` will be returned.
 
+### Viewing the system's build information
+
+This API endpoint will return the system's current build information, in JSON format. It can only be changed during the [updates](#updates) procedure.
+
+**Since**
+
+`>= v1.14.0`
+
+**HTTP Method**
+
+```
+GET
+```
+
+**Endpoint**
+
+```
+/build
+```
+
+**Example**
+
+```
+curl -X GET https://[hostname]:8443/api/v1/admin/build?hash=[sha256hmachash]
+or
+curl -X GET https://[hostname]:8443/api/v1/admin/build?token=[yourtoken]
+```
+
+**Success response**
+
+```
+HTTP/1.1 200 OK
+Content-Type: application/json
+{
+    "builddate":"123456789"
+}
+```
+
+**Error response**
+
+If the build file doesn't exist, `404 Not Found` will be returned.
+
 [^ return to menu](#menu)
 
 ----
@@ -1036,7 +1078,9 @@ Content-Type: application/json
 
 Changing the storage options is an asynchronous procedure. The API will return a response immediately while the settings are updated in the background. Only one update can run at any given time.
 
-Storage type can be set to `local`, `nfs` by uploading a _settings.json_ file.
+Storage type can be set to `local`, `nfs`, `aoe`, `iscsi`, `nbd` by uploading a _settings.json_ file.
+
+**Note:** Storage types are only available based on options found in `/usr/local/etc/storage-options.json`.
 
 Settings are only applied after a reboot.
 
@@ -1082,9 +1126,47 @@ multipart/form-data
 {
     "storage": {
         "type": "nfs",
-        "mount_options": "noacl,async",
+        "mount_options": "noacl,sync",
         "ip": "192.168.1.100",
         "share": "/nfs/storage"
+    }
+}
+```
+
+**Example `aoe` _settings.json_ file (ATA-over-Ethernet)**
+
+```
+{
+    "storage": {
+        "type": "aoe",
+        "device": "e0.1"
+    }
+}
+```
+
+**Example `iscsi` _settings.json_ file (iSCSI)**
+
+```
+{
+    "storage": {
+        "type": "iscsi",
+        "target": "iqn.2016-01.com.example:storage.lun1",
+        "ip": "192.168.1.100",
+        "username": "user",
+        "password": "pass"
+    }
+}
+```
+
+**Example `nbd` _settings.json_ file (Network Block Device)**
+
+```
+{
+    "storage": {
+        "type": "nbd",
+        "export_name": "otherexport",
+        "ip": "192.168.1.100",
+        "port": "1043"
     }
 }
 ```
@@ -1146,10 +1228,11 @@ Content-Type: application/json
 {
     "storage": {
         "type": "nfs",
-        "mount_options": "noacl,async",
+        "mount_options": "noacl,sync",
         "ip": "192.168.1.100",
         "share": "/nfs/storage"
-    }
+    },
+    "options": ["local", "nfs", "nbd", "iscsi", "aoe"]
 }
 ```
 
@@ -1157,4 +1240,4 @@ Content-Type: application/json
 
 ----
 
-**Powered by [Jidoteki](https://jidoteki.com) - [Copyright notices](/docs/NOTICE) - `v1.13.0`**
+**Powered by [Jidoteki](https://jidoteki.com) - [Copyright notices](/docs/NOTICE) - `v1.14.0`**

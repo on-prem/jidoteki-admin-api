@@ -8,7 +8,8 @@
 
 (function() {
   'use strict';
-  var apiServer, apiType, authenticate, capitalize, certsButtonListener, clearToken, debugButtonListener, drawGraphs, failedUpload, fetchData, fetchFile, getHmac, getSha256, getStatus, getToken, loadHome, loadLogin, loadMonitor, loadNetwork, loadSetup, loadStorage, loadSupport, loadToken, loadUpdateCerts, loginButtonListener, logoutButtonListener, logsButtonListener, monitorButtonListener, monitorClick, navbarListener, networkButtonListener, newTokenButtonListener, pollStatus, putFile, putToken, redirectUrl, restartButtonListener, runningUpload, storageButtonListener, storageSelectListener, successUpload, tokenButtonListener, updateButtonListener, updateCertsButtonListener;
+  var apiServer, apiType, authenticate, capitalize, certsButtonListener, clearToken, debugButtonListener, drawGraphs, failedUpload, fetchData, fetchFile, getHmac, getSha256, getStatus, getToken, loadHome, loadLogin, loadMonitor, loadNetwork, loadSetup, loadStorage, loadSupport, loadToken, loadUpdateCerts, loginButtonListener, logoutButtonListener, logsButtonListener, monitorButtonListener, monitorClick, navbarListener, networkButtonListener, newTokenButtonListener, pollStatus, putFile, putToken, redirectUrl, restartButtonListener, runningUpload, storageButtonListener, storageSelectListener, successUpload, tokenButtonListener, updateButtonListener, updateCertsButtonListener,
+    indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
   apiServer = window.location.origin != null ? window.location.origin : window.location.protocol + "//" + window.location.hostname + (window.location.port != null ? ':' + window.location.port : '');
 
@@ -33,7 +34,7 @@
   };
 
   clearToken = function() {
-    return document.cookie = 'jidoteki-admin-api-token=;';
+    return document.cookie = 'jidoteki-admin-api-token=; path=/';
   };
 
   capitalize = function(string) {
@@ -269,7 +270,7 @@
     return $('#jido-button-login').click(function() {
       var pass, sha256;
       pass = $('#login-password').val();
-      if (pass.length >= 8 && pass.length <= 64) {
+      if (pass.length >= 0 && pass.length <= 255) {
         sha256 = getSha256(pass);
       }
       if (sha256 != null) {
@@ -517,9 +518,40 @@
       }
     });
     return fetchData("/api/v1/admin/storage", function(err, result) {
+      var ref, storageOptions, value;
       if (!err) {
         $('.storage-form input.form-control').val('');
-        if (result.storage.type) {
+        storageOptions = (function() {
+          var i, len, ref, results;
+          ref = result.options;
+          results = [];
+          for (i = 0, len = ref.length; i < len; i++) {
+            value = ref[i];
+            $("#storage-help-" + value).show();
+            switch (value) {
+              case 'local':
+                results.push("<option value='local')>Local (disk)</option>");
+                break;
+              case 'nfs':
+                results.push("<option value='nfs'>NFS</option>");
+                break;
+              case 'aoe':
+                results.push("<option value='aoe'>AoE (ATA-over-Ethernet)</option>");
+                break;
+              case 'iscsi':
+                results.push("<option value='iscsi'>iSCSI</option>");
+                break;
+              case 'nbd':
+                results.push("<option value='nbd'>NBD</option>");
+                break;
+              default:
+                results.push(void 0);
+            }
+          }
+          return results;
+        })();
+        $('#storage-name-select').html(storageOptions);
+        if (result.storage.type && (ref = result.storage.type, indexOf.call(result.options, ref) >= 0)) {
           $("#storage-name-select option[value=" + result.storage.type + "]").attr('selected', true);
           $("#storage-" + result.storage.type).show();
           switch (result.storage.type) {
@@ -527,6 +559,17 @@
               $("#storage-" + result.storage.type + " .mount-input").val(result.storage.mount_options);
               $("#storage-" + result.storage.type + " .ip-input").val(result.storage.ip);
               return $("#storage-" + result.storage.type + " .share-input").val(result.storage.share);
+            case "aoe":
+              return $("#storage-" + result.storage.type + " .device-input").val(result.storage.device);
+            case "iscsi":
+              $("#storage-" + result.storage.type + " .ip-input").val(result.storage.ip);
+              $("#storage-" + result.storage.type + " .target-input").val(result.storage.target);
+              $("#storage-" + result.storage.type + " .username-input").val(result.storage.username);
+              return $("#storage-" + result.storage.type + " .password-input").val(result.storage.password);
+            case "nbd":
+              $("#storage-" + result.storage.type + " .ip-input").val(result.storage.ip);
+              $("#storage-" + result.storage.type + " .port-input").val(result.storage.port);
+              return $("#storage-" + result.storage.type + " .export-input").val(result.storage["export"]);
           }
         } else {
           return $("#storage-name-select option[value=local]").attr('selected', true);
@@ -819,6 +862,68 @@
             $("#storage-" + json.storage.type + " .storage-share-label").parent().addClass('has-error');
             $("#storage-" + json.storage.type + " .storage-share-label").html('Share path (required)');
             $("#storage-" + json.storage.type + " .share-input").focus();
+            return;
+          }
+          break;
+        case "aoe":
+          json.storage.device = $("#storage-" + json.storage.type + " .device-input").val();
+          if (!json.storage.device) {
+            $("#storage-" + json.storage.type + " .storage-device-label").parent().addClass('has-error');
+            $("#storage-" + json.storage.type + " .storage-device-label").html('Device (required)');
+            $("#storage-" + json.storage.type + " .device-input").focus();
+            return;
+          }
+          break;
+        case "iscsi":
+          json.storage.ip = $("#storage-" + json.storage.type + " .ip-input").val();
+          json.storage.target = $("#storage-" + json.storage.type + " .target-input").val();
+          json.storage.username = $("#storage-" + json.storage.type + " .username-input").val();
+          json.storage.password = $("#storage-" + json.storage.type + " .password-input").val();
+          if (!(json.storage.ip && validator.isIP(json.storage.ip))) {
+            $("#storage-" + json.storage.type + " .storage-ip-label").parent().addClass('has-error');
+            $("#storage-" + json.storage.type + " .storage-ip-label").html('IP address (required)');
+            $("#storage-" + json.storage.type + " .ip-input").focus();
+            return;
+          }
+          if (!json.storage.target) {
+            $("#storage-" + json.storage.type + " .storage-target-label").parent().addClass('has-error');
+            $("#storage-" + json.storage.type + " .storage-target-label").html('Target (required)');
+            $("#storage-" + json.storage.type + " .target-input").focus();
+            return;
+          }
+          if (!json.storage.username) {
+            $("#storage-" + json.storage.type + " .storage-username-label").parent().addClass('has-error');
+            $("#storage-" + json.storage.type + " .storage-username-label").html('Username (required)');
+            $("#storage-" + json.storage.type + " .username-input").focus();
+            return;
+          }
+          if (!json.storage.password) {
+            $("#storage-" + json.storage.type + " .storage-password-label").parent().addClass('has-error');
+            $("#storage-" + json.storage.type + " .storage-password-label").html('Password (required)');
+            $("#storage-" + json.storage.type + " .password-input").focus();
+            return;
+          }
+          break;
+        case "nbd":
+          json.storage.ip = $("#storage-" + json.storage.type + " .ip-input").val();
+          json.storage.port = $("#storage-" + json.storage.type + " .port-input").val();
+          json.storage.export_name = $("#storage-" + json.storage.type + " .export-input").val();
+          if (!(json.storage.ip && validator.isIP(json.storage.ip))) {
+            $("#storage-" + json.storage.type + " .storage-ip-label").parent().addClass('has-error');
+            $("#storage-" + json.storage.type + " .storage-ip-label").html('IP address (required)');
+            $("#storage-" + json.storage.type + " .ip-input").focus();
+            return;
+          }
+          if (!json.storage.port) {
+            $("#storage-" + json.storage.type + " .storage-port-label").parent().addClass('has-error');
+            $("#storage-" + json.storage.type + " .storage-port-label").html('Port (required)');
+            $("#storage-" + json.storage.type + " .port-input").focus();
+            return;
+          }
+          if (!json.storage.export_name) {
+            $("#storage-" + json.storage.type + " .storage-export-label").parent().addClass('has-error');
+            $("#storage-" + json.storage.type + " .storage-export-label").html('Export name (required)');
+            $("#storage-" + json.storage.type + " .export-input").focus();
             return;
           }
       }

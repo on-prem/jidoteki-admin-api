@@ -36,8 +36,14 @@
         (storage-read File)
         (http-msg 400) ]
 
+[de storage-options ()
+  (let (Options   (if (decode "/usr/local/etc/storage-options.json" T) @ (list (cons "options" T '("local"))))
+        Settings  (decode (pack *Admin_path "etc/storage.json") T) )
+
+    (encode (append Settings Options) ]
+
 (de storage-get ()
-  (response-json-nocache (pack *Admin_path "etc/storage.json") 200 T) ]
+  (response-json-nocache (storage-options)) )
 
 (de storage-request ()
   (if (validate-auth)

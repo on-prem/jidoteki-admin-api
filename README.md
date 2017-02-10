@@ -18,6 +18,7 @@ In combination with the [jidoteki-admin](https://github.com/unscramble/jidoteki-
   * Retrieve version and changelog of the system
   * Reboot the system
   * View and update persistent storage options
+  * Retrieve build details
 
 An Admin UI is included, and enables simpler management through a web-based interface:
 

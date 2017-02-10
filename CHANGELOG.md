@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.14.0 (2017-02-10)
+
+  * Add '/build' endpoint to retrieve information about the specific build. #28
+  * Make storage options "optional". #27
+  * Add extra Storage options, such as NBD, AoE, iSCSI
+
 ## 1.13.0 (2017-01-09)
 
   * Add endpoint to upload and update persistent Storage options

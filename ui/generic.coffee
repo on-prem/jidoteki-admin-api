@@ -27,7 +27,7 @@ getToken = ->
   (document.cookie.match('(^|; )jidoteki-admin-api-token=([^;]*)')||0)[2]
 
 clearToken = ->
-  document.cookie = 'jidoteki-admin-api-token=;'
+  document.cookie = 'jidoteki-admin-api-token=; path=/'
 
 capitalize = (string) ->
   string.charAt(0).toUpperCase() + string.slice(1)
@@ -227,7 +227,7 @@ logoutButtonListener = ->
 loginButtonListener = ->
   $('#jido-button-login').click ->
     pass = $('#login-password').val()
-    sha256 = getSha256 pass if pass.length >= 8 && pass.length <= 64
+    sha256 = getSha256 pass if pass.length >= 0 && pass.length <= 255
     if sha256?
       putToken sha256
       authenticate (err) ->

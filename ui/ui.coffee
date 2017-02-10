@@ -109,7 +109,18 @@ loadStorage = ->
     unless err
       $('.storage-form input.form-control').val '' # reset all storage input fields
 
-      if result.storage.type
+      storageOptions = for value in result.options
+        $("#storage-help-#{value}").show()
+        switch value
+          when 'local'  then "<option value='local')>Local (disk)</option>"
+          when 'nfs'    then "<option value='nfs'>NFS</option>"
+          when 'aoe'    then "<option value='aoe'>AoE (ATA-over-Ethernet)</option>"
+          when 'iscsi'  then "<option value='iscsi'>iSCSI</option>"
+          when 'nbd'    then "<option value='nbd'>NBD</option>"
+
+      $('#storage-name-select').html storageOptions
+
+      if result.storage.type and result.storage.type in result.options
         $("#storage-name-select option[value=#{result.storage.type}]").attr 'selected', true
         $("#storage-#{result.storage.type}").show()
 
@@ -118,6 +129,17 @@ loadStorage = ->
             $("#storage-#{result.storage.type} .mount-input").val result.storage.mount_options
             $("#storage-#{result.storage.type} .ip-input").val result.storage.ip
             $("#storage-#{result.storage.type} .share-input").val result.storage.share
+          when "aoe"
+            $("#storage-#{result.storage.type} .device-input").val result.storage.device
+          when "iscsi"
+            $("#storage-#{result.storage.type} .ip-input").val result.storage.ip
+            $("#storage-#{result.storage.type} .target-input").val result.storage.target
+            $("#storage-#{result.storage.type} .username-input").val result.storage.username
+            $("#storage-#{result.storage.type} .password-input").val result.storage.password
+          when "nbd"
+            $("#storage-#{result.storage.type} .ip-input").val result.storage.ip
+            $("#storage-#{result.storage.type} .port-input").val result.storage.port
+            $("#storage-#{result.storage.type} .export-input").val result.storage.export
       else
         $("#storage-name-select option[value=local]").attr 'selected', true
 
@@ -349,6 +371,68 @@ storageButtonListener = ->
           $("#storage-#{json.storage.type} .storage-share-label").parent().addClass 'has-error'
           $("#storage-#{json.storage.type} .storage-share-label").html 'Share path (required)'
           $("#storage-#{json.storage.type} .share-input").focus()
+          return
+
+      when "aoe"
+        json.storage.device = $("#storage-#{json.storage.type} .device-input").val()
+
+        unless json.storage.device
+          $("#storage-#{json.storage.type} .storage-device-label").parent().addClass 'has-error'
+          $("#storage-#{json.storage.type} .storage-device-label").html 'Device (required)'
+          $("#storage-#{json.storage.type} .device-input").focus()
+          return
+
+      when "iscsi"
+        json.storage.ip = $("#storage-#{json.storage.type} .ip-input").val()
+        json.storage.target = $("#storage-#{json.storage.type} .target-input").val()
+        json.storage.username = $("#storage-#{json.storage.type} .username-input").val()
+        json.storage.password = $("#storage-#{json.storage.type} .password-input").val()
+
+        unless json.storage.ip and validator.isIP(json.storage.ip)
+          $("#storage-#{json.storage.type} .storage-ip-label").parent().addClass 'has-error'
+          $("#storage-#{json.storage.type} .storage-ip-label").html 'IP address (required)'
+          $("#storage-#{json.storage.type} .ip-input").focus()
+          return
+
+        unless json.storage.target
+          $("#storage-#{json.storage.type} .storage-target-label").parent().addClass 'has-error'
+          $("#storage-#{json.storage.type} .storage-target-label").html 'Target (required)'
+          $("#storage-#{json.storage.type} .target-input").focus()
+          return
+
+        unless json.storage.username
+          $("#storage-#{json.storage.type} .storage-username-label").parent().addClass 'has-error'
+          $("#storage-#{json.storage.type} .storage-username-label").html 'Username (required)'
+          $("#storage-#{json.storage.type} .username-input").focus()
+          return
+
+        unless json.storage.password
+          $("#storage-#{json.storage.type} .storage-password-label").parent().addClass 'has-error'
+          $("#storage-#{json.storage.type} .storage-password-label").html 'Password (required)'
+          $("#storage-#{json.storage.type} .password-input").focus()
+          return
+
+      when "nbd"
+        json.storage.ip = $("#storage-#{json.storage.type} .ip-input").val()
+        json.storage.port = $("#storage-#{json.storage.type} .port-input").val()
+        json.storage.export_name = $("#storage-#{json.storage.type} .export-input").val()
+
+        unless json.storage.ip and validator.isIP(json.storage.ip)
+          $("#storage-#{json.storage.type} .storage-ip-label").parent().addClass 'has-error'
+          $("#storage-#{json.storage.type} .storage-ip-label").html 'IP address (required)'
+          $("#storage-#{json.storage.type} .ip-input").focus()
+          return
+
+        unless json.storage.port
+          $("#storage-#{json.storage.type} .storage-port-label").parent().addClass 'has-error'
+          $("#storage-#{json.storage.type} .storage-port-label").html 'Port (required)'
+          $("#storage-#{json.storage.type} .port-input").focus()
+          return
+
+        unless json.storage.export_name
+          $("#storage-#{json.storage.type} .storage-export-label").parent().addClass 'has-error'
+          $("#storage-#{json.storage.type} .storage-export-label").html 'Export name (required)'
+          $("#storage-#{json.storage.type} .export-input").focus()
           return
 
     formData = new FormData()

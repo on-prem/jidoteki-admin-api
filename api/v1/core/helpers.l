@@ -14,8 +14,17 @@
 (de http-code (Code)
   (cdr (assoc Code *Http_codes)) )
 
-(de http-msg (Code)
-  (response-json [encode (list (cons "Status" (pack Code " " (http-code Code)] Code) )
+[de http-error (Code Error)
+  (response-json-generic
+    (encode (list (cons "Status" (pack Code " " (http-code Code))) (cons "Error-Message" Error)))
+    Code
+    NIL
+    (list (cons "Content-Type" "application/json") (cons "Error-Message" Error)) ]
+
+(de http-msg (Code Error)
+  (if Error
+      (http-error Code Error)
+      (response-json [encode (list (cons "Status" (pack Code " " (http-code Code)] Code) ) )
 
 [de json-file (Json)
   (setq Info (info Json)

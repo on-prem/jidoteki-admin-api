@@ -17,6 +17,6 @@
       (if *Post
           (http-msg 400)
           (version-get) )
-      (http-msg 403) ) )
+      (http-msg 403 "Authentication error") ) )
 
 (version-request)

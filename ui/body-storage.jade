@@ -8,32 +8,100 @@ mixin getNFS()
   #storage-nfs.storage-form-options(style='display:none;')
     .form-group
       label.control-label.storage-ip-label(for='ip-input')
+        | NFS Server IP (ex: 192.168.1.100)
+      input.ip-input.form-control(placeholder='External NFS Server IP', name='ip', type='text')
+    .form-group
+      label.control-label.storage-share-label(for='share-input')
+        | NFS Server Path (ex: /nfs/storage)
+      input.share-input.form-control(placeholder='External NFS Server Path', name='share', type='text')
+    .form-group
+      label.control-label.storage-mount-label(for='mount-input')
+        | Mount options (ex: noacl,sync)
+      input.mount-input.form-control(placeholder='Mount options', name='mount_options', type='text')
+
+mixin getAOE()
+  #storage-aoe.storage-form-options(style='display:none;')
+    .form-group
+      label.control-label.storage-device-label(for='device-input')
+        | Device (ex: e0.1)
+      input.device-input.form-control(placeholder='Device name', name='device', type='text')
+
+mixin getISCSI()
+  #storage-iscsi.storage-form-options(style='display:none;')
+    .form-group
+      label.control-label.storage-ip-label(for='ip-input')
         | IP address (ex: 192.168.1.100)
       input.ip-input.form-control(placeholder='IP address', name='ip', type='text')
     .form-group
-      label.control-label.storage-mount-label(for='mount-input')
-        | Mount options (ex: noacl,async)
-      input.mount-input.form-control(placeholder='Mount options', name='mount_options', type='text')
+      label.control-label.storage-target-label(for='target-input')
+        | Target (ex: iqn.2016-01.com.example:storage.lun1)
+      input.target-input.form-control(placeholder='Target', name='target', type='text')
     .form-group
-      label.control-label.storage-share-label(for='share-input')
-        | Share path (ex: /nfs/storage)
-      input.share-input.form-control(placeholder='Share path', name='share', type='text')
+      label.control-label.storage-username-label(for='username-input')
+        | Username (ex: nfsuser)
+      input.username-input.form-control(placeholder='Username', name='username', type='text')
+    .form-group
+      label.control-label.storage-password-label(for='password-input')
+        | Password (ex: nfspassword)
+      input.password-input.form-control(placeholder='Password', name='password', type='text')
+
+mixin getNBD()
+  #storage-nbd.storage-form-options(style='display:none;')
+    .form-group
+      label.control-label.storage-ip-label(for='ip-input')
+        | IP address (ex: 192.168.1.100)
+      input.ip-input.form-control(placeholder='IP address', name='ip', type='text')
+    .form-group
+      label.control-label.storage-port-label(for='port-input')
+        | Port (ex: 1043)
+      input.port-input.form-control(placeholder='Port', name='port', type='text')
+    .form-group
+      label.control-label.storage-export-label(for='export-input')
+        | Export name (ex: otherexport)
+      input.export-input.form-control(placeholder='Export name', name='export_name', type='text')
 
 mixin helpLOCAL()
-  h4 Local (disk)
-  p This is the default setting.
-  p Data is stored locally on the 2nd disk, in an LVM partition mounted to 
-    code  /data
-    | .
+  #storage-help-local(style='display:none;')
+    h4 Local (disk)
+    p This is the default setting.
+    p Data is stored locally on the 2nd disk, in an LVM partition mounted to 
+      code  /data
+      | .
 
 mixin helpNFS()
-  h4 NFS
-  p Network File System (NFS) storage provides a multitude of configuration options.
-  p NFS 
-    code Mount options
-    |  are fully listed and described in the 
-    a(href="https://linux.die.net/man/5/nfs") nfs(5)
-    |  man page (external link).
+  #storage-help-nfs(style='display:none;')
+    h4 NFS
+    p Network File System (NFS) storage provides a multitude of configuration options.
+    p NFS 
+      code Mount options
+      |  are fully listed and described in the 
+      a(href="https://linux.die.net/man/5/nfs") nfs(5)
+      |  man page (external link).
+
+mixin helpAOE()
+  #storage-help-aoe(style='display:none;')
+    h4 AoE (ATA-over-Ethernet)
+    p AoE storage provides block storage over ethernet.
+    p The AoE
+      code Device
+      |  is a block device defined by the target server, as described in the 
+      a(href="https://linux.die.net/man/8/aoe-stat") aoe-stat(8)
+      |  man page (external link).
+
+mixin helpISCSI()
+  #storage-help-iscsi(style='display:none;')
+    h4 iSCSI
+    p iSCSI storage provides a SCSI interface over TCP.
+    p The iSCSI
+      code Target
+      |  is described in the 
+      a(href="https://linux.die.net/man/8/iscsiadm") iscsiadm(8)
+      |  man page (external link).
+
+mixin helpNBD()
+  #storage-help-nbd(style='display:none;')
+    h4 NBD
+    p NBD provides a network block device by connecting to an NBD server over TCP.
 
 // #storage container
 #jido-page-storage.container-fluid.jido-page-content.jido-page-content-storage(style='display:none')
@@ -66,10 +134,11 @@ mixin helpNFS()
                     label.control-label.storage-type-label(for='type-input')
                       | Storage type
                     select#storage-name-select.form-control(tabindex='21')
-                      option(value='local') Local (disk)
-                      option(value='nfs') NFS
                   div#storageForms
                     mixin getNFS()
+                    mixin getAOE()
+                    mixin getISCSI()
+                    mixin getNBD()
                   .form-group
                     br
                     input#jido-button-storage-upload.btn.btn-lg.btn-primary.btn-block(type='submit', value='Update', onclick='return event.preventDefault();')
@@ -83,5 +152,8 @@ mixin helpNFS()
         .panel-body#storageHelp
           mixin helpLOCAL()
           mixin helpNFS()
+          mixin helpAOE()
+          mixin helpISCSI()
+          mixin helpNBD()
 
 // /#storage container

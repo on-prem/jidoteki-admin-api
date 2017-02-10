@@ -45,7 +45,7 @@
         </div>
       </nav>
     </div>
-    <div style="display:none;" class="alert alert-danger restart-alert">System is restarting</div>
+    <div style="display:none;" class="alert alert-danger restart-alert">System is restarting. Please Refresh the page in 1 minute.</div>
     <!-- #login container-->
     <div id="jido-page-login" style="display:none" class="container-fluid">
       <div class="row">
@@ -352,24 +352,59 @@
                     <div class="col-lg-12 col-md-12 col-sm-12">
                       <div class="form-group">
                         <label for="type-input" class="control-label storage-type-label">Storage type</label>
-                        <select id="storage-name-select" tabindex="21" class="form-control">
-                          <option value="local">Local (disk)</option>
-                          <option value="nfs">NFS</option>
-                        </select>
+                        <select id="storage-name-select" tabindex="21" class="form-control"></select>
                       </div>
                       <div id="storageForms">
                             <div id="storage-nfs" style="display:none;" class="storage-form-options">
+                              <div class="form-group">
+                                <label for="ip-input" class="control-label storage-ip-label">NFS Server IP (ex: 192.168.1.100)</label>
+                                <input placeholder="External NFS Server IP" name="ip" type="text" class="ip-input form-control">
+                              </div>
+                              <div class="form-group">
+                                <label for="share-input" class="control-label storage-share-label">NFS Server Path (ex: /nfs/storage)</label>
+                                <input placeholder="External NFS Server Path" name="share" type="text" class="share-input form-control">
+                              </div>
+                              <div class="form-group">
+                                <label for="mount-input" class="control-label storage-mount-label">Mount options (ex: noacl,sync)</label>
+                                <input placeholder="Mount options" name="mount_options" type="text" class="mount-input form-control">
+                              </div>
+                            </div>
+                            <div id="storage-aoe" style="display:none;" class="storage-form-options">
+                              <div class="form-group">
+                                <label for="device-input" class="control-label storage-device-label">Device (ex: e0.1)</label>
+                                <input placeholder="Device name" name="device" type="text" class="device-input form-control">
+                              </div>
+                            </div>
+                            <div id="storage-iscsi" style="display:none;" class="storage-form-options">
                               <div class="form-group">
                                 <label for="ip-input" class="control-label storage-ip-label">IP address (ex: 192.168.1.100)</label>
                                 <input placeholder="IP address" name="ip" type="text" class="ip-input form-control">
                               </div>
                               <div class="form-group">
-                                <label for="mount-input" class="control-label storage-mount-label">Mount options (ex: noacl,async)</label>
-                                <input placeholder="Mount options" name="mount_options" type="text" class="mount-input form-control">
+                                <label for="target-input" class="control-label storage-target-label">Target (ex: iqn.2016-01.com.example:storage.lun1)</label>
+                                <input placeholder="Target" name="target" type="text" class="target-input form-control">
                               </div>
                               <div class="form-group">
-                                <label for="share-input" class="control-label storage-share-label">Share path (ex: /nfs/storage)</label>
-                                <input placeholder="Share path" name="share" type="text" class="share-input form-control">
+                                <label for="username-input" class="control-label storage-username-label">Username (ex: nfsuser)</label>
+                                <input placeholder="Username" name="username" type="text" class="username-input form-control">
+                              </div>
+                              <div class="form-group">
+                                <label for="password-input" class="control-label storage-password-label">Password (ex: nfspassword)</label>
+                                <input placeholder="Password" name="password" type="text" class="password-input form-control">
+                              </div>
+                            </div>
+                            <div id="storage-nbd" style="display:none;" class="storage-form-options">
+                              <div class="form-group">
+                                <label for="ip-input" class="control-label storage-ip-label">IP address (ex: 192.168.1.100)</label>
+                                <input placeholder="IP address" name="ip" type="text" class="ip-input form-control">
+                              </div>
+                              <div class="form-group">
+                                <label for="port-input" class="control-label storage-port-label">Port (ex: 1043)</label>
+                                <input placeholder="Port" name="port" type="text" class="port-input form-control">
+                              </div>
+                              <div class="form-group">
+                                <label for="export-input" class="control-label storage-export-label">Export name (ex: otherexport)</label>
+                                <input placeholder="Export name" name="export_name" type="text" class="export-input form-control">
                               </div>
                             </div>
                       </div>
@@ -389,12 +424,30 @@
               <h3 class="panel-title"><i class="fa icon-info-circled"></i> Information</h3>
             </div>
             <div id="storageHelp" class="panel-body">
-                  <h4>Local (disk)</h4>
-                  <p>This is the default setting.</p>
-                  <p>Data is stored locally on the 2nd disk, in an LVM partition mounted to <code> /data</code>.</p>
-                  <h4>NFS</h4>
-                  <p>Network File System (NFS) storage provides a multitude of configuration options.</p>
-                  <p>NFS <code>Mount options</code> are fully listed and described in the <a href="https://linux.die.net/man/5/nfs">nfs(5)</a> man page (external link).</p>
+                  <div id="storage-help-local" style="display:none;">
+                    <h4>Local (disk)</h4>
+                    <p>This is the default setting.</p>
+                    <p>Data is stored locally on the 2nd disk, in an LVM partition mounted to <code> /data</code>.</p>
+                  </div>
+                  <div id="storage-help-nfs" style="display:none;">
+                    <h4>NFS</h4>
+                    <p>Network File System (NFS) storage provides a multitude of configuration options.</p>
+                    <p>NFS <code>Mount options</code> are fully listed and described in the <a href="https://linux.die.net/man/5/nfs">nfs(5)</a> man page (external link).</p>
+                  </div>
+                  <div id="storage-help-aoe" style="display:none;">
+                    <h4>AoE (ATA-over-Ethernet)</h4>
+                    <p>AoE storage provides block storage over ethernet.</p>
+                    <p>The AoE<code>Device</code> is a block device defined by the target server, as described in the <a href="https://linux.die.net/man/8/aoe-stat">aoe-stat(8)</a> man page (external link).</p>
+                  </div>
+                  <div id="storage-help-iscsi" style="display:none;">
+                    <h4>iSCSI</h4>
+                    <p>iSCSI storage provides a SCSI interface over TCP.</p>
+                    <p>The iSCSI<code>Target</code> is described in the <a href="https://linux.die.net/man/8/iscsiadm">iscsiadm(8)</a> man page (external link).</p>
+                  </div>
+                  <div id="storage-help-nbd" style="display:none;">
+                    <h4>NBD</h4>
+                    <p>NBD provides a network block device by connecting to an NBD server over TCP.</p>
+                  </div>
             </div>
           </div>
         </div>
