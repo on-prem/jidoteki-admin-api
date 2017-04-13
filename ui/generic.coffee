@@ -93,7 +93,7 @@ putFile = (msg, endpoint, file, callback) ->
         callback null, response
       error: (jqXHR, status, err) ->
         failedUpload msg, 'upload failed'
-        callback new Error err
+        callback new Error(err), jqXHR
   else
     callback new Error "Missing or invalid API token"
 

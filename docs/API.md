@@ -23,7 +23,7 @@ Individual API endpoints are documented in separate sections listed below.
 | 2. [Authentication](#authentication) | `POST /setup` | How to authenticate to the API, and change the API token. |
 | 3. [Updates](#updates) | `POST /update` <br/> `GET /update` <br/> `GET /update/log` | Updating the system using encrypted software update packages, and viewing the status of an update. |
 | 4. [Network](#network) | `POST /settings` <br/> `GET /settings` | Viewing and changing network/application settings. |
-| 5. [Information](#information) | `GET /version` <br/> `GET /changelog` <br/> `GET /build` | Viewing system information, such as the version, changelog, and build. |
+| 5. [Information](#information) | `GET /version` <br/> `GET /changelog` <br/> `GET /build` <br/> `GET /health` | Viewing system information, such as the version, changelog, build, and health. |
 | 6. [Support](#support) | `GET /logs` <br/> `GET /debug` | Retrieving log files and debug bundles to help troubleshoot various issues. |
 | 7. [TLS](#tls) | `POST /certs` <br/> `GET /certs` | Updating the system's TLS certificates to replace the default self-signed certificates. |
 | 8. [License](#license) | `POST /license` <br/> `GET /license` | Viewing and changing the system license. |
@@ -633,7 +633,63 @@ Content-Type: application/json
 
 **Error response**
 
-If the build file doesn't exist, `404 Not Found` will be returned.
+If the system's `build.json` file doesn't exist, `404 Not Found` will be returned.
+
+### Viewing the system's health information
+
+This API endpoint will return the system's current health information (disk/memory/cpu), in JSON format.
+
+**Since**
+
+`>= v1.15.0`
+
+**HTTP Method**
+
+```
+GET
+```
+
+**Endpoint**
+
+```
+/health
+```
+
+**Example**
+
+```
+curl -X GET https://[hostname]:8443/api/v1/admin/health?hash=[sha256hmachash]
+or
+curl -X GET https://[hostname]:8443/api/v1/admin/health?token=[yourtoken]
+```
+
+**Success response**
+
+```
+HTTP/1.1 200 OK
+Content-Type: application/json
+{
+    "disk": {
+        "used": "3.4G",
+        "total": "234G",
+        "percentage": 2
+    },
+    "memory": {
+        "used": "260M",
+        "total": "1000M",
+        "percentage": 26
+    },
+    "cpu": {
+        "num": 1,
+        "load": "0.66, 0.28, 0.14",
+        "cpu5min": 0
+    }
+}
+```
+
+**Error response**
+
+If the system's `health.json` file doesn't exist, `404 Not Found` will be returned.
 
 [^ return to menu](#menu)
 

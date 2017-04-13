@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.15.0 (2017-04-13)
+
+  * Add '/health' endpoint to retrieve information about appliance health
+  * Return jqXHR on API call errors for easier debugging
+
 ## 1.14.0 (2017-02-10)
 
   * Add '/build' endpoint to retrieve information about the specific build. #28

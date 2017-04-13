@@ -107,7 +107,7 @@
         },
         error: function(jqXHR, status, err) {
           failedUpload(msg, 'upload failed');
-          return callback(new Error(err));
+          return callback(new Error(err), jqXHR);
         }
       });
     } else {
