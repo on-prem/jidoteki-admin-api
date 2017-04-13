@@ -193,7 +193,7 @@ reloadHealth = () ->
     unless err
       cpudanger   = if result['cpu']['cpu5min'] >= result['cpu']['num'] then 'jido-health-danger' else ''
       diskdanger  = if result['disk']['percentage'] >= 98 then 'jido-health-danger' else ''
-      memdanger   = if result['memory']['percentage'] >= 95 then 'jido-health-danger' else ''
+      memdanger   = if result['memory']['percentage'] >= 90 then 'jido-health-danger' else ''
 
       $('#jido-health-bar').empty()
       $('#jido-health-bar').append "<li class=\"#{cpudanger}\">cpu #{result['cpu']['load']} (#{result['cpu']['num']} cores)</li>"

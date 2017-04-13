@@ -230,7 +230,7 @@
       if (!err) {
         cpudanger = result['cpu']['cpu5min'] >= result['cpu']['num'] ? 'jido-health-danger' : '';
         diskdanger = result['disk']['percentage'] >= 98 ? 'jido-health-danger' : '';
-        memdanger = result['memory']['percentage'] >= 95 ? 'jido-health-danger' : '';
+        memdanger = result['memory']['percentage'] >= 90 ? 'jido-health-danger' : '';
         $('#jido-health-bar').empty();
         $('#jido-health-bar').append("<li class=\"" + cpudanger + "\">cpu " + result['cpu']['load'] + " (" + result['cpu']['num'] + " cores)</li>");
         $('#jido-health-bar').append("<li class=\"" + diskdanger + "\">disk " + result['disk']['used'] + " of " + result['disk']['total'] + " (" + result['disk']['percentage'] + "%)</li>");
