@@ -1,4 +1,4 @@
-[<< return to the Admin UI](/)
+[<< return to the Admin Dashboard](/)
 
 # API documentation
 
@@ -1296,4 +1296,4 @@ Content-Type: application/json
 
 ----
 
-**Powered by [Jidoteki](https://jidoteki.com) - [Copyright notices](/docs/NOTICE) - `v1.14.0`**
+**Powered by [Jidoteki](https://jidoteki.com) - [Copyright notices](/docs/NOTICE) - `v1.15.0`**

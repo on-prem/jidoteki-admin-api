@@ -188,6 +188,18 @@ authenticate = (callback) ->
     else
       callback null
 
+reloadHealth = () ->
+  fetchData "/api/v1/admin/health", (err, result) ->
+    unless err
+      cpudanger   = if result['cpu']['cpu5min'] >= result['cpu']['num'] then 'jido-health-danger' else ''
+      diskdanger  = if result['disk']['percentage'] >= 98 then 'jido-health-danger' else ''
+      memdanger   = if result['memory']['percentage'] >= 95 then 'jido-health-danger' else ''
+
+      $('#jido-health-bar').empty()
+      $('#jido-health-bar').append "<li class=\"#{cpudanger}\">cpu #{result['cpu']['load']} (#{result['cpu']['num']} cores)</li>"
+      $('#jido-health-bar').append "<li class=\"#{diskdanger}\">disk #{result['disk']['used']} of #{result['disk']['total']} (#{result['disk']['percentage']}%)</li>"
+      $('#jido-health-bar').append "<li class=\"#{memdanger}\">memory #{result['memory']['used']} of #{result['memory']['total']} (#{result['memory']['percentage']}%)</li>"
+
 ### generic content functions ###
 
 loadToken = ->

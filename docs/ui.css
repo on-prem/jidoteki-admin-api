@@ -19,12 +19,14 @@
 .jido-button-fulllog { display: block;}
 .jido-data-network-info li span { font-weight: normal;}
 .jido-monitor { padding: 10px; margin: 0; background-color: #F2F2F2; text-align: center;}
-
-#jido-modal-restart.modal .modal-content { background-color: #CC2417;}
-#jido-modal-restart.modal .modal-title { color: #FFF;}
+.jido-health-danger { color: #EC201C;}
+#jido-modal-restart .modal-content { background-color: #FFF; text-align: center;}
+#jido-modal-restart .modal-body { color: #222;}
+#jido-modal-restart .text-warning { color: #f39c12;}
 #jido-button-restart { color: #272727;}
 #jido-button-restart:hover { background-color: #CC2417; color: #FFF;}
 #jido-page-login { margin-top: 40px;}
+#jido-health-bar { margin-bottom: 0; background-color: #222; color: #DDD; border-radius: 0;}
 
 /* Theme overrides */
 
@@ -34,3 +36,8 @@
 .page-header { margin-top: 20px;}
 .form-control { height: inherit;}
 .restart-alert { text-align: center;}
+
+.modal .modal-content { background: #FFF; }
+.modal .modal-body { color: #555;}
+.modal .modal-body h1 span { vertical-align: super;}
+.modal .modal-footer { border-top: 1px solid #DDD; margin: 0 20px; padding: 20px 0;}

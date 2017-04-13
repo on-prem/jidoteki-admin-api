@@ -8,7 +8,7 @@
 
 (function() {
   'use strict';
-  var apiServer, apiType, authenticate, capitalize, certsButtonListener, clearToken, debugButtonListener, drawGraphs, failedUpload, fetchData, fetchFile, getHmac, getSha256, getStatus, getToken, loadHome, loadLogin, loadMonitor, loadNetwork, loadSetup, loadStorage, loadSupport, loadToken, loadUpdateCerts, loginButtonListener, logoutButtonListener, logsButtonListener, monitorButtonListener, monitorClick, navbarListener, networkButtonListener, newTokenButtonListener, pollStatus, putFile, putToken, redirectUrl, restartButtonListener, runningUpload, storageButtonListener, storageSelectListener, successUpload, tokenButtonListener, updateButtonListener, updateCertsButtonListener,
+  var apiServer, apiType, authenticate, capitalize, certsButtonListener, clearToken, debugButtonListener, drawGraphs, failedUpload, fetchData, fetchFile, getHmac, getSha256, getStatus, getToken, loadHome, loadLogin, loadMonitor, loadNetwork, loadSetup, loadStorage, loadSupport, loadToken, loadUpdateCerts, loginButtonListener, logoutButtonListener, logsButtonListener, monitorButtonListener, monitorClick, navbarListener, networkButtonListener, newTokenButtonListener, pollStatus, putFile, putToken, redirectUrl, reloadHealth, restartButtonListener, runningUpload, storageButtonListener, storageSelectListener, successUpload, tokenButtonListener, updateButtonListener, updateCertsButtonListener,
     indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
   apiServer = window.location.origin != null ? window.location.origin : window.location.protocol + "//" + window.location.hostname + (window.location.port != null ? ':' + window.location.port : '');
@@ -220,6 +220,21 @@
         return callback(err);
       } else {
         return callback(null);
+      }
+    });
+  };
+
+  reloadHealth = function() {
+    return fetchData("/api/v1/admin/health", function(err, result) {
+      var cpudanger, diskdanger, memdanger;
+      if (!err) {
+        cpudanger = result['cpu']['cpu5min'] >= result['cpu']['num'] ? 'jido-health-danger' : '';
+        diskdanger = result['disk']['percentage'] >= 98 ? 'jido-health-danger' : '';
+        memdanger = result['memory']['percentage'] >= 95 ? 'jido-health-danger' : '';
+        $('#jido-health-bar').empty();
+        $('#jido-health-bar').append("<li class=\"" + cpudanger + "\">cpu " + result['cpu']['load'] + " (" + result['cpu']['num'] + " cores)</li>");
+        $('#jido-health-bar').append("<li class=\"" + diskdanger + "\">disk " + result['disk']['used'] + " of " + result['disk']['total'] + " (" + result['disk']['percentage'] + "%)</li>");
+        return $('#jido-health-bar').append("<li class=\"" + memdanger + "\">memory " + result['memory']['used'] + " of " + result['memory']['total'] + " (" + result['memory']['percentage'] + "%)</li>");
       }
     });
   };
@@ -957,29 +972,39 @@
   };
 
   navbarListener = function() {
+    reloadHealth();
     return $('#jido-page-navbar .navbar-nav li a').click(function() {
       var clicked;
       clicked = $(this).parent().attr('id');
       switch (clicked) {
         case "jido-button-home":
-          return loadHome();
+          loadHome();
+          break;
         case "jido-button-update":
-          return loadUpdateCerts('update');
+          loadUpdateCerts('update');
+          break;
         case "jido-button-network":
-          return loadNetwork();
+          loadNetwork();
+          break;
         case "jido-button-certs":
-          return loadUpdateCerts('certs');
+          loadUpdateCerts('certs');
+          break;
         case "jido-button-license":
-          return loadLicense();
+          loadLicense();
+          break;
         case "jido-button-storage":
-          return loadStorage();
+          loadStorage();
+          break;
         case "jido-button-token":
-          return loadToken();
+          loadToken();
+          break;
         case "jido-button-support":
-          return loadSupport();
+          loadSupport();
+          break;
         case "jido-button-monitor":
-          return loadMonitor();
+          loadMonitor();
       }
+      return reloadHealth();
     });
   };
 

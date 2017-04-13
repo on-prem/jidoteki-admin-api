@@ -51,20 +51,19 @@ mixin certModals(title)
 #jido-modal-certs-rsa.modal
   +certModals('RSA private key (un-encrypted)')
 
-#jido-modal-restart.modal
+#jido-modal-restart.modal(tabindex='-1')
   .modal-dialog
     .modal-content
-      .modal-header
-        button.close(type='button', data-dismiss='modal', aria-hidden='true') &times;
-        h4.modal-title
-          i.fa.icon-attention
-          |  Are you sure you want to restart?
       .modal-body
-        pre Choose Yes to immediately restart the system.
-      .modal-footer
-        button#jido-button-restart-confirm.btn.btn-default(type='button', data-dismiss='modal')
-          i.fa.icon-thumbs-up-alt
-          |  Yes
+        h1
+          i.fa.icon-attention.text-warning(style='font-size:2em;')
+          p.text-muted Are you sure ?
+        p Choose Yes to immediately restart the system.
+        br
         button.btn.btn-default(type='button', data-dismiss='modal')
-          i.fa.icon-thumbs-down-alt
-          |  No
+          i.fa.icon-cancel
+          |  No, not yet
+        | &nbsp;&nbsp;
+        button#jido-button-restart-confirm.btn.btn-danger(type='button', data-dismiss='modal')
+          i.fa.icon-ok
+          |  Yes, restart it!

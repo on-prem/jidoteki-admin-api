@@ -20,9 +20,9 @@ In combination with the [jidoteki-admin](https://github.com/unscramble/jidoteki-
   * View and update persistent storage options
   * Retrieve build details
 
-An Admin UI is included, and enables simpler management through a web-based interface:
+An Admin Dashboard is included, and enables simpler management through a web-based interface:
 
-![Admin UI](https://cloud.githubusercontent.com/assets/153401/19772513/044ed2f0-9c56-11e6-90d5-cb235dc088ef.gif)
+![Admin Dashboard](https://cloud.githubusercontent.com/assets/153401/19772513/044ed2f0-9c56-11e6-90d5-cb235dc088ef.gif)
 
 # Requirements
 

@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-    <title>Admin UI</title>
+    <title>Admin Dashboard</title>
     <!-- Bootstrap Core CSS-->
     <link href="docs/themes/bootstrap.min.css" rel="stylesheet">
     <!-- Fontello / Font Awesome CSS-->
@@ -16,10 +16,11 @@
   </head>
   <body>
     <div id="jido-page-navbar" style="display:none">
+      <ul id="jido-health-bar" class="breadcrumb text-right"></ul>
       <nav class="navbar navbar-default navbar-static-top">
         <div class="container">
           <div class="navbar-header">
-            <button type="button" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" class="navbar-toggle collapsed"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button><a href="#" class="navbar-brand">Admin UI</a>
+            <button type="button" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" class="navbar-toggle collapsed"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button><a href="#" class="navbar-brand">Admin Dashboard</a>
           </div>
           <div id="bs-example-navbar-collapse-1" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
@@ -53,7 +54,7 @@
           <div id="invalid-token" style="display:none" class="alert alert-danger">Missing or invalid API token</div>
           <div class="login-panel panel panel-default">
             <div class="panel-heading">
-              <h3 class="panel-title">Admin UI Login</h3>
+              <h3 class="panel-title">Admin Dashboard Login</h3>
             </div>
             <div class="panel-body">
               <form id="login-form" role="form">
@@ -641,19 +642,16 @@ GEs=
             </div>
           </div>
     </div>
-    <div id="jido-modal-restart" class="modal">
+    <div id="jido-modal-restart" tabindex="-1" class="modal">
       <div class="modal-dialog">
         <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" data-dismiss="modal" aria-hidden="true" class="close">&times;</button>
-            <h4 class="modal-title"><i class="fa icon-attention"></i> Are you sure you want to restart?</h4>
-          </div>
           <div class="modal-body">
-            <pre>Choose Yes to immediately restart the system.</pre>
-          </div>
-          <div class="modal-footer">
-            <button id="jido-button-restart-confirm" type="button" data-dismiss="modal" class="btn btn-default"><i class="fa icon-thumbs-up-alt"></i> Yes</button>
-            <button type="button" data-dismiss="modal" class="btn btn-default"><i class="fa icon-thumbs-down-alt"></i> No</button>
+            <h1><i style="font-size:2em;" class="fa icon-attention text-warning"></i>
+              <p class="text-muted">Are you sure ?</p>
+            </h1>
+            <p>Choose Yes to immediately restart the system.</p><br>
+            <button type="button" data-dismiss="modal" class="btn btn-default"><i class="fa icon-cancel"></i> No, not yet</button>&nbsp;&nbsp;
+            <button id="jido-button-restart-confirm" type="button" data-dismiss="modal" class="btn btn-danger"><i class="fa icon-ok"></i> Yes, restart it!</button>
           </div>
         </div>
       </div>

@@ -458,6 +458,7 @@ storageSelectListener = () ->
     $("#storage-#{option}").show()
 
 navbarListener = ->
+  reloadHealth()
   $('#jido-page-navbar .navbar-nav li a').click ->
     clicked = $(this).parent().attr 'id'
     switch clicked
@@ -470,6 +471,8 @@ navbarListener = ->
       when "jido-button-token"    then loadToken()
       when "jido-button-support"  then loadSupport()
       when "jido-button-monitor"  then loadMonitor()
+
+    reloadHealth()
 
 ### start here ###
 
