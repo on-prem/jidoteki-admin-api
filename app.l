@@ -13,6 +13,8 @@
   (and (load ".modules/picolisp-json/HEAD/json.l") (symbols 'json))
   (load "@lib/json.l") )
 
+(load ".modules/picolisp-semver/HEAD/semver.l")
+
 (setq
   *API_VERSION  (if (format (sys "JIDO_API_VERSION")) @ 1)
   *API_PATH     (pack "api/v" *API_VERSION)

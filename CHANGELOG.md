@@ -3,6 +3,7 @@
 ## 1.15.0 (2017-04-13)
 
   * Add '/health' endpoint to retrieve information about appliance health
+  * Add 'picolisp-semver' module dependency
   * Display health status at top Admin Dashboard
   * Return jqXHR on API call errors for easier debugging
   * Fix disk usage graph display. #26

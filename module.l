@@ -9,4 +9,5 @@
   ("install"    "make")
   ("requires"
     ("picolisp-unit"    "v1.0.0"    "https://github.com/aw/picolisp-unit.git")
-    ("picolisp-json"    "v1.1.0"    "https://github.com/aw/picolisp-json.git") ]
+    ("picolisp-json"    "v1.1.0"    "https://github.com/aw/picolisp-json.git")
+    ("picolisp-semver"  "v0.8.0"    "https://github.com/aw/picolisp-semver.git") ]
