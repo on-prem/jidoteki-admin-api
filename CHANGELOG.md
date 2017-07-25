@@ -2,6 +2,7 @@
 
 ## 1.16.0 (2017-07-25)
 
+  * Fix parsing of '/services' with capital T. #30
   * Disable all versions of TLS/SSL except TLSv1.2
 
 ## 1.15.0 (2017-04-13)

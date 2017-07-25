@@ -6,7 +6,7 @@
 
 [de services-process ()
   (sys "SSH_ORIGINAL_COMMAND" "services")
-  (in (list (pack *Admin_path "bin/wrapper.sh")) (pack (till T) ]
+  (in (list (pack *Admin_path "bin/wrapper.sh")) (pack (till) ]
 
 (de services-validate ()
   (if (services-process)
