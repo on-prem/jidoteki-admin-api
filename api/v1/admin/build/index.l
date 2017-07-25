@@ -9,7 +9,7 @@
 
 [de build-get ()
   (if (build-exists)
-      (response-json "/usr/local/etc/build.json" 200 T)
+      (response-json-nocache "/usr/local/etc/build.json" 200 T)
       (http-msg 404) ]
 
 (de build-request ()
