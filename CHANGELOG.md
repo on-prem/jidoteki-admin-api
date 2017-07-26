@@ -6,6 +6,7 @@
   * Ensure '/build' returns a no-cache header
   * Fix parsing of '/services' with capital T. #30
   * Disable all versions of TLS/SSL except TLSv1.2
+  * Disable form autocomplete on login/token page
 
 ## 1.15.0 (2017-04-13)
 
