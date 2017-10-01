@@ -2,7 +2,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (c) 2015-2016 Alexander Williams, Unscramble <license@unscramble.jp>
+# Copyright (c) 2015-2017 Alexander Williams, Unscramble <license@unscramble.jp>
 
 apiType = 'admin'
 
@@ -26,6 +26,9 @@ loadHome = ->
         key = "IP address" if key == 'ip_address'
         key = "DNS 1" if key == 'dns1'
         key = "DNS 2" if key == 'dns2'
+        key = "NTP Server" if key == 'ntpserver'
+
+        value = "" if typeof value is 'object'
 
         "<li class=\"list-group-item\">#{capitalize key} <span class=\"pull-right text-primary\">#{value}</span></li>"
 
@@ -83,11 +86,8 @@ loadNetwork = ->
         $('#interface-input').val 'eth0'
 
       networkSettings = for key, value of result.network
+        value = "" if typeof value is 'object'
         $("##{key}-input").val value
-
-        key = "IP address" if key == 'ip_address'
-        key = "DNS 1" if key == 'dns1'
-        key = "DNS 2" if key == 'dns2'
 
         "<li class=\"list-group-item\">#{capitalize key} <span class=\"pull-right label label-primary\">#{value}</span></li>"
 
@@ -217,6 +217,7 @@ networkButtonListener = ->
     json.network.ip_address = $('#ip_address-input').val()
     json.network.netmask = $('#netmask-input').val()
     json.network.gateway = $('#gateway-input').val()
+    json.network.ntpserver = $('#ntpserver-input').val()
     if $('#dns1-input').val() then json.network.dns1 = $('#dns1-input').val()
     if $('#dns2-input').val() then json.network.dns2 = $('#dns2-input').val()
 
@@ -272,6 +273,7 @@ networkButtonListener = ->
       delete json.network.ip_address
       delete json.network.netmask
       delete json.network.gateway
+      delete json.network.ntpserver
       delete json.network.dns1
       delete json.network.dns2
 

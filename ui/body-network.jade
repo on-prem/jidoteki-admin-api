@@ -46,6 +46,10 @@
                     label.control-label.network-interface-label(for='interface-input')
                       | Interface
                     input#interface-input.form-control(placeholder='Interface', name='interface', type='text')
+                  .form-group.has-success
+                    label.control-label.network-ntpserver-label(for='ntpserver-input')
+                      | NTP Server
+                    input#ntpserver-input.form-control(placeholder='pool.ntp.org', name='ntpserver', type='text')
                   .form-group
                     label.control-label.network-dns1-label.text-info(for='dns1-input')
                       em DNS 1 (optional for STATIC)

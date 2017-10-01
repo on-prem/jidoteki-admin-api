@@ -19,7 +19,7 @@
     (json-string [encode (list (cons "Status" (pack 202 " " (http-code 202))) (cons "Location" "/api/v1/admin/settings")])
     (response-generic 202 Size Date Body '(("Location" . "/api/v1/admin/settings") ("Content-Type" . "application/json")) ]
 
-(de settings-static (Interface Ip_address Netmask Gateway Dns1 Dns2 Hostname)
+(de settings-static (Interface Ip_address Netmask Gateway Dns1 Dns2 Hostname Ntpserver)
   (out (pack *Upload_path "network.conf")
     (prinl "mode=static")
     (if Interface
@@ -29,7 +29,8 @@
     (prinl "subnet=" Netmask)
     (prinl "router=" Gateway)
     (prin "dns=\"") (when Dns1 (prin @)) (when Dns2 (prin " " @)) (prinl "\"")
-    (prin "hostname=\"") (when Hostname (prin @)) (prinl "\"") )
+    (prin "hostname=\"") (when Hostname (prin @)) (prinl "\"")
+    (prin "ntpserver=\"") (when Ntpserver (prin @)) (prinl "\"") )
   (settings-update "static") )
 
 (de settings-dhcp (Interface Hostname)
@@ -38,7 +39,8 @@
     (if Interface
         (prinl "interface=" Interface)
         (prinl "interface=eth0") )
-    (prin "hostname=\"") (when Hostname (prin @)) (prinl "\"") )
+    (prin "hostname=\"") (when Hostname (prin @)) (prinl "\"")
+    (prin "ntpserver=\"") (when Ntpserver (prin @)) (prinl "\"") )
   (settings-update "dhcp") )
 
 [de settings-store (Settings)
@@ -54,11 +56,12 @@
           Interface   (cdr (assoc "interface" Network))
           Dns1        (cdr (assoc "dns1" Network))
           Dns2        (cdr (assoc "dns2" Network))
-          Hostname    (cdr (assoc "hostname" Network)) )
+          Hostname    (cdr (assoc "hostname" Network))
+          Ntpserver   (cdr (assoc "ntpserver" Network)) )
 
       (if (and Ip_address Netmask Gateway)
-          (settings-static Interface Ip_address Netmask Gateway Dns1 Dns2 Hostname)
-          (settings-dhcp Interface Hostname) ]
+          (settings-static Interface Ip_address Netmask Gateway Dns1 Dns2 Hostname Ntpserver)
+          (settings-dhcp Interface Hostname Ntpserver) ]
 
 [de settings-parse (File)
   (if (decode File T)

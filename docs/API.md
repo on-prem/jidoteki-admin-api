@@ -404,7 +404,8 @@ multipart/form-data
         "netmask": "255.255.255.0",
         "gateway": "192.168.1.1",
         "dns1": "192.168.1.2",
-        "dns2": "192.168.1.3"
+        "dns2": "192.168.1.3",
+        "ntpserver": "pool.ntp.org"
     },
     "app": {
         "name": "testapp"
@@ -420,7 +421,8 @@ Omit the `ip_address, netmask, gateway` fields, and the network settings will au
 {
     "network": {
         "interface": "eth0",
-        "hostname": "test.host"
+        "hostname": "test.host",
+        "ntpserver": "pool.ntp.org"
     },
     "app": {
         "name": "testapp"
@@ -490,7 +492,8 @@ Content-Type: application/json
         "netmask": "255.255.255.0",
         "gateway": "192.168.1.1",
         "dns1": "192.168.1.2",
-        "dns2": "192.168.1.3"
+        "dns2": "192.168.1.3",
+        "ntpserver": "pool.ntp.org"
     },
     "app": {
         "name": "testapp"
@@ -1296,4 +1299,4 @@ Content-Type: application/json
 
 ----
 
-**Powered by [Jidoteki](https://jidoteki.com) - [Copyright notices](/docs/NOTICE) - `v1.16.0`**
+**Powered by [Jidoteki](https://jidoteki.com) - [Copyright notices](/docs/NOTICE) - `v1.17.0`**

@@ -3,7 +3,7 @@
   License, v. 2.0. If a copy of the MPL was not distributed with this
   file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-  Copyright (c) 2015-2016 Alexander Williams, Unscramble <license@unscramble.jp>
+  Copyright (c) 2015-2017 Alexander Williams, Unscramble <license@unscramble.jp>
  */
 
 (function() {
@@ -424,6 +424,12 @@
             if (key === 'dns2') {
               key = "DNS 2";
             }
+            if (key === 'ntpserver') {
+              key = "NTP Server";
+            }
+            if (typeof value === 'object') {
+              value = "";
+            }
             results.push("<li class=\"list-group-item\">" + (capitalize(key)) + " <span class=\"pull-right text-primary\">" + value + "</span></li>");
           }
           return results;
@@ -501,16 +507,10 @@
           results = [];
           for (key in ref) {
             value = ref[key];
+            if (typeof value === 'object') {
+              value = "";
+            }
             $("#" + key + "-input").val(value);
-            if (key === 'ip_address') {
-              key = "IP address";
-            }
-            if (key === 'dns1') {
-              key = "DNS 1";
-            }
-            if (key === 'dns2') {
-              key = "DNS 2";
-            }
             results.push("<li class=\"list-group-item\">" + (capitalize(key)) + " <span class=\"pull-right label label-primary\">" + value + "</span></li>");
           }
           return results;
@@ -689,6 +689,7 @@
       json.network.ip_address = $('#ip_address-input').val();
       json.network.netmask = $('#netmask-input').val();
       json.network.gateway = $('#gateway-input').val();
+      json.network.ntpserver = $('#ntpserver-input').val();
       if ($('#dns1-input').val()) {
         json.network.dns1 = $('#dns1-input').val();
       }
@@ -751,6 +752,7 @@
         delete json.network.ip_address;
         delete json.network.netmask;
         delete json.network.gateway;
+        delete json.network.ntpserver;
         delete json.network.dns1;
         delete json.network.dns2;
       }
