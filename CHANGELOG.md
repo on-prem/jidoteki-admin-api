@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.17.0 (TBD)
+
+  * Ensure NTP server is configurable and displayed correectly. #20
+
 ## 1.16.0 (2017-07-25)
 
   * Ensure '/changelog' returns a no-cache header

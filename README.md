@@ -103,4 +103,4 @@ To do everything at once, type: `make ui`
 
 [MPL-2.0 License](LICENSE)
 
-Copyright (c) 2015-2016 Alexander Williams, Unscramble <license@unscramble.jp>
+Copyright (c) 2015-2017 Alexander Williams, Unscramble <license@unscramble.jp>
