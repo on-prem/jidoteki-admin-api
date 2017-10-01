@@ -1,5 +1,7 @@
 language: bash
 sudo: required
+cache: apt
+dist: precise
 
 before_script:
   - make
