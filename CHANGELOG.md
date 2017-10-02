@@ -1,8 +1,8 @@
 # Changelog
 
-## 1.17.0 (TBD)
+## 1.17.0 (2017-10-02)
 
-  * Ensure NTP server is configurable and displayed correectly. #20
+  * Ensure NTP server is configurable and displayed correctly. #20
 
 ## 1.16.0 (2017-07-25)
 
