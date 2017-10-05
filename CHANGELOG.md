@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.18.0 (TBD)
+
+  * Add audit-logging to authentication and new API calls
+
 ## 1.17.0 (2017-10-02)
 
   * Ensure NTP server is configurable and displayed correctly. #20

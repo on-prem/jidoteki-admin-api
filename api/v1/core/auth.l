@@ -45,3 +45,27 @@
         (sys "SSH_ORIGINAL_COMMAND" "token")
         (call (pack *Admin_path "bin/wrapper.sh")) )
       (http-msg 400) ]
+
+[de audit-log (Location User Action Target)
+ (let (Date (in (list 'date (pack "+%s.%N")) (pack (till "^J")))
+       Hash (in (list 'openssl "rand" "-hex" 8) (pack (till "^J"))) )
+
+   (out (pack "+" *Audit_log) (prinl (glue "," (list Date Hash Location User Action (pack "\"" Target "\"") ]
+
+# returns 403 if authentication failed
+# returns 400 if "GET" and "POST" methods are reversed
+# returns NIL otherwise
+(de check-auth-request (Method)
+ (if (validate-auth)
+     (case Method
+       ("GET"  (when   *Post (http-msg 400 "Invalid authentication method. Expected GET") (bye)))
+       ("POST" (unless *Post (http-msg 400 "Invalid authentication method. Expected POST") (bye))) )
+     (audit-log "web" "admin" "token.authenticate.failed" (get-http-url))
+     (http-msg 403 "Authentication error")
+     (bye) ) )
+
+[de check-auth (Method)
+ (check-auth-request Method)
+ (case Method
+   ("GET"  (api-request-get))
+   ("POST" (api-request-post)) ]

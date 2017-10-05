@@ -20,7 +20,8 @@
   *API_PATH     (pack "api/v" *API_VERSION)
   *API_DOC      (if (sys "JIDO_API_CUSTOM") (pack @ "/docs/API.md") "docs/API.md")
   *Admin_path   (if (sys "JIDO_ADMIN_PATH") @ "/opt/jidoteki/admin/")
-  *Upload_path  (pack *Admin_path "home/sftp/uploads/") )
+  *Upload_path  (pack *Admin_path "home/sftp/uploads/")
+  *Audit_log    (pack *Admin_path "log/jidoteki-audit.log") )
 
 # Load core
 (chdir (pack *API_PATH "/core")
