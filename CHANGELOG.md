@@ -3,6 +3,7 @@
 ## 1.18.0 (TBD)
 
   * Add audit-logging to authentication and new API calls
+  * Add '/backup' endpoints
 
 ## 1.17.0 (2017-10-02)
 
