@@ -30,6 +30,7 @@ Individual API endpoints are documented in separate sections listed below.
 | 9. [Administration](#administration) | `GET /reboot` | System administration, such as rebooting the system. |
 | 10. [Services](#services) | `GET /services` | Retrieving the status of system services. |
 | 11. [Storage](#storage) | `POST /storage` <br/> `GET /storage` | Viewing and changing persistent storage options. |
+| 12. [Backup](#backup) | `POST /backup` <br/> `GET /backup` <br/> `GET /backup/status` <br/> `GET /backup/log` | Generating a backup, and viewing its status and log. |
 
 # <a name="setup"></a>1. Setup
 
@@ -983,9 +984,9 @@ Content-Type: application/json
 
 **Error response**
 
-If the license file doesn't exist, `404 Not Found` will be returned.
+If the license file is invalid or doesn't exist, `404 Not Found` will be returned.
 
-If an error occurs when changing the license, `400 Bad Request` will be returned.
+If an error occurs when updating the license, `400 Bad Request` will be returned.
 
 ### Viewing the license details
 
@@ -1031,7 +1032,7 @@ Content-Type: application/json
 
 **Error response**
 
-If the license file doesn't exist, `404 Not Found` will be returned.
+If the license file is invalid or doesn't exist, `404 Not Found` will be returned.
 
 [^ return to menu](#menu)
 
@@ -1299,4 +1300,184 @@ Content-Type: application/json
 
 ----
 
-**Powered by [Jidoteki](https://jidoteki.com) - [Copyright notices](/docs/NOTICE) - `v1.17.0`**
+# <a name="backup"></a>12. Backup
+
+### Generating a backup
+
+Generating a backup is an asynchronous procedure. The API will return a response immediately while the backup is created in the background. Only one backup can run at any given time.
+
+The backup file is stored in memory, and can be stopped or deleted at any time.
+
+**Since**
+
+`>= v1.18.0`
+
+**HTTP Method**
+
+```
+POST
+```
+
+**Endpoint**
+
+```
+/backup
+```
+
+**Parameters**
+
+* `action` **(required)**: `START` to start a backup, `STOP` to stop or delete a backup
+
+**Content-type**
+
+```
+multipart/form-data
+```
+
+**Example**
+
+```
+curl -X POST https://[hostname]:8443/api/v1/admin/backup?hash=[sha256hmachash] -F action=START
+or
+curl -X POST https://[hostname]:8443/api/v1/admin/backup?token=[yourtoken] -F action=START
+```
+
+**Success response**
+
+```
+HTTP/1.1 202 Accepted
+Location: /api/v1/admin/backup/status
+Content-Type: application/json
+{"Status":"202 Accepted","Location":"/api/v1/admin/backup/status"}
+```
+
+**Error response**
+
+`400 Bad Request` if the backup API call fails
+
+### Retrieving a backup
+
+This will start a download of `backup.tar.gz`.
+
+**Since**
+
+`>= v1.18.0`
+
+**HTTP Method**
+
+```
+GET
+```
+
+**Endpoint**
+
+```
+/backup
+```
+
+**Example**
+
+```
+HTTP/1.1 200 OK
+Content-Type: application/octet-stream
+Filename: backup.tar.gz
+```
+
+**Error response**
+
+`404 Not Found` if the `backup.tar.gz` file doesn't exist
+
+### Viewing the backup status
+
+This API endpoint will return the status of the backup.
+
+**Since**
+
+`>= v1.18.0`
+
+**HTTP Method**
+
+```
+GET
+```
+
+**Endpoint**
+
+```
+/backup/status
+```
+
+**Example**
+
+```
+HTTP/1.1 200 OK
+Content-Type: application/json
+{
+    "status": "running"
+}
+```
+
+or
+
+```
+HTTP/1.1 200 OK
+Content-Type: application/json
+{
+    "status": "success",
+    "filesize": "128.0K",
+    "sha256": "6e31a817eb93270848e3c0b3c1d0c2bfa077fbb318f58a2bcbdec8f69f0dd420"
+}
+```
+
+**Status values**
+
+* `running`: The backup is currently running.
+* `success`: The backup completed successfully.
+* `failed`: The backup failed.
+
+**Error response**
+
+`404 Not Found` if the backup status file doesn't exist
+
+### Viewing the backup log
+
+This API endpoint will return the log of the backup.
+
+**Since**
+
+`>= v1.18.0`
+
+**HTTP Method**
+
+```
+GET
+```
+
+**Endpoint**
+
+```
+/backup/log
+```
+
+**Example**
+
+```
+HTTP/1.1 200 OK
+Content-Type: text/plain
+[1507206605][LIVE IMAGE] Validating backup file size
+[1507206605][LIVE IMAGE] Starting backup
+Created file: /opt/jidoteki/admin/home/sftp/uploads/backup.tar.gz - size: 128.0K - hash: 6e31a817eb93270848e3c0b3c1d0c2bfa077fbb318f58a2bcbdec8f69f0dd420
+[1507206606][LIVE IMAGE] Backup complete
+[1507212882][LIVE IMAGE] Deleting backup archive
+...
+```
+
+**Error response**
+
+`404 Not Found` if the backup log file doesn't exist
+
+[^ return to menu](#menu)
+
+----
+
+**Powered by [Jidoteki](https://jidoteki.com) - [Copyright notices](/docs/NOTICE) - `v1.18.0`**
