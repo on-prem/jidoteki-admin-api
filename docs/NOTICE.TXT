@@ -1,0 +1,52 @@
+API Documentation and UI licensing:
+
+* 'strapdown.js' licensed under the MIT License and
+  Copyright (c) 2012 Artur B. Adib
+  https://github.com/arturadib/strapdown
+
+* 'Marked' is licensed under the MIT License and
+  Copyright (c) 2011-2014, Christopher Jeffrey
+  https://github.com/chjj/marked
+
+* 'Google Code Prettify' is licensed under the Apache License v2.0 and
+  Copyright (c) Google Inc.
+  https://github.com/google/code-prettify
+
+* 'Twitter Bootstrap' is licensed under the MIT License and
+  Copyright (c) 2011-2015 Twitter, Inc
+  https://github.com/twbs/bootstrap
+
+* 'Bootswatch' is licensed under the MIT License and
+  Copyright 2014 Thomas Park
+  https://github.com/thomaspark/bootswatch.git
+
+* 'Font Awesome' fonts are licensed under the SIL OFL 1.1 License and
+  Copyright (c) 2015 Dave Gandy
+  https://github.com/FortAwesome/Font-Awesome
+
+* 'Fontello' css is licensed under the MIT License and
+  Copyright (C) 2011 by Vitaly Puzrin
+  https://github.com/fontello/fontello
+
+* 'jQuery' is licensed under the MIT License and
+  Copyright (c) 2016 jQuery Foundation and other contributors
+  https://jquery.org/
+
+* 'Forge' is licensed under the New BSD License (3-clause) and
+  Copyright (c) 2010, Digital Bazaar, Inc.
+  https://github.com/digitalbazaar/forge
+
+* 'Validator.js' is licensed under the MIT License and GPL
+  Copyright (c) 2016 Chris O'Hara <cohara87@gmail.com>
+  https://github.com/chriso/validator.js
+
+* 'jsrrdgraph' is licensed under the MIT License and
+  Copyright (c) 2013  Frank Wuerthwein, fkw@ucsd.edu, Igor Sfiligoi, isfiligoi@ucsd.edu
+  Copyright (c) 2008 Jacob Seidelin, cupboy@gmail.com, http://blog.nihilogic.dk/
+  RRDtool 1.4.5  Copyright by Tobi Oetiker, 1997-2010
+  Convert to javascript: Manuel Sanmartin <manuel.luis at gmail.com>
+  https://github.com/manuelluis/jsrrdgraph
+
+* 'API Documentation and UI' licensed under the MPL-2.0 License and
+  Copyright (c) 2015-2017 Alexander Williams, Unscramble
+  https://github.com/unscramble/jidoteki-admin-api.git
