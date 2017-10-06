@@ -2,6 +2,8 @@
 
 ## 1.18.0 (TBD)
 
+  * Update Fontello fonts
+  * Add Jidoteki footer to bottom of Dashboard UI
   * Add audit-logging to authentication and new API calls
   * Add '/backup' endpoints
 
