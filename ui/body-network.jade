@@ -2,7 +2,7 @@
 //- License, v. 2.0. If a copy of the MPL was not distributed with this
 //- file, You can obtain one at http://mozilla.org/MPL/2.0/.
 //- 
-//- Copyright (c) 2015-2016 Alexander Williams, Unscramble <license@unscramble.jp>
+//- Copyright (c) 2015-2017 Alexander Williams, Unscramble <license@unscramble.jp>
 
 // #network container
 #jido-page-network.container-fluid.jido-page-content.jido-page-content-network(style='display:none')
@@ -27,13 +27,10 @@
             i.fa.icon-sitemap
             |  Network settings
         .panel-body
-          | Update 
-          em Network settings
-          | , or switch between STATIC to DHCP modes.
-          br
+          h4 Update Network settings, or switch between STATIC to DHCP modes.
           br
           .alert.alert-info
-            | Remove the IP address, Netmask or Gateway to set to DHCP mode.
+            | For DHCP mode, remove the IP address, Netmask or Gateway.
           .row
             form.network-form(role='form')
               fieldset
