@@ -13,20 +13,24 @@
     .col-lg-10.col-md-10.col-sm-12.col-lg-offset-1.col-md-offset-1
       .panel.panel-default.jido-panel
         .panel-heading
-          | Status: 
-          span.label.label-default.jido-data-certs-status ...fetching
+          h4 Status: 
+            span.label.label-default.jido-data-certs-status ...fetching
           .progress(style='display:none; margin-top: 20px')
             .progress-bar.progress-bar-striped.active(role='progressbar', aria-valuenow='33', aria-valuemin='0', aria-valuemax='100', style='width: 33%')
               | ...uploading, please wait
   .row
     .col-lg-4.col-md-4.col-sm-12.col-lg-offset-1.col-md-offset-1
       .panel.panel-default.jido-panel
+        .panel-heading
+          h3.panel-title
+            i.fa.icon-lock
+            |  TLS Certificates
         .panel-body
           h4 Upload TLS certificates to replace the default self-signed certificates.
-          br
-          | Ex: enterprise.pem, enterprise.key, enterprise-cacert.pem
-          br
-          br
+          blockquote
+            span.text-muted Example
+            br
+            em enterprise.pem, enterprise.key, enterprise-cacert.pem
           .alert.alert-dismissible.alert-info.certs-alert(style='display:none;')
             button.close(type='button', data-dismiss='alert') ×
             | The status and log will update automatically.

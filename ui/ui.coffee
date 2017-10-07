@@ -5,6 +5,13 @@
 # Copyright (c) 2015-2017 Alexander Williams, Unscramble <license@unscramble.jp>
 
 apiType = 'admin'
+apiEndpoints = [
+  'settings',
+  'certs',
+  'license',
+  'storage',
+  'backup'
+  ]
 
 ### content functions ###
 
@@ -67,10 +74,12 @@ loadUpdateCerts = (msg) ->
       pollStatus msg
 
 loadNetwork = ->
+  currentEndpoint = "/api/v1/admin/settings"
+
   $('#jido-page-login').hide()
   $('.jido-page-content').hide()
   $('#jido-page-navbar .navbar-nav li').removeClass('active')
-  $('#jido-button-network').addClass('active')
+  $('#jido-button-settings').addClass('active')
   $('#jido-page-navbar').show()
   $('#jido-page-network').show()
 
@@ -461,12 +470,20 @@ storageSelectListener = () ->
 
 navbarListener = ->
   reloadHealth()
+
+  fetchData "/api/v1/admin/endpoints", (err, result) ->
+    unless err
+      # display the menu button if the endpoint is enabled
+      for value in apiEndpoints
+        if "/api/v1/admin/#{value}" in result.endpoints
+          $("#jido-button-#{value}").show()
+
   $('#jido-page-navbar .navbar-nav li a').click ->
     clicked = $(this).parent().attr 'id'
     switch clicked
       when "jido-button-home"     then loadHome()
       when "jido-button-update"   then loadUpdateCerts 'update'
-      when "jido-button-network"  then loadNetwork()
+      when "jido-button-settings" then loadNetwork()
       when "jido-button-certs"    then loadUpdateCerts 'certs'
       when "jido-button-license"  then loadLicense()
       when "jido-button-storage"  then loadStorage()

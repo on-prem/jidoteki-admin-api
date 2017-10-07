@@ -36,22 +36,26 @@
               |  Settings
               span.caret
             ul.dropdown-menu
-              li#jido-button-network
+              li#jido-button-backup(style='display:none;')
+                a(href='#')
+                  i.fa.icon-floppy
+                  |  Backup/Restore
+              li#jido-button-settings(style='display:none;')
                 a(href='#')
                   i.fa.icon-sitemap
                   |  Network
-              li#jido-button-certs
+              li#jido-button-certs(style='display:none;')
                 a(href='#')
                   i.fa.icon-lock
                   |  TLS Certificates
-              li#jido-button-storage
+              li#jido-button-storage(style='display:none;')
                 a(href='#')
                   i.fa.icon-database
                   |  Storage
-              //- li#jido-button-license
-              //-   a(href='#')
-              //-     i.fa.icon-certificate
-              //-     |  License
+              li#jido-button-license(style='display:none;')
+                a(href='#')
+                  i.fa.icon-certificate
+                  |  License
               li#jido-button-token
                 a(href='#')
                   i.fa.icon-user

@@ -11,23 +11,29 @@
       h1.page-header Update
   .row
     .col-lg-10.col-md-10.col-sm-12.col-lg-offset-1.col-md-offset-1
-      .alert.jido-panel.jido-page-content-update-panel
-        .label.label-default.jido-data-update-status ...fetching
-        span.pull-right.jido-data-update-status-error(style='display:none;')
-          .jido-data-update-status-error-message
-        .progress(style='display:none; margin-top: 20px; margin-bottom:0;')
-          .progress-bar.progress-bar-striped.active(role='progressbar', aria-valuenow='33', aria-valuemin='0', aria-valuemax='100', style='width: 33%')
-            | ...uploading, please wait
+      .panel.panel-default.jido-panel
+        .panel-heading
+          h4 Status: 
+            span.label.label-default.jido-data-update-status ...fetching
+            span.pull-right.jido-data-update-status-error(style='display:none;')
+              .jido-data-update-status-error-message.text-danger
+          .progress(style='display:none; margin-top: 20px; margin-bottom:0;')
+            .progress-bar.progress-bar-striped.active(role='progressbar', aria-valuenow='33', aria-valuemin='0', aria-valuemax='100', style='width: 33%')
+              | ...uploading, please wait
 
   .row
     .col-lg-4.col-md-4.col-sm-12.col-lg-offset-1.col-md-offset-1
       .panel.panel-default.jido-panel
+        .panel-heading
+          h3.panel-title
+            i.fa.icon-upload-cloud
+            |  Update
         .panel-body
           h4 Upload a software update package to keep the system up-to-date.
-          br
-          | Ex: software_package-v1.2.3.enc
-          br
-          br
+          blockquote
+            span.text-muted Example
+            br
+            em software_package-v1.2.3.enc
           .alert.alert-info.update-alert(style='display:none;')
             | The status and log will update automatically.
           form.update-form(role='form')
