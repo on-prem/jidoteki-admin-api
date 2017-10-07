@@ -17,18 +17,40 @@ Individual API endpoints are documented in separate sections listed below.
 
 > **Note:** All API endpoints must be prefixed with `/api/v1/admin`
 
+### Default API Endpoints
+
+These endpoints can not be disabled.
+
 | Section | API Endpoints <br> /api/v1/admin | Description |
 | :---- | :---- | :---- |
 | 1. [Setup](#setup) | `POST /setup` | Initial setup for using the API |
 | 2. [Authentication](#authentication) | `POST /setup` | How to authenticate to the API, and change the API token. |
 | 3. [Updates](#updates) | `POST /update` <br/> `GET /update` <br/> `GET /update/log` | Updating the system using encrypted software update packages, and viewing the status of an update. |
-| 4. [Network](#network) | `POST /settings` <br/> `GET /settings` | Viewing and changing network/application settings. |
-| 5. [Information](#information) | `GET /version` <br/> `GET /changelog` <br/> `GET /build` <br/> `GET /health` | Viewing system information, such as the version, changelog, build, and health. |
-| 6. [Support](#support) | `GET /logs` <br/> `GET /debug` | Retrieving log files and debug bundles to help troubleshoot various issues. |
-| 7. [TLS](#tls) | `POST /certs` <br/> `GET /certs` | Updating the system's TLS certificates to replace the default self-signed certificates. |
-| 8. [License](#license) | `POST /license` <br/> `GET /license` | Viewing and changing the system license. |
-| 9. [Administration](#administration) | `GET /reboot` | System administration, such as rebooting the system. |
-| 10. [Services](#services) | `GET /services` | Retrieving the status of system services. |
+| 4. [Support](#support) | `GET /logs` <br/> `GET /debug` | Retrieving log files and debug bundles to help troubleshoot various issues. |
+| 5. [Administration](#administration) | `GET /reboot` | System administration, such as rebooting the system. |
+| 6. [Services](#services) | `GET /services` | Retrieving the status of system services. |
+| 7. [Information](#information) | `GET /version` <br/> `GET /changelog` <br/> `GET /build` <br/> `GET /health `<br/> `GET /endpoints` | Viewing system information, such as the version, changelog, build, health, and endpoints. |
+
+### Optional API Endpoints
+
+These endpoints are optional and can only be enabled through `/usr/local/etc/jidoteki-admin-api.json`.
+
+**Example**
+
+```
+{
+    "endpoints": ["settings", "certs", "license", "storage", "backup" ],
+    "parameters": ["public", "private", "ca", "license", "action"]
+}
+```
+
+> **Note:** Disabled API endpoints will return `404 Not Found`
+
+| Section | API Endpoints <br> /api/v1/admin | Description |
+| :---- | :---- | :---- |
+| 8. [Network](#network) | `POST /settings` <br/> `GET /settings` | Viewing and changing network/application settings. |
+| 9. [TLS](#tls) | `POST /certs` <br/> `GET /certs` | Updating the system's TLS certificates to replace the default self-signed certificates. |
+| 10. [License](#license) | `POST /license` <br/> `GET /license` | Viewing and changing the system license. |
 | 11. [Storage](#storage) | `POST /storage` <br/> `GET /storage` | Viewing and changing persistent storage options. |
 | 12. [Backup](#backup) | `POST /backup` <br/> `GET /backup` <br/> `GET /backup/status` <br/> `GET /backup/log` | Generating a backup, and viewing its status and log. |
 
@@ -360,105 +382,15 @@ If the log file doesn't exist, `404 Not Found` will be returned.
 
 ----
 
-# <a name="network"></a>4. Network
+# <a name="support"></a>4. Support
 
-### Updating the network/application settings
+### Retrieving log files
 
-Updating the network/application settings is an asynchronous procedure. The API will return a response immediately while the settings are updated in the background. Only one update can run at any given time.
-
-Network settings can be set to `DHCP` or `STATIC` by uploading a _settings.json_ file.
+Retrieving compressed log files can help troubleshoot issues with the system. The log files generally don't contain sensitive information, therefore they are not encrypted. This will start a download of `logs.tar.gz`.
 
 **Since**
 
-`>= v1.0.0`
-
-**HTTP Method**
-
-```
-POST
-```
-
-**Endpoint**
-
-```
-/settings
-```
-
-**Parameters**
-
-* `settings` **(required)**: JSON settings file
-
-**Content-type**
-
-```
-multipart/form-data
-```
-
-**Example `STATIC` _settings.json_ file**
-
-```
-{
-    "network": {
-        "interface": "eth0",
-        "hostname": "test.host",
-        "ip_address": "192.168.1.100",
-        "netmask": "255.255.255.0",
-        "gateway": "192.168.1.1",
-        "dns1": "192.168.1.2",
-        "dns2": "192.168.1.3",
-        "ntpserver": "pool.ntp.org"
-    },
-    "app": {
-        "name": "testapp"
-    }
-}
-```
-
-**Example `DHCP` _settings.json_ file**
-
-Omit the `ip_address, netmask, gateway` fields, and the network settings will automatically switch to DHCP.
-
-```
-{
-    "network": {
-        "interface": "eth0",
-        "hostname": "test.host",
-        "ntpserver": "pool.ntp.org"
-    },
-    "app": {
-        "name": "testapp"
-    }
-}
-```
-
-**Example**
-
-```
-curl -X POST https://[hostname]:8443/api/v1/admin/settings?hash=[sha256hmachash] -F settings=@[settings.json]
-or
-curl -X POST https://[hostname]:8443/api/v1/admin/settings?token=[yourtoken] -F settings=@[settings.json]
-```
-
-**Success response**
-
-```
-HTTP/1.1 202 Accepted
-Location: /api/v1/admin/settings
-Content-Type: application/json
-{"Status":"202 Accepted","Location":"/api/v1/admin/settings"}
-```
-
-**Error response**
-
-If the network/application settings update API call fails, `400 Bad Request` will be returned.
-
-### Viewing the network/application settings
-
-This API endpoint will return the network/application settings. It can be polled repeatedly to monitor changes to the network settings.
-
-**Since**
-
-`>= v1.0.0`
+`>= v1.1.1`
 
 **HTTP Method**
 
@@ -469,15 +401,151 @@ GET
 **Endpoint**
 
 ```
-/settings
+/logs
 ```
 
 **Example**
 
 ```
-curl -X GET https://[hostname]:8443/api/v1/admin/settings?hash=[sha256hmachash]
+curl -X GET https://[hostname]:8443/api/v1/admin/logs?hash=[sha256hmachash]
 or
-curl -X GET https://[hostname]:8443/api/v1/admin/settings?token=[yourtoken]
+curl -X GET https://[hostname]:8443/api/v1/admin/logs?token=[yourtoken]
+```
+
+**Success response**
+
+```
+HTTP/1.1 200 OK
+Content-Type: application/octet-stream
+Filename: logs.tar.gz
+```
+
+**Error response**
+
+If the logs.tar.gz file doesn't exist, `404 Not Found` will be returned.
+
+If an error occurs when compressing the logs, `400 Bad Request` will be returned.
+
+### Retrieve a debug bundle
+
+Retrieving a debug bundle can help the system developpers troubleshoot issues with the system. The debug bundle can contain sensitive information, therefore it is encrypted. This will start a download of `debug-bundle.tar`.
+
+**Since**
+
+`>= v1.7.0`
+
+**HTTP Method**
+
+```
+GET
+```
+
+**Endpoint**
+
+```
+/debug
+```
+
+**Example**
+
+```
+curl -X GET https://[hostname]:8443/api/v1/admin/debug?hash=[sha256hmachash]
+or
+curl -X GET https://[hostname]:8443/api/v1/admin/debug?token=[yourtoken]
+```
+
+**Success response**
+
+```
+HTTP/1.1 200 OK
+Content-Type: application/octet-stream
+Filename: debug-bundle.tar
+```
+
+**Error response**
+
+If the debug-bundle.tar file doesn't exist, `404 Not Found` will be returned.
+
+If an error occurs when creating the debug bundle, `400 Bad Request` will be returned.
+
+[^ return to menu](#menu)
+
+----
+
+# <a name="administration"></a>5. Administration
+
+### Rebooting the system
+
+This API endpoint will reboot the system immediately after performing a system backup.
+
+The API will return a response immediately while the system reboots in the background.
+
+**Since**
+
+`>= v1.5.0`
+
+**HTTP Method**
+
+```
+GET
+```
+
+**Endpoint**
+
+```
+/reboot
+```
+
+**Example**
+
+```
+curl -X GET https://[hostname]:8443/api/v1/admin/reboot?hash=[sha256hmachash]
+or
+curl -X GET https://[hostname]:8443/api/v1/admin/reboot?token=[yourtoken]
+```
+
+**Success response**
+
+```
+HTTP/1.1 202 Accepted
+Content-Type: application/json
+{"Status": "202 Accepted"}
+```
+
+[^ return to menu](#menu)
+
+----
+
+# <a name="services"></a>6. Services
+
+### Retrieving service status
+
+This API endpoint will retrieve the status of various system services.
+
+The API will return a response immediately.
+
+**Since**
+
+`>= v1.12.0`
+
+**HTTP Method**
+
+```
+GET
+```
+
+**Endpoint**
+
+```
+/services
+```
+
+**Example**
+
+```
+curl -X GET https://[hostname]:8443/api/v1/admin/services?hash=[sha256hmachash]
+or
+curl -X GET https://[hostname]:8443/api/v1/admin/services?token=[yourtoken]
 ```
 
 **Success response**
@@ -486,19 +554,11 @@ curl -X GET https://[hostname]:8443/api/v1/admin/settings?token=[yourtoken]
 HTTP/1.1 200 OK
 Content-Type: application/json
 {
-    "network": {
-        "interface": "eth0",
-        "hostname": "test.host",
-        "ip_address": "192.168.1.100",
-        "netmask": "255.255.255.0",
-        "gateway": "192.168.1.1",
-        "dns1": "192.168.1.2",
-        "dns2": "192.168.1.3",
-        "ntpserver": "pool.ntp.org"
-    },
-    "app": {
-        "name": "testapp"
-    }
+    "services": [{
+        "openssh": "running"
+    }, {
+        "jidoteki-admin-api": "running"
+    }]
 }
 ```
 
@@ -506,7 +566,7 @@ Content-Type: application/json
 
 ----
 
-# <a name="information"></a>5. Information
+# <a name="information"></a>7. Information
 
 ### Viewing the system's version
 
@@ -695,19 +755,15 @@ Content-Type: application/json
 
 If the system's `health.json` file doesn't exist, `404 Not Found` will be returned.
 
-[^ return to menu](#menu)
+### Viewing the system's API endpoints
 
-----
+This API endpoint will return the list of available API endpoints (first-level only).
 
-# <a name="support"></a>6. Support
-
-### Retrieving log files
-
-Retrieving compressed log files can help troubleshoot issues with the system. The log files generally don't contain sensitive information, therefore they are not encrypted. This will start a download of `logs.tar.gz`.
+> **Note:** Optional API endpoints are configured in `/usr/local/etc/jidoteki-admin-api.json`
 
 **Since**
 
-`>= v1.1.1`
+`>= v1.18.0`
 
 **HTTP Method**
 
@@ -718,38 +774,147 @@ GET
 **Endpoint**
 
 ```
-/logs
+/endpoints
 ```
 
 **Example**
 
 ```
-curl -X GET https://[hostname]:8443/api/v1/admin/logs?hash=[sha256hmachash]
+curl -X GET https://[hostname]:8443/api/v1/admin/endpoints?hash=[sha256hmachash]
 or
-curl -X GET https://[hostname]:8443/api/v1/admin/logs?token=[yourtoken]
+curl -X GET https://[hostname]:8443/api/v1/admin/endpoints?token=[yourtoken]
 ```
 
 **Success response**
 
 ```
 HTTP/1.1 200 OK
-Content-Type: application/octet-stream
-Filename: logs.tar.gz
+Content-Type: application/json
+{
+    "endpoints": [
+        "/api/v1/admin/backup",
+        "/api/v1/admin/build",
+        "/api/v1/admin/certs",
+        "/api/v1/admin/changelog",
+        "/api/v1/admin/debug",
+        "/api/v1/admin/endpoints",
+        "/api/v1/admin/health",
+        "/api/v1/admin/logs",
+        "/api/v1/admin/reboot",
+        "/api/v1/admin/services",
+        "/api/v1/admin/settings",
+        "/api/v1/admin/setup",
+        "/api/v1/admin/storage",
+        "/api/v1/admin/update",
+        "/api/v1/admin/version",
+        "/docs"
+    ]
+}
+```
+
+[^ return to menu](#menu)
+
+----
+
+# <a name="network"></a>8. Network
+
+### Updating the network/application settings
+
+Updating the network/application settings is an asynchronous procedure. The API will return a response immediately while the settings are updated in the background. Only one update can run at any given time.
+
+Network settings can be set to `DHCP` or `STATIC` by uploading a _settings.json_ file.
+
+**Since**
+
+`>= v1.0.0`
+
+**HTTP Method**
+
+```
+POST
+```
+
+**Endpoint**
+
+```
+/settings
+```
+
+**Parameters**
+
+* `settings` **(required)**: JSON settings file
+
+**Content-type**
+
+```
+multipart/form-data
+```
+
+**Example `STATIC` _settings.json_ file**
+
+```
+{
+    "network": {
+        "interface": "eth0",
+        "hostname": "test.host",
+        "ip_address": "192.168.1.100",
+        "netmask": "255.255.255.0",
+        "gateway": "192.168.1.1",
+        "dns1": "192.168.1.2",
+        "dns2": "192.168.1.3",
+        "ntpserver": "pool.ntp.org"
+    },
+    "app": {
+        "name": "testapp"
+    }
+}
+```
+
+**Example `DHCP` _settings.json_ file**
+
+Omit the `ip_address, netmask, gateway` fields, and the network settings will automatically switch to DHCP.
+
+```
+{
+    "network": {
+        "interface": "eth0",
+        "hostname": "test.host",
+        "ntpserver": "pool.ntp.org"
+    },
+    "app": {
+        "name": "testapp"
+    }
+}
+```
+
+**Example**
+
+```
+curl -X POST https://[hostname]:8443/api/v1/admin/settings?hash=[sha256hmachash] -F settings=@[settings.json]
+or
+curl -X POST https://[hostname]:8443/api/v1/admin/settings?token=[yourtoken] -F settings=@[settings.json]
+```
+
+**Success response**
+
+```
+HTTP/1.1 202 Accepted
+Location: /api/v1/admin/settings
+Content-Type: application/json
+{"Status":"202 Accepted","Location":"/api/v1/admin/settings"}
 ```
 
 **Error response**
 
-If the logs.tar.gz file doesn't exist, `404 Not Found` will be returned.
+If the network/application settings update API call fails, `400 Bad Request` will be returned.
 
-If an error occurs when compressing the logs, `400 Bad Request` will be returned.
+### Viewing the network/application settings
 
-### Retrieve a debug bundle
-
-Retrieving a debug bundle can help the system developpers troubleshoot issues with the system. The debug bundle can contain sensitive information, therefore it is encrypted. This will start a download of `debug-bundle.tar`.
+This API endpoint will return the network/application settings. It can be polled repeatedly to monitor changes to the network settings.
 
 **Since**
 
-`>= v1.7.0`
+`>= v1.0.0`
 
 **HTTP Method**
 
@@ -760,36 +925,44 @@ GET
 **Endpoint**
 
 ```
-/debug
+/settings
 ```
 
 **Example**
 
 ```
-curl -X GET https://[hostname]:8443/api/v1/admin/debug?hash=[sha256hmachash]
+curl -X GET https://[hostname]:8443/api/v1/admin/settings?hash=[sha256hmachash]
 or
-curl -X GET https://[hostname]:8443/api/v1/admin/debug?token=[yourtoken]
+curl -X GET https://[hostname]:8443/api/v1/admin/settings?token=[yourtoken]
 ```
 
 **Success response**
 
 ```
 HTTP/1.1 200 OK
-Content-Type: application/octet-stream
-Filename: debug-bundle.tar
+Content-Type: application/json
+{
+    "network": {
+        "interface": "eth0",
+        "hostname": "test.host",
+        "ip_address": "192.168.1.100",
+        "netmask": "255.255.255.0",
+        "gateway": "192.168.1.1",
+        "dns1": "192.168.1.2",
+        "dns2": "192.168.1.3",
+        "ntpserver": "pool.ntp.org"
+    },
+    "app": {
+        "name": "testapp"
+    }
+}
 ```
-
-**Error response**
-
-If the debug-bundle.tar file doesn't exist, `404 Not Found` will be returned.
-
-If an error occurs when creating the debug bundle, `400 Bad Request` will be returned.
 
 [^ return to menu](#menu)
 
 ----
 
-# <a name="tls"></a>7. TLS
+# <a name="tls"></a>9. TLS
 
 ### Updating TLS certificates
 
@@ -926,9 +1099,7 @@ Content-Type: application/json
 
 ----
 
-# <a name="license"></a>8. License
-
-> **Note:** This feature is occasionally unimplemented.
+# <a name="license"></a>10. License
 
 ### Changing the system license
 
@@ -1038,100 +1209,6 @@ If the license file is invalid or doesn't exist, `404 Not Found` will be returne
 
 ----
 
-# <a name="administration"></a>9. Administration
-
-### Rebooting the system
-
-This API endpoint will reboot the system immediately after performing a system backup.
-
-The API will return a response immediately while the system reboots in the background.
-
-**Since**
-
-`>= v1.5.0`
-
-**HTTP Method**
-
-```
-GET
-```
-
-**Endpoint**
-
-```
-/reboot
-```
-
-**Example**
-
-```
-curl -X GET https://[hostname]:8443/api/v1/admin/reboot?hash=[sha256hmachash]
-or
-curl -X GET https://[hostname]:8443/api/v1/admin/reboot?token=[yourtoken]
-```
-
-**Success response**
-
-```
-HTTP/1.1 202 Accepted
-Content-Type: application/json
-{"Status": "202 Accepted"}
-```
-
-[^ return to menu](#menu)
-
-----
-
-# <a name="services"></a>10. Services
-
-### Retrieving service status
-
-This API endpoint will retrieve the status of various system services.
-
-The API will return a response immediately.
-
-**Since**
-
-`>= v1.12.0`
-
-**HTTP Method**
-
-```
-GET
-```
-
-**Endpoint**
-
-```
-/services
-```
-
-**Example**
-
-```
-curl -X GET https://[hostname]:8443/api/v1/admin/services?hash=[sha256hmachash]
-or
-curl -X GET https://[hostname]:8443/api/v1/admin/services?token=[yourtoken]
-```
-
-**Success response**
-
-```
-HTTP/1.1 200 OK
-Content-Type: application/json
-{
-    "services": [{
-        "openssh": "running"
-    }, {
-        "jidoteki-admin-api": "running"
-    }]
-}
-```
-
-[^ return to menu](#menu)
-
-----
-
 # <a name="storage"></a>11. Storage
 
 ### Changing persistent storage options
@@ -1140,7 +1217,7 @@ Changing the storage options is an asynchronous procedure. The API will return a
 
 Storage type can be set to `local`, `nfs`, `aoe`, `iscsi`, `nbd` by uploading a _settings.json_ file.
 
-**Note:** Storage types are only available based on options found in `/usr/local/etc/storage-options.json`.
+> **Note:** Storage types are only available based on options found in `/usr/local/etc/storage-options.json`.
 
 Settings are only applied after a reboot.
 
@@ -1480,4 +1557,4 @@ Created file: /opt/jidoteki/admin/home/sftp/uploads/backup.tar.gz - size: 128.0K
 
 ----
 
-**Powered by [Jidoteki](https://jidoteki.com) - [Copyright notices](/docs/NOTICE) - `v1.18.0`**
+**Powered by [Jidoteki.com](#) - [Copyright notices](/docs/NOTICE.TXT) - `v1.18.0`**

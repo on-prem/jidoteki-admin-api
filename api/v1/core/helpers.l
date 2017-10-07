@@ -79,6 +79,8 @@
     (pipe (printJson Value) (line T)) )
 
   (de decode (Value Type)
-    (if Type
-      (in Value (readJson))
-      (parseJson Value) ]
+    (let Json
+      (if Type
+          (in Value (till NIL T))
+          Value )
+      (parseJson Json T) ]

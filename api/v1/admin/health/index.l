@@ -9,7 +9,7 @@
 
 [de health-get ()
   (if (health-exists)
-      (response-json (pack *Admin_path "etc/health.json") 200 T)
+      (response-json-nocache (pack *Admin_path "etc/health.json") 200 T)
       (http-msg 404) ]
 
 (de health-request ()
