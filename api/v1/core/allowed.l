@@ -24,12 +24,11 @@
 
 (allow "docs" T)
 
-(setq *Api_config (decode "/usr/local/etc/jidoteki-admin-api.json" T))
+(when (info "/usr/local/etc/jidoteki-admin-api.json")
+      (setq *Api_config (decode "/usr/local/etc/jidoteki-admin-api.json" T)) )
 
 # optional api endpoints
 (mapcar '((N) (allow (pack *API_PATH "/admin/" N) T)) (cddr (assoc "endpoints" *Api_config)))
 
 # optional api parameters
 (mapcar allow (cddr (assoc "parameters" *Api_config)))
-
-(println (cdr *Allow))
