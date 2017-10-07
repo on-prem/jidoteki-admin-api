@@ -1032,7 +1032,7 @@
         });
       }
     });
-    return $('#jido-button-backup-stop').click(function() {
+    $('#jido-button-backup-stop').click(function() {
       var formData;
       formData = new FormData();
       formData.append('action', "STOP");
@@ -1055,6 +1055,13 @@
           }
         });
       }
+    });
+    return $('#jido-data-backup-file').click(function() {
+      return fetchFile("/api/v1/admin/backup/download", function(err) {
+        if (!err) {
+
+        }
+      });
     });
   };
 

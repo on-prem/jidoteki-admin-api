@@ -6,7 +6,7 @@
 
 [de download-get ()
   (if (info (pack *Upload_path "backup.tar.gz"))
-      (httpEcho (pack *Upload_path "backup.tar.gz") "application/octet-stream" 1 T)
+      (httpEcho (pack *Upload_path "backup.tar.gz") "application/gzip" 1 T)
       (http-msg 404) ]
 
 (de download-request ()

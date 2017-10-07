@@ -543,6 +543,11 @@ backupButtonListener = () ->
           successUpload "backup"
           loadBackup()
 
+  $('#jido-data-backup-file').click ->
+    fetchFile "/api/v1/admin/backup/download", (err) ->
+      unless err
+        return
+
 navbarListener = ->
   reloadHealth()
 
