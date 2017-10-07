@@ -2,7 +2,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (c) 2015-2016 Alexander Williams, Unscramble <license@unscramble.jp>
+# Copyright (c) 2015-2017 Alexander Williams, Unscramble <license@unscramble.jp>
 
 'use strict'
 apiServer = if window.location.origin?
@@ -125,9 +125,12 @@ failedUpload = (msg, message) ->
 
 getStatus = (msg, callback) ->
   fetchData "/api/v1/#{apiType}/#{msg}", (err, result) ->
-    unless err
+    if err
+      callback new Error(err)
+    else
       $(".jido-data-#{msg}-status").html result.status
-      $(".jido-data-#{msg}-log").html(if typeof result.log is 'object' then "No log file found" else result.log.replace(/\\n/g,'<br/>'))
+      if result.log
+        $(".jido-data-#{msg}-log").html(if typeof result.log is 'object' then "No log file found" else result.log.replace(/\\n/g,'<br/>'))
 
       label = switch result.status
         when "failed"     then "label-danger"
@@ -156,21 +159,22 @@ getStatus = (msg, callback) ->
       $(".jido-data-#{msg}-status").removeClass("label-default")
       $(".jido-data-#{msg}-status").addClass(label)
 
-      callback result.status
+      callback result
 
 pollStatus = (msg) ->
   $(".#{msg}-form").hide()
   $(".#{msg}-alert").show()
 
   interval = setInterval () ->
-    getStatus msg, (status) ->
-      if status is "failed"
+    getStatus msg, (result) ->
+      if result.status is "failed"
         clearInterval interval
         failedUpload msg, 'failed'
-      else if status is "success"
+      else if result.status is "success"
         clearInterval interval
         successUpload msg
-      else if status is "running"
+        loadBackup() if msg is "backup"
+      else if result.status is "running"
         runningUpload msg
   , 1000
 

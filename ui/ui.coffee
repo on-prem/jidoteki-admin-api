@@ -69,13 +69,11 @@ loadUpdateCerts = (msg) ->
     unless err
       $('.jido-data-platform-version').html result.version
 
-  getStatus msg, (status) ->
-    if status is "running"
+  getStatus msg, (result) ->
+    if result.status is "running"
       pollStatus msg
 
 loadNetwork = ->
-  currentEndpoint = "/api/v1/admin/settings"
-
   $('#jido-page-login').hide()
   $('.jido-page-content').hide()
   $('#jido-page-navbar .navbar-nav li').removeClass('active')
@@ -177,6 +175,40 @@ loadMonitor = ->
       $('.jido-data-platform-version').html result.version
 
       monitorClick '1h'
+
+loadBackup = ->
+  $('#jido-page-login').hide()
+  $('.jido-page-content').hide()
+  $('#jido-page-navbar .navbar-nav li').removeClass('active')
+  $('#jido-button-backup').addClass('active')
+  $('#jido-page-navbar').show()
+  $('#jido-page-backup').show()
+
+  fetchData "/api/v1/admin/version", (err, result) ->
+    unless err
+      $('.jido-data-platform-version').html result.version
+
+  getStatus "backup", (result) ->
+    if result.status is "running"
+      pollStatus "backup"
+    else if result.status is "success"
+      $('#backupInfo').show()
+      $('#jido-button-backup-stop').show()
+      $('#jido-page-backup pre.backup-status-filesize').html result.filesize
+      $('#jido-page-backup pre.backup-status-sha256').html result.sha256
+    else
+      $('#backupInfo').hide()
+      $('#jido-button-backup-stop').hide()
+
+  # fetchData "/api/v1/admin/backup", (err, result) ->
+  #   if err
+  #     $('#backupInfo').hide()
+  #     $('#jido-button-backup-stop').hide()
+  #   else
+  #     $('#backupInfo').show()
+  #     $('#jido-button-backup-stop').show()
+  #     $('#jido-page-backup pre.backup-status-filesize').html result.filesize
+  #     $('#jido-page-backup pre.backup-status-sha256').html result.sha256
 
 ### generic functions ###
 monitorClick = (result) ->
@@ -468,6 +500,49 @@ storageSelectListener = () ->
     $('.storage-form-options').hide()
     $("#storage-#{option}").show()
 
+backupButtonListener = () ->
+  $('#jido-button-backup-start').click ->
+    formData = new FormData()
+    formData.append 'action', "START"
+
+    if formData
+      putFile 'backup', '/api/v1/admin/backup', formData, (err, result) ->
+        if err
+          $('.jido-data-backup-status').html 'failed'
+          $('.jido-data-backup-status').removeClass 'label-danger'
+          $('.jido-data-backup-status').removeClass 'label-success'
+          $('.jido-data-backup-status').removeClass 'label-default'
+          $('.jido-data-backup-status').addClass 'label-danger'
+        else
+          $('.jido-data-backup-status').removeClass 'label-danger'
+          $('.jido-data-backup-status').removeClass 'label-success'
+          $('.jido-data-backup-status').removeClass 'label-default'
+          $('.jido-data-backup-status').addClass 'label-success'
+
+          loadBackup()
+
+  $('#jido-button-backup-stop').click ->
+    formData = new FormData()
+    formData.append 'action', "STOP"
+
+    if formData
+      putFile 'backup', '/api/v1/admin/backup', formData, (err, result) ->
+        if err
+          $('.jido-data-backup-status').html 'failed'
+          $('.jido-data-backup-status').removeClass 'label-danger'
+          $('.jido-data-backup-status').removeClass 'label-success'
+          $('.jido-data-backup-status').removeClass 'label-default'
+          $('.jido-data-backup-status').addClass 'label-danger'
+        else
+          $('.jido-data-backup-status').html 'backup canceled'
+          $('.jido-data-backup-status').removeClass 'label-danger'
+          $('.jido-data-backup-status').removeClass 'label-success'
+          $('.jido-data-backup-status').removeClass 'label-default'
+          $('.jido-data-backup-status').addClass 'label-success'
+
+          successUpload "backup"
+          loadBackup()
+
 navbarListener = ->
   reloadHealth()
 
@@ -490,6 +565,7 @@ navbarListener = ->
       when "jido-button-token"    then loadToken()
       when "jido-button-support"  then loadSupport()
       when "jido-button-monitor"  then loadMonitor()
+      when "jido-button-backup"   then loadBackup()
 
     reloadHealth()
 
@@ -506,6 +582,7 @@ restartButtonListener()
 monitorButtonListener()
 storageButtonListener()
 storageSelectListener()
+backupButtonListener()
 navbarListener()
 
 authenticate (err) ->

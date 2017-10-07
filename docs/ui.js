@@ -8,7 +8,7 @@
 
 (function() {
   'use strict';
-  var apiServer, apiType, authenticate, capitalize, certsButtonListener, clearToken, debugButtonListener, drawGraphs, failedUpload, fetchData, fetchFile, getHmac, getSha256, getStatus, getToken, loadHome, loadLogin, loadMonitor, loadNetwork, loadSetup, loadStorage, loadSupport, loadToken, loadUpdateCerts, loginButtonListener, logoutButtonListener, logsButtonListener, monitorButtonListener, monitorClick, navbarListener, networkButtonListener, newTokenButtonListener, pollStatus, putFile, putToken, redirectUrl, reloadHealth, restartButtonListener, runningUpload, storageButtonListener, storageSelectListener, successUpload, tokenButtonListener, updateButtonListener, updateCertsButtonListener,
+  var apiEndpoints, apiServer, apiType, authenticate, backupButtonListener, capitalize, certsButtonListener, clearToken, debugButtonListener, drawGraphs, failedUpload, fetchData, fetchFile, getHmac, getSha256, getStatus, getToken, loadBackup, loadHome, loadLogin, loadMonitor, loadNetwork, loadSetup, loadStorage, loadSupport, loadToken, loadUpdateCerts, loginButtonListener, logoutButtonListener, logsButtonListener, monitorButtonListener, monitorClick, navbarListener, networkButtonListener, newTokenButtonListener, pollStatus, putFile, putToken, redirectUrl, reloadHealth, restartButtonListener, runningUpload, storageButtonListener, storageSelectListener, successUpload, tokenButtonListener, updateButtonListener, updateCertsButtonListener,
     indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
   apiServer = window.location.origin != null ? window.location.origin : window.location.protocol + "//" + window.location.hostname + (window.location.port != null ? ':' + window.location.port : '');
@@ -147,9 +147,13 @@
   getStatus = function(msg, callback) {
     return fetchData("/api/v1/" + apiType + "/" + msg, function(err, result) {
       var label;
-      if (!err) {
+      if (err) {
+        return callback(new Error(err));
+      } else {
         $(".jido-data-" + msg + "-status").html(result.status);
-        $(".jido-data-" + msg + "-log").html(typeof result.log === 'object' ? "No log file found" : result.log.replace(/\\n/g, '<br/>'));
+        if (result.log) {
+          $(".jido-data-" + msg + "-log").html(typeof result.log === 'object' ? "No log file found" : result.log.replace(/\\n/g, '<br/>'));
+        }
         label = (function() {
           switch (result.status) {
             case "failed":
@@ -181,7 +185,7 @@
         $(".jido-data-" + msg + "-status").removeClass("label-success");
         $(".jido-data-" + msg + "-status").removeClass("label-default");
         $(".jido-data-" + msg + "-status").addClass(label);
-        return callback(result.status);
+        return callback(result);
       }
     });
   };
@@ -191,14 +195,17 @@
     $("." + msg + "-form").hide();
     $("." + msg + "-alert").show();
     return interval = setInterval(function() {
-      return getStatus(msg, function(status) {
-        if (status === "failed") {
+      return getStatus(msg, function(result) {
+        if (result.status === "failed") {
           clearInterval(interval);
           return failedUpload(msg, 'failed');
-        } else if (status === "success") {
+        } else if (result.status === "success") {
           clearInterval(interval);
-          return successUpload(msg);
-        } else if (status === "running") {
+          successUpload(msg);
+          if (msg === "backup") {
+            return loadBackup();
+          }
+        } else if (result.status === "running") {
           return runningUpload(msg);
         }
       });
@@ -391,6 +398,8 @@
 
   apiType = 'admin';
 
+  apiEndpoints = ['settings', 'certs', 'license', 'storage', 'backup'];
+
 
   /* content functions */
 
@@ -475,8 +484,8 @@
         return $('.jido-data-platform-version').html(result.version);
       }
     });
-    return getStatus(msg, function(status) {
-      if (status === "running") {
+    return getStatus(msg, function(result) {
+      if (result.status === "running") {
         return pollStatus(msg);
       }
     });
@@ -486,7 +495,7 @@
     $('#jido-page-login').hide();
     $('.jido-page-content').hide();
     $('#jido-page-navbar .navbar-nav li').removeClass('active');
-    $('#jido-button-network').addClass('active');
+    $('#jido-button-settings').addClass('active');
     $('#jido-page-navbar').show();
     $('#jido-page-network').show();
     fetchData("/api/v1/admin/version", function(err, result) {
@@ -618,6 +627,33 @@
       if (!err) {
         $('.jido-data-platform-version').html(result.version);
         return monitorClick('1h');
+      }
+    });
+  };
+
+  loadBackup = function() {
+    $('#jido-page-login').hide();
+    $('.jido-page-content').hide();
+    $('#jido-page-navbar .navbar-nav li').removeClass('active');
+    $('#jido-button-backup').addClass('active');
+    $('#jido-page-navbar').show();
+    $('#jido-page-backup').show();
+    fetchData("/api/v1/admin/version", function(err, result) {
+      if (!err) {
+        return $('.jido-data-platform-version').html(result.version);
+      }
+    });
+    return getStatus("backup", function(result) {
+      if (result.status === "running") {
+        return pollStatus("backup");
+      } else if (result.status === "success") {
+        $('#backupInfo').show();
+        $('#jido-button-backup-stop').show();
+        $('#jido-page-backup pre.backup-status-filesize').html(result.filesize);
+        return $('#jido-page-backup pre.backup-status-sha256').html(result.sha256);
+      } else {
+        $('#backupInfo').hide();
+        return $('#jido-button-backup-stop').hide();
       }
     });
   };
@@ -973,8 +1009,72 @@
     });
   };
 
+  backupButtonListener = function() {
+    $('#jido-button-backup-start').click(function() {
+      var formData;
+      formData = new FormData();
+      formData.append('action', "START");
+      if (formData) {
+        return putFile('backup', '/api/v1/admin/backup', formData, function(err, result) {
+          if (err) {
+            $('.jido-data-backup-status').html('failed');
+            $('.jido-data-backup-status').removeClass('label-danger');
+            $('.jido-data-backup-status').removeClass('label-success');
+            $('.jido-data-backup-status').removeClass('label-default');
+            return $('.jido-data-backup-status').addClass('label-danger');
+          } else {
+            $('.jido-data-backup-status').removeClass('label-danger');
+            $('.jido-data-backup-status').removeClass('label-success');
+            $('.jido-data-backup-status').removeClass('label-default');
+            $('.jido-data-backup-status').addClass('label-success');
+            return loadBackup();
+          }
+        });
+      }
+    });
+    return $('#jido-button-backup-stop').click(function() {
+      var formData;
+      formData = new FormData();
+      formData.append('action', "STOP");
+      if (formData) {
+        return putFile('backup', '/api/v1/admin/backup', formData, function(err, result) {
+          if (err) {
+            $('.jido-data-backup-status').html('failed');
+            $('.jido-data-backup-status').removeClass('label-danger');
+            $('.jido-data-backup-status').removeClass('label-success');
+            $('.jido-data-backup-status').removeClass('label-default');
+            return $('.jido-data-backup-status').addClass('label-danger');
+          } else {
+            $('.jido-data-backup-status').html('backup canceled');
+            $('.jido-data-backup-status').removeClass('label-danger');
+            $('.jido-data-backup-status').removeClass('label-success');
+            $('.jido-data-backup-status').removeClass('label-default');
+            $('.jido-data-backup-status').addClass('label-success');
+            successUpload("backup");
+            return loadBackup();
+          }
+        });
+      }
+    });
+  };
+
   navbarListener = function() {
     reloadHealth();
+    fetchData("/api/v1/admin/endpoints", function(err, result) {
+      var i, len, ref, results, value;
+      if (!err) {
+        results = [];
+        for (i = 0, len = apiEndpoints.length; i < len; i++) {
+          value = apiEndpoints[i];
+          if (ref = "/api/v1/admin/" + value, indexOf.call(result.endpoints, ref) >= 0) {
+            results.push($("#jido-button-" + value).show());
+          } else {
+            results.push(void 0);
+          }
+        }
+        return results;
+      }
+    });
     return $('#jido-page-navbar .navbar-nav li a').click(function() {
       var clicked;
       clicked = $(this).parent().attr('id');
@@ -985,7 +1085,7 @@
         case "jido-button-update":
           loadUpdateCerts('update');
           break;
-        case "jido-button-network":
+        case "jido-button-settings":
           loadNetwork();
           break;
         case "jido-button-certs":
@@ -1005,6 +1105,9 @@
           break;
         case "jido-button-monitor":
           loadMonitor();
+          break;
+        case "jido-button-backup":
+          loadBackup();
       }
       return reloadHealth();
     });
@@ -1032,6 +1135,8 @@
   storageButtonListener();
 
   storageSelectListener();
+
+  backupButtonListener();
 
   navbarListener();
 
