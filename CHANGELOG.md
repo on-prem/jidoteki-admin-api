@@ -3,9 +3,13 @@
 ## 1.18.0 (TBD)
 
   * Update Fontello fonts
+  * Minor update to the look and feel of main sections
   * Add Jidoteki footer to bottom of Dashboard UI
   * Add audit-logging to authentication and new API calls
-  * Add '/backup' endpoints
+  * Add '/backup' endpoints to create/delete/restore a backup
+  * Add '/endpoints' endpoint to list all API endpoints
+  * Ensure '/health' endpoint is not cached
+  * Add the ability to disable "optional" API endpoints (ex: '/backup')
 
 ## 1.17.0 (2017-10-02)
 
