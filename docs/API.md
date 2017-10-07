@@ -52,7 +52,7 @@ These endpoints are optional and can only be enabled through `/usr/local/etc/jid
 | 9. [TLS](#tls) | `POST /certs` <br/> `GET /certs` | Updating the system's TLS certificates to replace the default self-signed certificates. |
 | 10. [License](#license) | `POST /license` <br/> `GET /license` | Viewing and changing the system license. |
 | 11. [Storage](#storage) | `POST /storage` <br/> `GET /storage` | Viewing and changing persistent storage options. |
-| 12. [Backup](#backup) | `POST /backup` <br/> `GET /backup` <br/> `GET /backup/status` <br/> `GET /backup/log` | Generating a backup, and viewing its status and log. |
+| 12. [Backup](#backup) | `POST /backup` <br/> `GET /backup` <br/> `GET /backup/download` <br/> `GET /backup/log` | Generating a backup, and viewing its status and log. |
 
 # <a name="setup"></a>1. Setup
 
@@ -1423,46 +1423,14 @@ curl -X POST https://[hostname]:8443/api/v1/admin/backup?token=[yourtoken] -F ac
 
 ```
 HTTP/1.1 202 Accepted
-Location: /api/v1/admin/backup/status
+Location: /api/v1/admin/backup
 Content-Type: application/json
-{"Status":"202 Accepted","Location":"/api/v1/admin/backup/status"}
+{"Status":"202 Accepted","Location":"/api/v1/admin/backup"}
 ```
 
 **Error response**
 
 `400 Bad Request` if the backup API call fails
-
-### Retrieving a backup
-
-This will start a download of `backup.tar.gz`.
-
-**Since**
-
-`>= v1.18.0`
-
-**HTTP Method**
-
-```
-GET
-```
-
-**Endpoint**
-
-```
-/backup
-```
-
-**Example**
-
-```
-HTTP/1.1 200 OK
-Content-Type: application/octet-stream
-Filename: backup.tar.gz
-```
-
-**Error response**
-
-`404 Not Found` if the `backup.tar.gz` file doesn't exist
 
 ### Viewing the backup status
 
@@ -1481,7 +1449,7 @@ GET
 **Endpoint**
 
 ```
-/backup/status
+/backup
 ```
 
 **Example**
@@ -1515,6 +1483,38 @@ Content-Type: application/json
 **Error response**
 
 `404 Not Found` if the backup status file doesn't exist
+
+### Retrieving a backup
+
+This will start a download of `backup.tar.gz`.
+
+**Since**
+
+`>= v1.18.0`
+
+**HTTP Method**
+
+```
+GET
+```
+
+**Endpoint**
+
+```
+/backup/download
+```
+
+**Example**
+
+```
+HTTP/1.1 200 OK
+Content-Type: application/octet-stream
+Filename: backup.tar.gz
+```
+
+**Error response**
+
+`404 Not Found` if the `backup.tar.gz` file doesn't exist
 
 ### Viewing the backup log
 

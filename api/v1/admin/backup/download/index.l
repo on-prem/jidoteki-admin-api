@@ -4,16 +4,13 @@
 #
 # Copyright (c) 2015-2017 Alexander Williams, Unscramble <license@unscramble.jp>
 
-(de status-exists ()
-  (info (pack *Upload_path "backup.json")) )
-
-[de status-get ()
-  (if (status-exists)
-      (response-json-nocache (pack *Upload_path "backup.json") 200 T)
+[de download-get ()
+  (if (info (pack *Upload_path "backup.tar.gz"))
+      (httpEcho (pack *Upload_path "backup.tar.gz") "application/octet-stream" 1 T)
       (http-msg 404) ]
 
-(de status-request ()
+(de download-request ()
   (check-auth-request "GET")
-  (status-get) )
+  (download-get) )
 
-(status-request)
+(download-request)
