@@ -84,3 +84,13 @@
           (in Value (till NIL T))
           Value )
       (parseJson Json T) ]
+
+# API endpoint helpers
+(de log-plaintext (Filename)
+  (use Log Info Size Date Body
+    (setq Log  (pack *Admin_path "log/" Filename))
+    (if (info Log)
+        (json-file Log)
+        (http-msg 404) )
+
+    (response-generic 200 Size Date Body '(("Content-Type" . "text/plain") ]
