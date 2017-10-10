@@ -27,16 +27,12 @@
 (de api-request-get ()
   (response-json (encode (update-process))) )
 
-(de update-store (File)
+(de api-request-file (File)
   (call 'mv "-f" File (pack *Upload_path "software_package-zzz.enc"))
   (response-async "update") )
 
 [de api-request-post ()
-  (let (Data (get 'update 'http)
-        File (tmp Data) )
-    (if (info File)
-        (update-store File)
-        (http-msg 400) ]
+  (http-file 'update) ]
 
 (check-auth)
 

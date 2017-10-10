@@ -4,12 +4,7 @@
 #
 # Copyright (c) 2015-2017 Alexander Williams, Unscramble <license@unscramble.jp>
 
-(de build-exists ()
-  (info "/usr/local/etc/build.json") )
-
 [de api-request-get ()
-  (if (build-exists)
-      (response-json-nocache "/usr/local/etc/build.json" 200 T)
-      (http-msg 404) ]
+  (response-json-nocache "/usr/local/etc/build.json" 200 T) ]
 
 (check-auth "GET")

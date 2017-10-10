@@ -15,17 +15,13 @@
 
   (response-async "storage") ]
 
-[de storage-read (File)
+[de api-request-file (File)
   (if (decode File T)
       (storage-save @)
       (http-msg 400) ]
 
 [de api-request-post ()
-  (let (Data (get 'settings 'http)
-        File (tmp Data) )
-    (if (info File)
-        (storage-read File)
-        (http-msg 400) ]
+  (http-file 'settings) ]
 
 [de storage-options ()
   (let (Options   (if (decode "/usr/local/etc/storage-options.json" T) @ (list (cons "options" T '("local"))))

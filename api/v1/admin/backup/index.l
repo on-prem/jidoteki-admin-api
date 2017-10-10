@@ -4,13 +4,8 @@
 #
 # Copyright (c) 2015-2017 Alexander Williams, Unscramble <license@unscramble.jp>
 
-(de backup-exists ()
-  (info (pack *Upload_path "backup.json")) )
-
 [de api-request-get ()
-  (if (backup-exists)
-      (response-json-nocache (pack *Upload_path "backup.json") 200 T)
-      (http-msg 404) ]
+  (response-json-nocache (pack *Upload_path "backup.json") 200 T) ]
 
 [de backup-post-action (Action)
   (if (or (= 'START Action) (= 'STOP Action))

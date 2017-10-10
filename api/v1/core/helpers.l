@@ -27,10 +27,12 @@
       (response-json [encode (list (cons "Status" (pack Code " " (http-code Code)] Code) ) )
 
 [de json-file (Json)
-  (setq Info (info Json)
+  (if (info Json)
+      (setq Info @
         Size (car Info)
         Date '(httpDate (cadr Info) (cddr Info))
-        Body (pack (in Json (till (eof) ]
+        Body (pack (in Json (till (eof)))) )
+      (http-msg 404) ]
 
 [de json-string (Json)
   (setq Size (length Json)
@@ -43,9 +45,9 @@
     (if Flg
         (json-file Json)
         (json-string Json) )
-    (ifn  Size
-          (http-msg 404)
-          (response-generic Code Size Date Body Headers) ]
+
+    # Size will be NIL if the file in (json-file) doesn't exist
+    (when Size (response-generic Code Size Date Body Headers) ]
 
 [de response-json (Json Code Flg)
   (response-json-generic Json Code Flg '(("Content-Type" . "application/json") ]
@@ -99,11 +101,12 @@
       (parseJson Json T) ]
 
 # API endpoint helpers
-(de log-plaintext (Filename)
-  (use Log Info Size Date Body
-    (setq Log  (pack *Admin_path "log/" Filename))
-    (if (info Log)
-        (json-file Log)
-        (http-msg 404) )
+[de log-plaintext (Filename)
+  (response-json-generic (pack *Admin_path "log/" Filename) 200 T '(("Content-Type" . "text/plain") ("Cache-Control" . "no-cache") ]
 
-    (response-generic 200 Size Date Body '(("Content-Type" . "text/plain") ("Cache-Control" . "no-cache") ]
+[de http-file (Type)
+  (let (Data (get Type 'http)
+        File (tmp Data) )
+    (if (info File)
+        (api-request-file File)
+        (http-msg 400) ]

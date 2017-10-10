@@ -12,7 +12,7 @@
       (response-json @)
       (http-msg 404) ) )
 
-(de license-update (File)
+(de api-request-file (File)
   (call 'mv "-f" File (pack *Upload_path "license.asc"))
   (sys "SSH_ORIGINAL_COMMAND" "license")
   (if (call (pack *Admin_path "bin/wrapper.sh"))
@@ -20,11 +20,7 @@
       (http-msg 400) ]
 
 [de api-request-post ()
-  (let (Data  (get 'license 'http)
-        File  (tmp Data) )
-    (if (and Data (info File))
-        (license-update File)
-        (http-msg 400) ]
+  (http-file 'license) ]
 
 (check-auth)
 

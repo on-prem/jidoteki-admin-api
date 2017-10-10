@@ -54,17 +54,13 @@
           (settings-static Interface Ip_address Netmask Gateway Dns1 Dns2 Hostname Ntpserver)
           (settings-dhcp Interface Hostname Ntpserver) ]
 
-[de settings-parse (File)
+[de api-request-file (File)
   (if (decode File T)
       (settings-store @)
       (http-msg 400) ]
 
 [de api-request-post ()
-  (let (Data (get 'settings 'http)
-        File (tmp Data) )
-    (if (info File)
-        (settings-parse File)
-        (http-msg 400) ]
+  (http-file 'settings) ]
 
 (de api-request-get ()
   (response-json (encode (settings-fetch))) )
