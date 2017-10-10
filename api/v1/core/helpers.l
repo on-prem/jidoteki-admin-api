@@ -53,6 +53,19 @@
 [de response-json-nocache (Json Code Flg)
   (response-json-generic Json Code Flg '(("Content-Type" . "application/json") ("Cache-Control" . "no-cache") ]
 
+(de response-async (Endpoint Action)
+  (let Location
+    (cons "Location" (pack "/api/v1/admin/" Endpoint))
+
+    (unless (fork)
+      (sys "SSH_ORIGINAL_COMMAND" Endpoint)
+      (exec 'nohup (pack *Admin_path "bin/wrapper.sh") Action) )
+
+    (use Size Date Body
+      (json-string [encode (list (cons "Status" (pack 202 " " (http-code 202))) Location])
+      (response-generic 202 Size Date Body (list Location '("Content-Type" . "application/json")))
+      (audit-log "web" "admin" (pack Endpoint ".post") Action) ]
+
 [de response-generic (Code Size Date Body Headers)
   (prinl "HTTP/1.1 " Code " " (http-code Code) "^M")
   (prinl "Server: PicoLisp^M")
@@ -81,7 +94,7 @@
   (de decode (Value Type)
     (let Json
       (if Type
-          (in Value (till NIL T))
+          (when (info Value) (in Value (till NIL T)))
           Value )
       (parseJson Json T) ]
 
@@ -93,4 +106,4 @@
         (json-file Log)
         (http-msg 404) )
 
-    (response-generic 200 Size Date Body '(("Content-Type" . "text/plain") ]
+    (response-generic 200 Size Date Body '(("Content-Type" . "text/plain") ("Cache-Control" . "no-cache") ]

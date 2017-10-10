@@ -12,20 +12,9 @@
       (response-json-nocache (pack *Upload_path "backup.json") 200 T)
       (http-msg 404) ]
 
-[de backup-action (Action)
-  (unless (fork)
-    (sys "SSH_ORIGINAL_COMMAND" "backup")
-    # use (exec) because we DONT want the result
-    (exec 'nohup (pack *Admin_path "bin/wrapper.sh") Action) )
-
-  (use Size Date Body
-    (json-string [encode (list (cons "Status" (pack 202 " " (http-code 202))) (cons "Location" "/api/v1/admin/backup")])
-    (response-generic 202 Size Date Body '(("Location" . "/api/v1/admin/backup") ("Content-Type" . "application/json")))
-    (audit-log "web" "admin" "backup.action" Action) ]
-
 [de backup-post-action (Action)
   (if (or (= 'START Action) (= 'STOP Action))
-      (backup-action Action)
+      (response-async "backup" Action)
       (http-msg 400 "Missing or invalid option: action. Expected value 'START' or 'STOP'") ]
 
 [de api-request-post ()

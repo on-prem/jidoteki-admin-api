@@ -2,12 +2,12 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (c) 2015-2016 Alexander Williams, Unscramble <license@unscramble.jp>
+# Copyright (c) 2015-2017 Alexander Williams, Unscramble <license@unscramble.jp>
 
 [de license-process ()
   (in (list (pack *Admin_path "bin/license.sh")) (pack (till T) ]
 
-(de license-validate ()
+(de api-request-get ()
   (if (license-process)
       (response-json @)
       (http-msg 404) ) )
@@ -19,21 +19,16 @@
       (license-validate)
       (http-msg 400) ]
 
-[de license-post ()
+[de api-request-post ()
   (let (Data  (get 'license 'http)
         File  (tmp Data) )
     (if (and Data (info File))
         (license-update File)
         (http-msg 400) ]
 
-(de license-get ()
-  (license-validate) )
+(check-auth)
 
-(de license-request ()
-  (if (validate-auth)
-      (if *Post
-          (license-post)
-          (license-get) )
-      (http-msg 403) ) )
+(if *Post
+    (api-request-post)
+    (api-request-get) ]
 
-(license-request)

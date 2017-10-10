@@ -4,15 +4,6 @@
 #
 # Copyright (c) 2017 Alexander Williams, Unscramble <license@unscramble.jp>
 
-[de storage-update ()
-  (unless (fork)
-    (sys "SSH_ORIGINAL_COMMAND" (pack "storage"))
-    (call (pack *Admin_path "bin/wrapper.sh")) )
-
-  (use Size Date Body
-    (json-string [encode (list (cons "Status" (pack 202 " " (http-code 202))) (cons "Location" "/api/v1/admin/storage")])
-    (response-generic 202 Size Date Body '(("Location" . "/api/v1/admin/storage") ("Content-Type" . "application/json")) ]
-
 [de storage-save (Settings)
   (out (pack *Upload_path "storage.json")
     (prinl (encode Settings)) )
@@ -22,14 +13,14 @@
             (prinl (pack (car N) "=\"" (cdr N) "\"")))
             (cdr (assoc "storage" Settings)) ) )
 
-  (storage-update) ]
+  (response-async "storage") ]
 
 [de storage-read (File)
   (if (decode File T)
       (storage-save @)
       (http-msg 400) ]
 
-[de storage-post ()
+[de api-request-post ()
   (let (Data (get 'settings 'http)
         File (tmp Data) )
     (if (info File)
@@ -42,14 +33,11 @@
 
     (encode (append Settings Options) ]
 
-(de storage-get ()
+(de api-request-get ()
   (response-json-nocache (storage-options)) )
 
-(de storage-request ()
-  (if (validate-auth)
-      (if *Post
-          (storage-post)
-          (storage-get) )
-      (http-msg 403) ) )
+(check-auth)
 
-(storage-request)
+(if *Post
+    (api-request-post)
+    (api-request-get) ]

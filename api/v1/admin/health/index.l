@@ -7,16 +7,9 @@
 (de health-exists ()
   (info (pack *Admin_path "etc/health.json")) )
 
-[de health-get ()
+[de api-request-get ()
   (if (health-exists)
       (response-json-nocache (pack *Admin_path "etc/health.json") 200 T)
       (http-msg 404) ]
 
-(de health-request ()
-  (if (validate-auth)
-      (if *Post
-          (http-msg 400)
-          (health-get) )
-      (http-msg 403 "Authentication error") ) )
-
-(health-request)
+(check-auth "GET")

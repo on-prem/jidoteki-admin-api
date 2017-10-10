@@ -7,16 +7,9 @@
 (de build-exists ()
   (info "/usr/local/etc/build.json") )
 
-[de build-get ()
+[de api-request-get ()
   (if (build-exists)
       (response-json-nocache "/usr/local/etc/build.json" 200 T)
       (http-msg 404) ]
 
-(de build-request ()
-  (if (validate-auth)
-      (if *Post
-          (http-msg 400)
-          (build-get) )
-      (http-msg 403 "Authentication error") ) )
-
-(build-request)
+(check-auth "GET")
