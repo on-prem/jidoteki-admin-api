@@ -5,8 +5,8 @@
 # Copyright (c) 2015-2017 Alexander Williams, Unscramble <license@unscramble.jp>
 
 [de api-request-get ()
-  (if (info (pack *Upload_path "backup.tar.gz"))
-      (httpEcho (pack *Upload_path "backup.tar.gz") "application/gzip" 1 T)
+  (if (info (pack *Upload_path "backup.tar"))
+      (httpEcho (pack *Upload_path "backup.tar") "application/x-tar" 1 T)
       (http-msg 404) ]
 
 (check-auth "GET")

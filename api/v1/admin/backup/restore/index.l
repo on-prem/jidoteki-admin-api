@@ -8,11 +8,11 @@
   (sys "SSH_ORIGINAL_COMMAND" "backup")
   (if (call (pack *Admin_path "bin/wrapper.sh") "RESTORE")
       (and  (http-msg 200)
-            (audit-log "web" "admin" "backup.restore" "backup-archive.tar.gz") )
+            (audit-log "web" "admin" "backup.restore" "backup-archive.tar") )
       (http-msg 400 "Unable to extract backup archive") ]
 
 [de restore-store (File)
-  (call 'mv "-f" File (pack *Upload_path "backup-archive.tar.gz"))
+  (call 'mv "-f" File (pack *Upload_path "backup-archive.tar"))
   (restore-extract) ]
 
 [de api-request-post ()

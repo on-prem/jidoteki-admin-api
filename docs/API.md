@@ -1486,7 +1486,7 @@ Content-Type: application/json
 
 ### Retrieving a backup
 
-This will start a download of `backup.tar.gz`.
+This will start a download of `backup.tar`.
 
 **Since**
 
@@ -1509,12 +1509,12 @@ GET
 ```
 HTTP/1.1 200 OK
 Content-Type: application/octet-stream
-Filename: backup.tar.gz
+Filename: backup.tar
 ```
 
 **Error response**
 
-`404 Not Found` if the `backup.tar.gz` file doesn't exist
+`404 Not Found` if the `backup.tar` file doesn't exist
 
 ### Viewing the backup log
 
@@ -1543,7 +1543,7 @@ HTTP/1.1 200 OK
 Content-Type: text/plain
 [1507206605][LIVE IMAGE] Validating backup file size
 [1507206605][LIVE IMAGE] Starting backup
-Created file: /opt/jidoteki/admin/home/sftp/uploads/backup.tar.gz - size: 128.0K - hash: 6e31a817eb93270848e3c0b3c1d0c2bfa077fbb318f58a2bcbdec8f69f0dd420
+Created file: /opt/jidoteki/admin/home/sftp/uploads/backup.tar - size: 128.0K - hash: 6e31a817eb93270848e3c0b3c1d0c2bfa077fbb318f58a2bcbdec8f69f0dd420
 [1507206606][LIVE IMAGE] Backup complete
 [1507212882][LIVE IMAGE] Deleting backup archive
 ...
@@ -1575,7 +1575,7 @@ POST
 
 **Parameters**
 
-* `archive` **(required)**: tar+gzip backup archive, ex: `backup.tar.gz`
+* `archive` **(required)**: tar backup archive, ex: `backup.tar`
 
 **Content-type**
 
@@ -1586,9 +1586,9 @@ multipart/form-data
 **Example**
 
 ```
-curl -X POST https://[hostname]:8443/api/v1/admin/backup/restore?hash=[sha256hmachash] -F archive=@[backup.tar.gz]
+curl -X POST https://[hostname]:8443/api/v1/admin/backup/restore?hash=[sha256hmachash] -F archive=@[backup.tar]
 or
-curl -X POST https://[hostname]:8443/api/v1/admin/backup/restore?token=[yourtoken] -F archive=@[backup.tar.gz]
+curl -X POST https://[hostname]:8443/api/v1/admin/backup/restore?token=[yourtoken] -F archive=@[backup.tar]
 ```
 
 **Success response**
