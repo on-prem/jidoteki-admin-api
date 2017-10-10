@@ -533,6 +533,7 @@ backupButtonListener = () ->
           $('.jido-data-backup-status').removeClass 'label-success'
           $('.jido-data-backup-status').removeClass 'label-default'
           $('.jido-data-backup-status').addClass 'label-danger'
+
         else
           $('.jido-data-backup-status').html 'backup canceled'
           $('.jido-data-backup-status').removeClass 'label-danger'
@@ -547,6 +548,27 @@ backupButtonListener = () ->
     fetchFile "/api/v1/admin/backup/download", (err) ->
       unless err
         return
+
+  $('#jido-button-backup-upload').click ->
+    formData = new FormData()
+    formData.append 'archive', $('#backup-restore-input[type=file]')[0].files[0]
+
+    if formData
+      putFile 'backup', "/api/v1/admin/backup/restore", formData, (err, result) ->
+        if err
+          $('.jido-data-backup-status').html 'failed'
+          $('.jido-data-backup-status').removeClass 'label-danger'
+          $('.jido-data-backup-status').removeClass 'label-success'
+          $('.jido-data-backup-status').removeClass 'label-default'
+          $('.jido-data-backup-status').addClass 'label-danger'
+        else
+          $('.jido-data-backup-status').html 'backup restored'
+          $('.jido-data-backup-status').removeClass 'label-danger'
+          $('.jido-data-backup-status').removeClass 'label-success'
+          $('.jido-data-backup-status').removeClass 'label-default'
+          $('.jido-data-backup-status').addClass 'label-success'
+
+        $(".jido-page-content-backup .progress").hide()
 
 navbarListener = ->
   reloadHealth()

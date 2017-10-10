@@ -1056,12 +1056,35 @@
         });
       }
     });
-    return $('#jido-data-backup-file').click(function() {
+    $('#jido-data-backup-file').click(function() {
       return fetchFile("/api/v1/admin/backup/download", function(err) {
         if (!err) {
 
         }
       });
+    });
+    return $('#jido-button-backup-upload').click(function() {
+      var formData;
+      formData = new FormData();
+      formData.append('archive', $('#backup-restore-input[type=file]')[0].files[0]);
+      if (formData) {
+        return putFile('backup', "/api/v1/admin/backup/restore", formData, function(err, result) {
+          if (err) {
+            $('.jido-data-backup-status').html('failed');
+            $('.jido-data-backup-status').removeClass('label-danger');
+            $('.jido-data-backup-status').removeClass('label-success');
+            $('.jido-data-backup-status').removeClass('label-default');
+            $('.jido-data-backup-status').addClass('label-danger');
+          } else {
+            $('.jido-data-backup-status').html('backup restored');
+            $('.jido-data-backup-status').removeClass('label-danger');
+            $('.jido-data-backup-status').removeClass('label-success');
+            $('.jido-data-backup-status').removeClass('label-default');
+            $('.jido-data-backup-status').addClass('label-success');
+          }
+          return $(".jido-page-content-backup .progress").hide();
+        });
+      }
     });
   };
 
