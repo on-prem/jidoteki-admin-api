@@ -7,7 +7,7 @@
 (de backup-exists ()
   (info (pack *Upload_path "backup.json")) )
 
-[de backup-get ()
+[de api-request-get ()
   (if (backup-exists)
       (response-json-nocache (pack *Upload_path "backup.json") 200 T)
       (http-msg 404) ]
@@ -28,14 +28,12 @@
       (backup-action Action)
       (http-msg 400 "Missing or invalid option: action. Expected value 'START' or 'STOP'") ]
 
-[de backup-post ()
+[de api-request-post ()
   (let Action (uppc (get 'action 'http))
     (backup-post-action Action) ]
 
-[de backup-request ()
-  (check-auth-request)
-  (if *Post
-      (backup-post)
-      (backup-get) ]
+(check-auth)
 
-(backup-request)
+(if *Post
+    (api-request-post)
+    (api-request-get) ]

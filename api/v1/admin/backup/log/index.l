@@ -4,7 +4,7 @@
 #
 # Copyright (c) 2015-2017 Alexander Williams, Unscramble <license@unscramble.jp>
 
-[de log-get ()
+[de api-request-get ()
   (use Log Info Size Date Body
     (setq Log  (pack *Admin_path "log/update_backup.log"))
     (if (info Log)
@@ -13,8 +13,4 @@
 
     (response-generic 200 Size Date Body '(("Content-Type" . "text/plain") ]
 
-(de log-request ()
-  (check-auth-request "GET")
-  (log-get) )
-
-(log-request)
+(check-auth "GET")

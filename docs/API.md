@@ -39,8 +39,8 @@ These endpoints are optional and can only be enabled through `/usr/local/etc/jid
 
 ```
 {
-    "endpoints": ["settings", "certs", "license", "storage", "backup" ],
-    "parameters": ["public", "private", "ca", "license", "action"]
+    "endpoints": ["settings", "certs", "license", "storage", "backup"],
+    "parameters": ["public", "private", "ca", "license", "action", "archive"]
 }
 ```
 
@@ -52,7 +52,7 @@ These endpoints are optional and can only be enabled through `/usr/local/etc/jid
 | 9. [TLS](#tls) | `POST /certs` <br/> `GET /certs` | Updating the system's TLS certificates to replace the default self-signed certificates. |
 | 10. [License](#license) | `POST /license` <br/> `GET /license` | Viewing and changing the system license. |
 | 11. [Storage](#storage) | `POST /storage` <br/> `GET /storage` | Viewing and changing persistent storage options. |
-| 12. [Backup](#backup) | `POST /backup` <br/> `GET /backup` <br/> `GET /backup/download` <br/> `GET /backup/log` | Generating a backup, and viewing its status and log. |
+| 12. [Backup](#backup) | `POST /backup` <br/> `GET /backup` <br/> `GET /backup/download` <br/> `GET /backup/log` <br/> `POST /backup/restore` | Generating a backup, and viewing its status and log. Restore a backup |
 
 # <a name="setup"></a>1. Setup
 
@@ -1552,6 +1552,56 @@ Created file: /opt/jidoteki/admin/home/sftp/uploads/backup.tar.gz - size: 128.0K
 **Error response**
 
 `404 Not Found` if the backup log file doesn't exist
+
+### Restoring a backup
+
+Restoring a backup is a synchronous procedure. The API will wait until the restore completes. Only one restore can run at any given time.
+
+**Since**
+
+`>= v1.18.0`
+
+**HTTP Method**
+
+```
+POST
+```
+
+**Endpoint**
+
+```
+/backup/restore
+```
+
+**Parameters**
+
+* `archive` **(required)**: tar+gzip backup archive, ex: `backup.tar.gz`
+
+**Content-type**
+
+```
+multipart/form-data
+```
+
+**Example**
+
+```
+curl -X POST https://[hostname]:8443/api/v1/admin/backup/restore?hash=[sha256hmachash] -F archive=@[backup.tar.gz]
+or
+curl -X POST https://[hostname]:8443/api/v1/admin/backup/restore?token=[yourtoken] -F archive=@[backup.tar.gz]
+```
+
+**Success response**
+
+```
+HTTP/1.1 200 OK
+Content-Type: application/json
+{"Status":"200 OK"}
+```
+
+**Error response**
+
+`400 Bad Request` if the backup archive is missing or invalid
 
 [^ return to menu](#menu)
 
