@@ -36,14 +36,14 @@
                     a#jido-button-backup-start.btn.btn-lg.btn-primary.btn-block(href='#', onclick='return event.preventDefault();') Start backup
                   .col-lg-6.col-md-6.col-sm-12
                     a#jido-button-backup-stop.btn.btn-lg.btn-danger.btn-block(href='#', onclick='return event.preventDefault();', style='display:none;') Cancel backup
-              //- hr
-              //- .form-group
-              //-   .alert.alert-info
-              //-     | Restore will overwrite files in <code>/data</code>
-              //-   label.control-label(for='backup-restore-file')
-              //-     | Restore a backup
-              //-   input#backup-restore-input.form-control(placeholder='backup.tar.gz', name='backup_file', type='file')
-              //- input#jido-button-backup-upload.btn.btn-lg.btn-primary.btn-block(type='submit', value='Restore backup', onclick='return event.preventDefault();')
+              hr
+              .form-group
+                .alert.alert-info
+                  | Restore will overwrite files in <code>/data</code>
+                label.control-label(for='backup-restore-file')
+                  | Restore a backup
+                input#backup-restore-input.form-control(placeholder='backup.tar', name='backup_file', type='file')
+              input#jido-button-backup-upload.btn.btn-lg.btn-primary.btn-block(type='submit', value='Restore backup', onclick='return event.preventDefault();')
 
     .col-lg-6.col-md-6.col-sm-12
       .panel.panel-default.jido-panel
@@ -57,7 +57,7 @@
             a#jido-data-backup-file.list-group-item(href='#')
               h4.list-group-item-heading
                 i.fa.icon-file-archive
-                |  Backup files (backup.tar.gz)
+                |  Backup files (backup.tar)
           h4 Filesize
           p
             pre.backup-status-filesize

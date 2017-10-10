@@ -645,6 +645,13 @@
                       <div class="col-lg-6 col-md-6 col-sm-12"><a id="jido-button-backup-stop" href="#" onclick="return event.preventDefault();" style="display:none;" class="btn btn-lg btn-danger btn-block">Cancel backup</a></div>
                     </div>
                   </div>
+                  <hr>
+                  <div class="form-group">
+                    <div class="alert alert-info">Restore will overwrite files in <code>/data</code></div>
+                    <label for="backup-restore-file" class="control-label">Restore a backup</label>
+                    <input id="backup-restore-input" placeholder="backup.tar" name="backup_file" type="file" class="form-control">
+                  </div>
+                  <input id="jido-button-backup-upload" type="submit" value="Restore backup" onclick="return event.preventDefault();" class="btn btn-lg btn-primary btn-block">
                 </fieldset>
               </form>
             </div>
@@ -658,7 +665,7 @@
             <div id="backupInfo" style="display:none;" class="panel-body">
               <h4>Download</h4>
               <div class="list-group"><a id="jido-data-backup-file" href="#" class="list-group-item">
-                  <h4 class="list-group-item-heading"><i class="fa icon-file-archive"></i> Backup files (backup.tar.gz)</h4></a></div>
+                  <h4 class="list-group-item-heading"><i class="fa icon-file-archive"></i> Backup files (backup.tar)</h4></a></div>
               <h4>Filesize</h4>
               <p>
                 <pre class="backup-status-filesize"></pre>
