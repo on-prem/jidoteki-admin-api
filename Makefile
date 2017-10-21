@@ -6,7 +6,7 @@ REPO_PREFIX ?= https://github.com/aw
 ## Edit below
 JSON_REPO = $(REPO_PREFIX)/picolisp-json.git
 JSON_DIR = $(PIL_MODULE_DIR)/picolisp-json/HEAD
-JSON_REF ?= v1.1.0
+JSON_REF ?= v2.2.0
 SEMVER_REPO = $(REPO_PREFIX)/picolisp-semver.git
 SEMVER_DIR = $(PIL_MODULE_DIR)/picolisp-semver/HEAD
 SEMVER_REF ?= v0.8.0
@@ -42,7 +42,7 @@ $(TEST_DIR):
 check: all $(TEST_DIR) run-tests
 
 run-tests:
-		./test.l
+		PIL_NAMESPACES=false ./test.l
 
 html:
 		jade -o . -P -E html ui/index.jade

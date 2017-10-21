@@ -39,12 +39,11 @@
         (validate-token Token) ]
 
 [de update-token (Token)
-  (if (and Token (> (length Token) 0) (<= (length Token) 255))
+  (or (validate-string-range Token 'newtoken *Ascii_codes_printable (1 . 255))
       (prog
         (out (pack *Upload_path "api.token") (prinl Token))
         (sys "SSH_ORIGINAL_COMMAND" "token")
-        (call (pack *Admin_path "bin/wrapper.sh")) )
-      (http-msg 400) ]
+        (call (pack *Admin_path "bin/wrapper.sh")) ]
 
 [de audit-log (Location User Action Target)
  (let (Date (in (list 'date (pack "+%s.%N")) (pack (till "^J")))

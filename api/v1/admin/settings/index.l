@@ -38,9 +38,6 @@
   (let (App     (cdr (assoc "app" Settings))
         Network (cdr (assoc "network" Settings)) )
 
-    (out (pack *Upload_path "app.json") (prinl (encode App)))
-    (out (pack *Upload_path "network.json") (prinl (encode Network)))
-
     (let (Ip_address  (cdr (assoc "ip_address" Network))
           Netmask     (cdr (assoc "netmask" Network))
           Gateway     (cdr (assoc "gateway" Network))
@@ -50,9 +47,28 @@
           Hostname    (cdr (assoc "hostname" Network))
           Ntpserver   (cdr (assoc "ntpserver" Network)) )
 
-      (if (and Ip_address Netmask Gateway)
-          (settings-static Interface Ip_address Netmask Gateway Dns1 Dns2 Hostname Ntpserver)
-          (settings-dhcp Interface Hostname Ntpserver) ]
+      (or
+          # required string character/length validations
+          (validate-string-range Interface  'interface *Ascii_codes_alphanumeric (3 . 14))
+          (validate-string-range Hostname   'hostname *Ascii_codes_fqdn *Range_fqdn)
+
+          # optional
+          (when Ip_address  (validate-string-range Ip_address 'ip_address *Ascii_codes_ipaddress *Range_ipaddress))
+          (when Netmask     (validate-string-range Netmask    'netmask *Ascii_codes_ipaddress *Range_ipaddress))
+          (when Gateway     (validate-string-range Gateway    'gateway *Ascii_codes_ipaddress *Range_ipaddress))
+          (when Dns1        (validate-string-range Dns1       'dns1 *Ascii_codes_ipaddress *Range_ipaddress))
+          (when Dns2        (validate-string-range Dns2       'dns2 *Ascii_codes_ipaddress *Range_ipaddress))
+          (when Ntpserver   (validate-string-range Ntpserver  'ntpserver (pack *Ascii_codes_fqdn ":") *Range_fqdn))
+
+          (prog
+            # output JSON files if validation success
+            (out (pack *Upload_path "app.json") (prinl (encode App)))
+            (out (pack *Upload_path "network.json") (prinl (encode Network)))
+
+            # output CONF files if validation success
+            (if (and Ip_address Netmask Gateway)
+                (settings-static Interface Ip_address Netmask Gateway Dns1 Dns2 Hostname Ntpserver)
+                (settings-dhcp Interface Hostname Ntpserver) ]
 
 [de api-request-file (File)
   (if (decode File T)

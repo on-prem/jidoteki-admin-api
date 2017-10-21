@@ -3,7 +3,7 @@
 (load ".modules/picolisp-unit/HEAD/unit.l")
 
 (if *CPU
-  (and (load (pack (car (file)) ".modules/picolisp-json/HEAD/json.l")) (symbols 'json))
+  (load (pack  ".modules/picolisp-json/HEAD/json.l"))
   (load "@lib/json.l") )
 
 (sys "JIDO_API_PORT" "49888") # set the PORT as a string
@@ -17,4 +17,4 @@
 (chdir "test/"
   (load "test_app.l" "test_core.l" "test_regressions.l") )
 
-(unit~report)
+(report)

@@ -76,7 +76,7 @@ POST
 
 **Parameters**
 
-* `newtoken` **(required)**: New API token, between 1 and 255 characters
+* `newtoken` **(required)**: New API token, between 1 and 255 printable ASCII characters between codes 33 and 126 inclusively.
 
 **Content-type**
 
@@ -184,7 +184,7 @@ POST
 
 **Parameters**
 
-* `newtoken` **(required)**: New API token
+* `newtoken` **(required)**: New API token, between 1 and 255 printable ASCII characters between codes 33 and 126 inclusively.
 
 **Content-type**
 
@@ -844,6 +844,19 @@ POST
 
 * `settings` **(required)**: JSON settings file
 
+**Settings validation (network)**
+
+- **interface (required)**: `a-zA-Z0-9` (alphanumeric), between 3 and 14 characters
+    (Not required prior to `v1.18.0`)
+- **hostname (required)**: `a-zA-Z0-9` (alphanumeric) + `.-`, between 3 and 255 characters
+    (Not required prior to `v1.18.0`)
+- **ip_address**: `abcdef0123456789ABCDEF.:`, between 3 and 45 characters
+- **netmask**: `abcdef0123456789ABCDEF.:`, between 3 and 45 characters
+- **gateway**: `abcdef0123456789ABCDEF.:`, between 3 and 45 characters
+- **dns1**: `abcdef0123456789ABCDEF.:`, between 3 and 45 characters
+- **dns2**: `abcdef0123456789ABCDEF.:`, between 3 and 45 characters
+- **ntpserver**: `a-zA-Z0-9` (alphanumeric) + `.-:`, between 3 and 255 characters
+
 **Content-type**
 
 ```
@@ -878,8 +891,7 @@ Omit the `ip_address, netmask, gateway` fields, and the network settings will au
 {
     "network": {
         "interface": "eth0",
-        "hostname": "test.host",
-        "ntpserver": "pool.ntp.org"
+        "hostname": "test.host"
     },
     "app": {
         "name": "testapp"
@@ -1215,9 +1227,15 @@ If the license file is invalid or doesn't exist, `404 Not Found` will be returne
 
 Changing the storage options is an asynchronous procedure. The API will return a response immediately while the settings are updated in the background. Only one update can run at any given time.
 
-Storage type can be set to `local`, `nfs`, `aoe`, `iscsi`, `nbd` by uploading a _settings.json_ file.
-
 > **Note:** Storage types are only available based on options found in `/usr/local/etc/storage-options.json`.
+
+**Example**
+
+```
+{
+    "options": ["local", "aoe", "nfs", "nbd", "iscsi"]
+}
+```
 
 Settings are only applied after a reboot.
 
@@ -1240,6 +1258,33 @@ POST
 **Parameters**
 
 * `settings` **(required)**: JSON settings file
+
+**Settings validation (storage)**
+
+- **type (required)**: Allowed: `local`, `nfs`, `aoe`, `iscsi`, `nbd`
+
+[nfs]
+
+- **mount_options (required)**: `a-zA-Z0-9` (alphanumeric) + `.-=,`, between 3 and 255 characters
+- **ip (required)**: `abcdef0123456789ABCDEF.:`, between 3 and 45 characters
+- **share (required)**: `a-zA-Z0-9` (alphanumeric) + `.-_/`, between 3 and 255 characters
+
+[aoe]
+
+- **device (required)**: `a-zA-Z0-9` (alphanumeric) + `.-`, between 3 and 255 characters
+
+[iscsi]
+
+- **target (required)**: `a-zA-Z0-9` (alphanumeric) + `.-_:`, between 3 and 255 characters
+- **ip (required)**: `abcdef0123456789ABCDEF.:`, between 3 and 45 characters
+- **username (required)**: printable ASCII characters (ASCII codes 33-126, no spaces), between 3 and 255 characters
+- **password (required)**: printable ASCII characters (ASCII codes 33-126, no spaces), between 3 and 255 characters
+
+[nbd]
+
+- **export_name (required)**: `a-zA-Z0-9` (alphanumeric) + `.-_/`, between 3 and 255 characters
+- **ip (required)**: `abcdef0123456789ABCDEF.:`, between 3 and 45 characters
+- **port (required)**: `0-9` (numeric) + `.-_/`, between 1 and 5 characters
 
 **Content-type**
 
@@ -1607,4 +1652,4 @@ Content-Type: application/json
 
 ----
 
-**Powered by [Jidoteki.com](#) - [Copyright notices](/docs/NOTICE.TXT) - `v1.18.0`**
+Powered by Jidoteki.com - v1.18.0 - [Copyright notices](/docs/NOTICE.TXT)

@@ -25,14 +25,11 @@ case "${SSH_ORIGINAL_COMMAND}" in
   "license")
     sudo ${admin_dir}/bin/update_license.sh
     ;;
-  "settings static")
-    sudo ${admin_dir}/bin/update_settings.sh static
-    ;;
-  "settings dhcp")
-    sudo ${admin_dir}/bin/update_settings.sh dhcp
+  "settings")
+    ./test/admin/bin/update_settings.sh "$1"
     ;;
   "token")
-    sudo ${admin_dir}/bin/update_token.sh
+    ./admin/bin/update_token.sh
     ;;
   "logs")
     if [ -f "${admin_dir}/etc/logs.txt" ]; then
