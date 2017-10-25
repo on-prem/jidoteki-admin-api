@@ -1,8 +1,12 @@
-# Jidoteki Admin REST API
+# Jidoteki Admin Dashboard and REST API
 
-[![GitHub release](https://img.shields.io/github/release/unscramble/jidoteki-admin-api.svg)](https://github.com/unscramble/jidoteki-admin-api) [![Build Status](https://travis-ci.org/unscramble/jidoteki-admin-api.svg?branch=master)](https://travis-ci.org/unscramble/jidoteki-admin-api) [![Dependency](https://img.shields.io/badge/[deps]&#32;picolisp--semver-v0.8.0-ff69b4.svg)](https://github.com/aw/picolisp-semver) [![Dependency](https://img.shields.io/badge/[deps]&#32;picolisp--json-v2.2.0-ff69b4.svg)](https://github.com/aw/picolisp-json) [![Dependency](https://img.shields.io/badge/[deps]&#32;picolisp--unit-v2.1.0-ff69b4.svg)](https://github.com/aw/picolisp-unit.git)
+[![GitHub release](https://img.shields.io/github/release/unscramble/jidoteki-admin-api.svg)](https://github.com/unscramble/jidoteki-admin-api) [![Build Status](https://travis-ci.org/unscramble/jidoteki-admin-api.svg?branch=master)](https://travis-ci.org/unscramble/jidoteki-admin-api) [![Dependency](https://img.shields.io/badge/[deps]&#32;picolisp--semver-v0.9.0-ff69b4.svg)](https://github.com/aw/picolisp-semver) [![Dependency](https://img.shields.io/badge/[deps]&#32;picolisp--json-v2.2.0-ff69b4.svg)](https://github.com/aw/picolisp-json) [![Dependency](https://img.shields.io/badge/[deps]&#32;picolisp--unit-v2.1.0-ff69b4.svg)](https://github.com/aw/picolisp-unit.git)
 
 This API enables simple management of a [Jidoteki](https://jidoteki.com) system.
+
+An Admin Dashboard is included, and enables simpler management through a web-based interface:
+
+![Admin Dashboard](https://user-images.githubusercontent.com/153401/31997699-69b65a34-b97c-11e7-9eef-fb09b296fbb3.png)
 
 In combination with the [jidoteki-admin](https://github.com/unscramble/jidoteki-admin), it is possible to use the REST API to:
 
@@ -19,10 +23,6 @@ In combination with the [jidoteki-admin](https://github.com/unscramble/jidoteki-
   * Reboot the system
   * View and update persistent storage options
   * Retrieve build details
-
-An Admin Dashboard is included, and enables simpler management through a web-based interface:
-
-![Admin Dashboard](https://cloud.githubusercontent.com/assets/153401/19772513/044ed2f0-9c56-11e6-90d5-cb235dc088ef.gif)
 
 # Requirements
 
@@ -104,6 +104,40 @@ To do everything at once, type: `make ui`
 * [Changelog](CHANGELOG.md)
 * [Changelog 2016](CHANGELOG-2016.md)
 * [Changelog 2015](CHANGELOG-2015.md)
+
+# Screenshots
+
+### Update
+
+![screen-update](https://user-images.githubusercontent.com/153401/31997710-6ae25e08-b97c-11e7-9ab4-7245c38090cb.png)
+
+### Backup/Restore
+
+![screen-backup](https://user-images.githubusercontent.com/153401/31997698-6984f598-b97c-11e7-8567-08d1cde65d27.png)
+
+### Network
+
+![screen-network](https://user-images.githubusercontent.com/153401/31997702-6a12ad3e-b97c-11e7-8086-b70479b280d6.png)
+
+### Certs
+
+![screeen-certs](https://user-images.githubusercontent.com/153401/31997697-695606f2-b97c-11e7-83e7-3f5acfee2723.png)
+
+### Storage
+
+![screen-storage](https://user-images.githubusercontent.com/153401/31997703-6a4b18f4-b97c-11e7-9494-441d2e90eb80.png)
+
+### API Token
+
+![screen-token](https://user-images.githubusercontent.com/153401/31997705-6aaae3ce-b97c-11e7-9075-55d54fe16edc.png)
+
+### Monitor
+
+![screen-monitor](https://user-images.githubusercontent.com/153401/31997701-69e69528-b97c-11e7-9bdf-d46710bcc646.png)
+
+### Support
+
+![screen-support](https://user-images.githubusercontent.com/153401/31997704-6a81a3e2-b97c-11e7-84bc-fc3c8d733121.png)
 
 # License
 
