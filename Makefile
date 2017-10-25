@@ -9,7 +9,7 @@ JSON_DIR = $(PIL_MODULE_DIR)/picolisp-json/HEAD
 JSON_REF ?= v2.2.0
 SEMVER_REPO = $(REPO_PREFIX)/picolisp-semver.git
 SEMVER_DIR = $(PIL_MODULE_DIR)/picolisp-semver/HEAD
-SEMVER_REF ?= v0.8.0
+SEMVER_REF ?= v0.9.0
 ## Edit above
 
 # Unit testing

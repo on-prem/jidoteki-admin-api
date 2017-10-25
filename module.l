@@ -8,6 +8,6 @@
   ("copyright"  "(c) 2015-2017 Alexander Williams, Unscramble <license@unscramble.jp>")
   ("install"    "make")
   ("requires"
-    ("picolisp-unit"    "v1.0.0"    "https://github.com/aw/picolisp-unit.git")
-    ("picolisp-json"    "v1.1.0"    "https://github.com/aw/picolisp-json.git")
-    ("picolisp-semver"  "v0.8.0"    "https://github.com/aw/picolisp-semver.git") ]
+    ("picolisp-unit"    "v2.1.0"    "https://github.com/aw/picolisp-unit.git")
+    ("picolisp-json"    "v2.2.0"    "https://github.com/aw/picolisp-json.git")
+    ("picolisp-semver"  "v0.9.0"    "https://github.com/aw/picolisp-semver.git") ]
