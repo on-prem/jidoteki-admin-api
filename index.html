@@ -59,7 +59,7 @@
               <h3 class="panel-title">Admin Dashboard Login</h3>
             </div>
             <div class="panel-body">
-              <form id="login-form" role="form" autocomplete="false">
+              <form id="login-form" role="form" autocomplete="off">
                 <fieldset>
                   <div class="form-group">
                     <input id="login-password" placeholder="API Token" name="token" type="password" value="" class="form-control">
@@ -498,7 +498,7 @@
             <div class="panel-body">Set your new<em> API Token</em> below.<br><br>
               <div style="display:none;" class="alert alert-danger token-alert">API Token mismatch. Please verify the API Token.</div>
               <div class="row">
-                <form role="form" autocomplete="false" class="token-form">
+                <form role="form" autocomplete="off" class="token-form">
                   <fieldset>
                     <div class="col-lg-8 col-md-8 col-sm-8 col-md-offset-2">
                       <div class="form-group has-success">
@@ -619,12 +619,13 @@
       </div>
       <div class="row">
         <div class="col-lg-10 col-md-10 col-sm-12 col-lg-offset-1 col-md-offset-1">
-          <div class="panel panel-default jido-panel">
+          <div style="display:none;" class="panel panel-default jido-panel">
             <div class="panel-heading">
               <h4>Status: <span class="label label-default jido-data-backup-status">...waiting for backup</span></h4>
               <div style="display:none; margin-top: 20px" class="progress">
-                <div role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width: 33%" class="progress-bar progress-bar-striped active">...please wait</div>
+                <div role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width: 33%" class="progress-bar progress-bar-striped active">...uploading, please wait</div>
               </div>
+              <div style="display:none;" class="alert alert-dismissible alert-success backup-alert"></div>
             </div>
           </div>
         </div>
@@ -764,7 +765,7 @@ GEs=
     <script src="docs/jsrrdgraph/strftime.js"></script>
     <script src="docs/jsrrdgraph/draw.js"></script>
     <script src="docs/ui.min.js"></script>
-    <div style="margin-bottom:0;margin-top:3em;position:relative;bottom:0px;width:100%;" class="well text-right text-muted jido-smalltext">Powered by Jidoteki.com - v1.18.0 - <a href="/docs/NOTICE.TXT">Copyright notices</a></div>
+    <div style="margin-bottom:0;margin-top:3em;position:relative;bottom:0px;width:100%;" class="well text-right text-muted jido-smalltext">Powered by Jidoteki.com - v1.18.1 - <a href="/docs/NOTICE.TXT">Copyright notices</a></div>
     <!-- This Source Code Form is subject to the terms of the Mozilla Public-->
     <!-- License, v. 2.0. If a copy of the MPL was not distributed with this-->
     <!-- file, You can obtain one at http://mozilla.org/MPL/2.0/.-->

@@ -203,16 +203,6 @@ loadBackup = ->
       $('#backupInfo').hide()
       $('#jido-button-backup-stop').hide()
 
-  # fetchData "/api/v1/admin/backup", (err, result) ->
-  #   if err
-  #     $('#backupInfo').hide()
-  #     $('#jido-button-backup-stop').hide()
-  #   else
-  #     $('#backupInfo').show()
-  #     $('#jido-button-backup-stop').show()
-  #     $('#jido-page-backup pre.backup-status-filesize').html result.filesize
-  #     $('#jido-page-backup pre.backup-status-sha256').html result.sha256
-
 ### generic functions ###
 monitorClick = (result) ->
   makeGraph = (clicked) ->
@@ -520,6 +510,8 @@ backupButtonListener = () ->
 
     if formData
       putFile 'backup', '/api/v1/admin/backup', formData, (err, result) ->
+        $(".backup-alert").html "The backup will complete shortly."
+        $('.jido-panel').show()
         if err
           $('.jido-data-backup-status').html 'failed'
           $('.jido-data-backup-status').removeClass 'label-danger'
@@ -540,6 +532,7 @@ backupButtonListener = () ->
 
     if formData
       putFile 'backup', '/api/v1/admin/backup', formData, (err, result) ->
+        $('.jido-panel').show()
         if err
           $('.jido-data-backup-status').html 'failed'
           $('.jido-data-backup-status').removeClass 'label-danger'
@@ -568,6 +561,7 @@ backupButtonListener = () ->
 
     if formData
       putFile 'backup', "/api/v1/admin/backup/restore", formData, (err, result) ->
+        $('.jido-panel').show()
         if err
           $('.jido-data-backup-status').html 'failed'
           $('.jido-data-backup-status').removeClass 'label-danger'

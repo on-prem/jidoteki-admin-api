@@ -1053,6 +1053,8 @@
       formData.append('action', "START");
       if (formData) {
         return putFile('backup', '/api/v1/admin/backup', formData, function(err, result) {
+          $(".backup-alert").html("The backup will complete shortly.");
+          $('.jido-panel').show();
           if (err) {
             $('.jido-data-backup-status').html('failed');
             $('.jido-data-backup-status').removeClass('label-danger');
@@ -1075,6 +1077,7 @@
       formData.append('action', "STOP");
       if (formData) {
         return putFile('backup', '/api/v1/admin/backup', formData, function(err, result) {
+          $('.jido-panel').show();
           if (err) {
             $('.jido-data-backup-status').html('failed');
             $('.jido-data-backup-status').removeClass('label-danger');
@@ -1106,6 +1109,7 @@
       formData.append('archive', $('#backup-restore-input[type=file]')[0].files[0]);
       if (formData) {
         return putFile('backup', "/api/v1/admin/backup/restore", formData, function(err, result) {
+          $('.jido-panel').show();
           if (err) {
             $('.jido-data-backup-status').html('failed');
             $('.jido-data-backup-status').removeClass('label-danger');

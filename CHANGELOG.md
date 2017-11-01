@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.18.1 (2017-11-01)
+
+  ### Minor fixes
+
+  * [dashboard] Ensure `Backup/Restore` section displays the alert and status panel when needed
+  * [dashboard] Set `autocomplete=off` on login/token page, instead of `autocomplete=false`
+
 ## 1.18.0 (2017-10-25)
 
   ### Bug fixes

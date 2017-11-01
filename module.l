@@ -1,6 +1,6 @@
 [de MODULE_INFO
   ("name"       "jidoteki-admin-api")
-  ("version"    "1.18.0")
+  ("version"    "1.18.1")
   ("summary"    "Jidoteki Admin API")
   ("source"     "https://jidoteki.com")
   ("author"     "Alexander Williams")
