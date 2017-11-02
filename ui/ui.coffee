@@ -490,7 +490,7 @@ storageButtonListener = ->
 
     if formData
       putFile 'storage', '/api/v1/admin/storage', formData, (err, result) ->
-        $('.jido-panel').show()
+        $('.jido-page-content-storage .jido-panel').show()
         unless err
           successUpload 'storage'
 
@@ -511,7 +511,7 @@ backupButtonListener = () ->
     if formData
       putFile 'backup', '/api/v1/admin/backup', formData, (err, result) ->
         $(".backup-alert").html "The backup will complete shortly."
-        $('.jido-panel').show()
+        $('.jido-page-content-backup .jido-panel').show()
         if err
           $('.jido-data-backup-status').html 'failed'
           $('.jido-data-backup-status').removeClass 'label-danger'
@@ -532,7 +532,7 @@ backupButtonListener = () ->
 
     if formData
       putFile 'backup', '/api/v1/admin/backup', formData, (err, result) ->
-        $('.jido-panel').show()
+        $('.jido-page-content-backup .jido-panel').show()
         if err
           $('.jido-data-backup-status').html 'failed'
           $('.jido-data-backup-status').removeClass 'label-danger'
@@ -561,7 +561,7 @@ backupButtonListener = () ->
 
     if formData
       putFile 'backup', "/api/v1/admin/backup/restore", formData, (err, result) ->
-        $('.jido-panel').show()
+        $('.jido-page-content-backup .jido-panel').show()
         if err
           $('.jido-data-backup-status').html 'failed'
           $('.jido-data-backup-status').removeClass 'label-danger'
