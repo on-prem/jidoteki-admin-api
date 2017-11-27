@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.19.0 (2017-11-27)
+
+  ### Minor fixes
+
+  * [html] Append API version to static files
+  * [api] Ensure custom code is loaded after generic code
+
 ## 1.18.3 (2017-11-16)
 
   ### Minor fixes

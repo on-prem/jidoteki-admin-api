@@ -17,7 +17,7 @@ TEST_REPO = $(REPO_PREFIX)/picolisp-unit.git
 TEST_DIR = $(PIL_MODULE_DIR)/picolisp-unit/HEAD
 
 # Generic
-.PHONY: all clean
+.PHONY: all clean html
 
 all: $(JSON_DIR) $(SEMVER_DIR)
 

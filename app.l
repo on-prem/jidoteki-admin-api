@@ -25,9 +25,13 @@
 
 # Load core
 (chdir (pack *API_PATH "/core")
-  (load "api.l" "auth.l" "helpers.l" (when (sys "JIDO_API_CUSTOM") (pack "../../../" @ "/" *API_PATH "/core/custom.l"))) )
+  (load "api.l" "auth.l" "helpers.l") )
 
 (load (pack *API_PATH "/core/allowed.l"))
+
+# Load custom code
+(when (sys "JIDO_API_CUSTOM")
+      (load (pack @ "/" *API_PATH "/core/custom.l")) )
 
 (api-start)
 
