@@ -10,7 +10,11 @@
 
     (list (append '("network") Network) (append '("app") App)) ]
 
-(de settings-static (Interface Ip_address Netmask Gateway Dns1 Dns2 Hostname Ntpserver)
+(de settings-static (Network App Interface Ip_address Netmask Gateway Dns1 Dns2 Hostname Ntpserver)
+  # output JSON files if validation success
+  (out (pack *Upload_path "app.json") (prinl (encode App)))
+  (out (pack *Upload_path "network.json") (prinl (encode (insert 1 Network '("mode" . "static")))))
+
   (out (pack *Upload_path "network.conf")
     (prinl "mode=static")
     (if Interface
@@ -24,7 +28,11 @@
     (prin "ntpserver=\"") (when Ntpserver (prin @)) (prinl "\"") )
   (response-async "settings" "static") )
 
-(de settings-dhcp (Interface Hostname)
+(de settings-dhcp (Network App Interface Hostname)
+  # output JSON files if validation success
+  (out (pack *Upload_path "app.json") (prinl (encode App)))
+  (out (pack *Upload_path "network.json") (prinl (encode (insert 1 Network '("mode" . "dhcp")))))
+
   (out (pack *Upload_path "network.conf")
     (prinl "mode=dhcp")
     (if Interface
@@ -61,14 +69,10 @@
           (when Ntpserver   (validate-string-range Ntpserver  'ntpserver (pack *Ascii_codes_fqdn ":") *Range_fqdn))
 
           (prog
-            # output JSON files if validation success
-            (out (pack *Upload_path "app.json") (prinl (encode App)))
-            (out (pack *Upload_path "network.json") (prinl (encode Network)))
-
             # output CONF files if validation success
             (if (and Ip_address Netmask Gateway)
-                (settings-static Interface Ip_address Netmask Gateway Dns1 Dns2 Hostname Ntpserver)
-                (settings-dhcp Interface Hostname Ntpserver) ]
+                (settings-static Network App Interface Ip_address Netmask Gateway Dns1 Dns2 Hostname Ntpserver)
+                (settings-dhcp Network App Interface Hostname Ntpserver) ]
 
 [de api-request-file (File)
   (if (decode File T)

@@ -309,6 +309,7 @@ tokenButtonListener = ->
 
     if formData
       putFile 'token', '/api/v1/admin/setup', formData, (err, result) ->
+        $('.jido-page-content-token .jido-panel').show()
         if err
           $('.jido-data-token-status').html 'failed'
           $('.jido-data-token-status').removeClass 'label-danger'

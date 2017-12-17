@@ -1,10 +1,20 @@
 # Changelog
 
-## 1.19.1 (2017-12-17)
+## 1.20.0 (2017-12-17)
+
+  ### New features
+
+  * [dashboard] Redesign network settings to select dhcp/static
+  * [dashboard] Display network 'Mode' in dashboard
 
   ### Minor fixes
 
   * [html] Add 'Content-Security-Policy' HTTPS security header
+  * [html] Remove 'waiting for...' empty messages
+
+  ### Bug fixes
+
+  * [html] NTP server disappears when switching from STATIC to DHCP
 
 ## 1.19.0 (2017-11-27)
 

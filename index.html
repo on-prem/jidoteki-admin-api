@@ -8,11 +8,11 @@
     <meta name="author" content="">
     <title>Admin Dashboard</title>
     <!-- Bootstrap Core CSS-->
-    <link href="/docs/themes/bootstrap.min.css?v=1.19.1" rel="stylesheet">
+    <link href="/docs/themes/bootstrap.min.css?v=1.20.0" rel="stylesheet">
     <!-- Fontello / Font Awesome CSS-->
-    <link href="/docs/font-awesome/css/fontello.min.css?v=1.19.1" rel="stylesheet" type="text/css">
+    <link href="/docs/font-awesome/css/fontello.min.css?v=1.20.0" rel="stylesheet" type="text/css">
     <!-- UI CSS-->
-    <link href="/docs/ui.css?v=1.19.1" rel="stylesheet">
+    <link href="/docs/ui.css?v=1.20.0" rel="stylesheet">
   </head>
   <body>
     <div id="jido-page-navbar" style="display:none">
@@ -138,7 +138,7 @@
       </div>
       <div class="row">
         <div class="col-lg-10 col-md-10 col-sm-12 col-lg-offset-1 col-md-offset-1">
-          <div class="panel panel-default jido-panel">
+          <div style="display:none;" class="panel panel-default jido-panel">
             <div class="panel-heading">
               <h4>Status: <span class="label label-default jido-data-update-status">...fetching</span><span style="display:none;" class="pull-right jido-data-update-status-error">
                   <div class="jido-data-update-status-error-message text-danger"></div></span></h4>
@@ -202,7 +202,7 @@
       </div>
       <div class="row">
         <div class="col-lg-10 col-md-10 col-sm-12 col-lg-offset-1 col-md-offset-1">
-          <div class="panel panel-default jido-panel">
+          <div style="display:none;" class="panel panel-default jido-panel">
             <div class="panel-heading">
               <h4>Status: <span class="label label-default jido-data-network-status">...waiting for network settings</span></h4>
               <div style="display:none; margin-top: 20px" class="progress">
@@ -220,44 +220,53 @@
               <h3 class="panel-title"><i class="fa icon-sitemap"></i> Network settings</h3>
             </div>
             <div class="panel-body">
-              <h4>Update Network settings, or switch between STATIC to DHCP modes.</h4><br>
-              <div class="alert alert-info">For DHCP mode, remove the IP address, Netmask or Gateway.</div>
+              <h4>Update Network settings, or switch between STATIC to DHCP modes.</h4>
               <div class="row">
                 <form role="form" class="network-form">
                   <fieldset>
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                      <div class="form-group">
+                        <label style="margin-right: 1.2em;" class="radio-inline control-label">
+                          <input id="network-type-dhcp" name="network-type" value="dhcp" type="radio"><strong>DHCP</strong>
+                        </label>
+                        <label style="margin-right: 1.2em;" class="radio-inline control-label">
+                          <input id="network-type-static" name="network-type" value="static" type="radio"><strong>STATIC</strong>
+                        </label>
+                      </div>
+                    </div><br>
                     <div class="col-lg-6 col-md-6 col-sm-6">
-                      <div class="form-group has-success">
+                      <div class="form-group">
                         <label for="hostname-input" class="control-label network-hostname-label">Hostname</label>
                         <input id="hostname-input" placeholder="Hostname" name="hostname" type="text" class="form-control">
                       </div>
-                      <div class="form-group has-success">
+                      <div class="form-group">
                         <label for="interface-input" class="control-label network-interface-label">Interface</label>
                         <input id="interface-input" placeholder="Interface" name="interface" type="text" class="form-control">
                       </div>
-                      <div class="form-group has-success">
+                      <div class="form-group">
                         <label for="ntpserver-input" class="control-label network-ntpserver-label">NTP Server</label>
                         <input id="ntpserver-input" placeholder="pool.ntp.org" name="ntpserver" type="text" class="form-control">
                       </div>
                       <div class="form-group">
-                        <label for="dns1-input" class="control-label network-dns1-label text-info"><em>DNS 1 (optional for STATIC)</em></label>
+                        <label for="dns1-input" class="control-label network-dns1-label"><em>DNS 1 (optional)</em></label>
                         <input id="dns1-input" placeholder="DNS 1" name="dns-1" type="text" class="form-control">
                       </div>
                       <div class="form-group">
-                        <label for="dns2-input" class="control-label network-dns2-label text-info"><em>DNS 2 (optional for STATIC)</em></label>
+                        <label for="dns2-input" class="control-label network-dns2-label"><em>DNS 2 (optional)</em></label>
                         <input id="dns2-input" placeholder="DNS 2" name="dns-2" type="text" class="form-control">
                       </div>
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-6">
                       <div class="form-group">
-                        <label for="ip_address-input" class="control-label network-ip_address-label text-info"><em>IP address (required for STATIC)</em></label>
+                        <label for="ip_address-input" class="control-label network-ip_address-label">IP address<em> (required for STATIC)</em></label>
                         <input id="ip_address-input" placeholder="IP address" name="ip-address" type="text" class="form-control">
                       </div>
                       <div class="form-group">
-                        <label for="netmask-input" class="control-label network-netmask-label text-info"><em>Netmask / Prefix (ex: /64) (required for STATIC)</em></label>
+                        <label for="netmask-input" class="control-label network-netmask-label">Netmask / Prefix (ex: /64)<em> (required for STATIC)</em></label>
                         <input id="netmask-input" placeholder="Netmask / Prefix (ex: /64)" name="netmask" type="text" class="form-control">
                       </div>
                       <div class="form-group">
-                        <label for="gateway-input" class="control-label network-gateway-label text-info"><em>Gateway (required for STATIC)</em></label>
+                        <label for="gateway-input" class="control-label network-gateway-label">Gateway<em> (required for STATIC)</em></label>
                         <input id="gateway-input" placeholder="Gateway" name="gateway" type="text" class="form-control">
                       </div>
                       <div class="form-group"><br>
@@ -282,7 +291,7 @@
       </div>
       <div class="row">
         <div class="col-lg-10 col-md-10 col-sm-12 col-lg-offset-1 col-md-offset-1">
-          <div class="panel panel-default jido-panel">
+          <div style="display:none;" class="panel panel-default jido-panel">
             <div class="panel-heading">
               <h4>Status: <span class="label label-default jido-data-certs-status">...fetching</span></h4>
               <div style="display:none; margin-top: 20px" class="progress">
@@ -482,7 +491,7 @@
       </div>
       <div class="row">
         <div class="col-lg-6 col-md-6 col-sm-12 col-lg-offset-3 col-md-offset-3">
-          <div class="panel panel-default jido-panel">
+          <div style="display:none;" class="panel panel-default jido-panel">
             <div class="panel-heading">
               <h4>Status: <span class="label label-default jido-data-token-status">...waiting for token</span></h4>
               <div style="display:none; margin-top: 20px" class="progress">
@@ -749,23 +758,23 @@ GEs=
         </div>
       </div>
     </div>
-    <script src="/docs/jquery/jquery.min.js?v=1.19.1"></script>
-    <script src="/docs/forge/forge.min.js?v=1.19.1"></script>
-    <script src="/docs/validator/validator.min.js?v=1.19.1"></script>
-    <script src="/docs/themes/bootstrap.min.js?v=1.19.1"></script>
-    <script src="/docs/jsrrdgraph/binaryxhr.js?v=1.19.1"></script>
-    <script src="/docs/jsrrdgraph/rrdcmdline.js?v=1.19.1"></script>
-    <script src="/docs/jsrrdgraph/rrddatafile.js?v=1.19.1"></script>
-    <script src="/docs/jsrrdgraph/rrdfile.js?v=1.19.1"></script>
-    <script src="/docs/jsrrdgraph/rrdgfxcanvas.js?v=1.19.1"></script>
-    <script src="/docs/jsrrdgraph/rrdgraph.min.js?v=1.19.1"></script>
-    <script src="/docs/jsrrdgraph/rrdrpn.js?v=1.19.1"></script>
-    <script src="/docs/jsrrdgraph/rrdtime.js?v=1.19.1"></script>
-    <script src="/docs/jsrrdgraph/sprintf.js?v=1.19.1"></script>
-    <script src="/docs/jsrrdgraph/strftime.js?v=1.19.1"></script>
-    <script src="/docs/jsrrdgraph/draw.js?v=1.19.1"></script>
-    <script src="/docs/ui.min.js?v=1.19.1"></script>
-    <div style="margin-bottom:0;margin-top:3em;position:relative;bottom:0px;width:100%;" class="well text-right text-muted jido-smalltext">Powered by Jidoteki.com - v1.19.1 - <a href="/docs/NOTICE.TXT">Copyright notices</a></div>
+    <script src="/docs/jquery/jquery.min.js?v=1.20.0"></script>
+    <script src="/docs/forge/forge.min.js?v=1.20.0"></script>
+    <script src="/docs/validator/validator.min.js?v=1.20.0"></script>
+    <script src="/docs/themes/bootstrap.min.js?v=1.20.0"></script>
+    <script src="/docs/jsrrdgraph/binaryxhr.js?v=1.20.0"></script>
+    <script src="/docs/jsrrdgraph/rrdcmdline.js?v=1.20.0"></script>
+    <script src="/docs/jsrrdgraph/rrddatafile.js?v=1.20.0"></script>
+    <script src="/docs/jsrrdgraph/rrdfile.js?v=1.20.0"></script>
+    <script src="/docs/jsrrdgraph/rrdgfxcanvas.js?v=1.20.0"></script>
+    <script src="/docs/jsrrdgraph/rrdgraph.min.js?v=1.20.0"></script>
+    <script src="/docs/jsrrdgraph/rrdrpn.js?v=1.20.0"></script>
+    <script src="/docs/jsrrdgraph/rrdtime.js?v=1.20.0"></script>
+    <script src="/docs/jsrrdgraph/sprintf.js?v=1.20.0"></script>
+    <script src="/docs/jsrrdgraph/strftime.js?v=1.20.0"></script>
+    <script src="/docs/jsrrdgraph/draw.js?v=1.20.0"></script>
+    <script src="/docs/ui.min.js?v=1.20.0"></script>
+    <div style="margin-bottom:0;margin-top:3em;position:relative;bottom:0px;width:100%;" class="well text-right text-muted jido-smalltext">Powered by Jidoteki.com - v1.20.0 - <a href="/docs/NOTICE.TXT">Copyright notices</a></div>
     <!-- This Source Code Form is subject to the terms of the Mozilla Public-->
     <!-- License, v. 2.0. If a copy of the MPL was not distributed with this-->
     <!-- file, You can obtain one at http://mozilla.org/MPL/2.0/.-->

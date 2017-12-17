@@ -95,6 +95,19 @@ loadNetwork = ->
       unless result.network.interface?
         $('#interface-input').val 'eth0'
 
+      if result.network.mode == 'dhcp'
+        $('#network-type-dhcp').prop('checked', true)
+        $('#network-type-static').prop('checked', false)
+        $('#ip_address-input').prop('disabled', true)
+        $('#netmask-input').prop('disabled', true)
+        $('#gateway-input').prop('disabled', true)
+      else
+        $('#network-type-dhcp').prop('checked', false)
+        $('#network-type-static').prop('checked', true)
+        $('#ip_address-input').prop('disabled', false)
+        $('#netmask-input').prop('disabled', false)
+        $('#gateway-input').prop('disabled', false)
+
       networkSettings = for key, value of result.network
         value = "" if typeof value is 'object'
         $("##{key}-input").val validator.escape(value)
@@ -237,6 +250,7 @@ updateButtonListener = ->
 
     if formData
       putFile 'update', "/api/v1/admin/update", formData, (err, result) ->
+        $('.jido-page-content-update .jido-panel').show()
         unless err
           pollStatus 'update'
 
@@ -254,6 +268,7 @@ networkButtonListener = ->
     json.network.ntpserver = $('#ntpserver-input').val()
     if $('#dns1-input').val() then json.network.dns1 = $('#dns1-input').val()
     if $('#dns2-input').val() then json.network.dns2 = $('#dns2-input').val()
+    network_mode = if $('#network-type-dhcp').is(':checked') then 'dhcp' else 'static'
 
     # Validations
     unless json.network.hostname and validator.isFQDN(json.network.hostname, {require_tld: false})
@@ -280,7 +295,7 @@ networkButtonListener = ->
     $('.jido-data-network-status').removeClass 'label-success'
     $('.jido-data-network-status').removeClass 'label-default'
 
-    if json.network.ip_address and json.network.netmask and json.network.gateway
+    if network_mode == 'static'
       unless validator.isIP(json.network.ip_address)
         $('.network-form .network-ip_address-label').parent().addClass 'has-error'
         $('.network-form .network-ip_address-label').focus()
@@ -317,7 +332,6 @@ networkButtonListener = ->
       delete json.network.ip_address
       delete json.network.netmask
       delete json.network.gateway
-      delete json.network.ntpserver
       delete json.network.dns1
       delete json.network.dns2
 
@@ -330,6 +344,7 @@ networkButtonListener = ->
 
     if formData
       putFile 'network', '/api/v1/admin/settings', formData, (err, result) ->
+        $('.jido-page-content-network .jido-panel').show()
         unless err
           successUpload 'network'
 
@@ -351,6 +366,7 @@ certsButtonListener = ->
 
     if formData
       putFile 'certs', "/api/v1/admin/certs", formData, (err, result) ->
+        $('.jido-page-content-certs .jido-panel').show()
         unless err
           pollStatus 'certs'
 
@@ -577,6 +593,17 @@ backupButtonListener = () ->
 
         $(".jido-page-content-backup .progress").hide()
 
+dhcpStaticListener = ->
+  $('#network-type-dhcp').change ->
+    $('#ip_address-input').prop('disabled', true)
+    $('#netmask-input').prop('disabled', true)
+    $('#gateway-input').prop('disabled', true)
+
+  $('#network-type-static').change ->
+    $('#ip_address-input').prop('disabled', false)
+    $('#netmask-input').prop('disabled', false)
+    $('#gateway-input').prop('disabled', false)
+
 navbarListener = ->
   $('#jido-page-navbar .navbar-nav li a').click ->
     clicked = $(this).parent().attr 'id'
@@ -608,6 +635,7 @@ monitorButtonListener()
 storageButtonListener()
 storageSelectListener()
 backupButtonListener()
+dhcpStaticListener()
 navbarListener()
 
 authenticate (err) ->

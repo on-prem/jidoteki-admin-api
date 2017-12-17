@@ -8,7 +8,7 @@
 
 (function() {
   'use strict';
-  var apiEndpoints, apiServer, apiType, authenticate, backupButtonListener, capitalize, certsButtonListener, clearToken, debugButtonListener, drawGraphs, failedUpload, fetchData, fetchFile, getHmac, getSha256, getStatus, getToken, loadBackup, loadHome, loadLogin, loadMonitor, loadNetwork, loadSetup, loadStorage, loadSupport, loadToken, loadUpdateCerts, loginButtonListener, logoutButtonListener, logsButtonListener, monitorButtonListener, monitorClick, navbarListener, networkButtonListener, newTokenButtonListener, pollStatus, putFile, putToken, redirectUrl, reloadEndpoints, reloadHealth, restartButtonListener, runningUpload, storageButtonListener, storageSelectListener, successUpload, tokenButtonListener, updateButtonListener, updateCertsButtonListener,
+  var apiEndpoints, apiServer, apiType, authenticate, backupButtonListener, capitalize, certsButtonListener, clearToken, debugButtonListener, dhcpStaticListener, drawGraphs, failedUpload, fetchData, fetchFile, getHmac, getSha256, getStatus, getToken, loadBackup, loadHome, loadLogin, loadMonitor, loadNetwork, loadSetup, loadStorage, loadSupport, loadToken, loadUpdateCerts, loginButtonListener, logoutButtonListener, logsButtonListener, monitorButtonListener, monitorClick, navbarListener, networkButtonListener, newTokenButtonListener, pollStatus, putFile, putToken, redirectUrl, reloadEndpoints, reloadHealth, restartButtonListener, runningUpload, storageButtonListener, storageSelectListener, successUpload, tokenButtonListener, updateButtonListener, updateCertsButtonListener,
     indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
   apiServer = window.location.origin != null ? window.location.origin : window.location.protocol + "//" + window.location.hostname + (window.location.port != null ? ':' + window.location.port : '');
@@ -382,6 +382,7 @@
       formData.append('newtoken', pass1);
       if (formData) {
         return putFile('token', '/api/v1/admin/setup', formData, function(err, result) {
+          $('.jido-page-content-token .jido-panel').show();
           if (err) {
             $('.jido-data-token-status').html('failed');
             $('.jido-data-token-status').removeClass('label-danger');
@@ -534,6 +535,19 @@
         $('.network-form input.form-control').val('');
         if (result.network["interface"] == null) {
           $('#interface-input').val('eth0');
+        }
+        if (result.network.mode === 'dhcp') {
+          $('#network-type-dhcp').prop('checked', true);
+          $('#network-type-static').prop('checked', false);
+          $('#ip_address-input').prop('disabled', true);
+          $('#netmask-input').prop('disabled', true);
+          $('#gateway-input').prop('disabled', true);
+        } else {
+          $('#network-type-dhcp').prop('checked', false);
+          $('#network-type-static').prop('checked', true);
+          $('#ip_address-input').prop('disabled', false);
+          $('#netmask-input').prop('disabled', false);
+          $('#gateway-input').prop('disabled', false);
         }
         networkSettings = (function() {
           var ref, results;
@@ -731,6 +745,7 @@
       formData.append('update', $('#update-input[type=file]')[0].files[0]);
       if (formData) {
         return putFile('update', "/api/v1/admin/update", formData, function(err, result) {
+          $('.jido-page-content-update .jido-panel').show();
           if (!err) {
             return pollStatus('update');
           }
@@ -741,7 +756,7 @@
 
   networkButtonListener = function() {
     return $('#jido-button-network-upload').click(function() {
-      var blob, encoded, formData, json;
+      var blob, encoded, formData, json, network_mode;
       json = new Object();
       json.app = {};
       json.network = {};
@@ -757,6 +772,7 @@
       if ($('#dns2-input').val()) {
         json.network.dns2 = $('#dns2-input').val();
       }
+      network_mode = $('#network-type-dhcp').is(':checked') ? 'dhcp' : 'static';
       if (!(json.network.hostname && validator.isFQDN(json.network.hostname, {
         require_tld: false
       }))) {
@@ -782,7 +798,7 @@
       $('.jido-data-network-status').removeClass('label-danger');
       $('.jido-data-network-status').removeClass('label-success');
       $('.jido-data-network-status').removeClass('label-default');
-      if (json.network.ip_address && json.network.netmask && json.network.gateway) {
+      if (network_mode === 'static') {
         if (!validator.isIP(json.network.ip_address)) {
           $('.network-form .network-ip_address-label').parent().addClass('has-error');
           $('.network-form .network-ip_address-label').focus();
@@ -825,7 +841,6 @@
         delete json.network.ip_address;
         delete json.network.netmask;
         delete json.network.gateway;
-        delete json.network.ntpserver;
         delete json.network.dns1;
         delete json.network.dns2;
       }
@@ -839,6 +854,7 @@
       if (formData) {
         return putFile('network', '/api/v1/admin/settings', formData, function(err, result) {
           var newIP, newUrl;
+          $('.jido-page-content-network .jido-panel').show();
           if (!err) {
             successUpload('network');
             if (json.network.ip_address) {
@@ -867,6 +883,7 @@
       }
       if (formData) {
         return putFile('certs', "/api/v1/admin/certs", formData, function(err, result) {
+          $('.jido-page-content-certs .jido-panel').show();
           if (!err) {
             return pollStatus('certs');
           }
@@ -1129,6 +1146,19 @@
     });
   };
 
+  dhcpStaticListener = function() {
+    $('#network-type-dhcp').change(function() {
+      $('#ip_address-input').prop('disabled', true);
+      $('#netmask-input').prop('disabled', true);
+      return $('#gateway-input').prop('disabled', true);
+    });
+    return $('#network-type-static').change(function() {
+      $('#ip_address-input').prop('disabled', false);
+      $('#netmask-input').prop('disabled', false);
+      return $('#gateway-input').prop('disabled', false);
+    });
+  };
+
   navbarListener = function() {
     return $('#jido-page-navbar .navbar-nav li a').click(function() {
       var clicked;
@@ -1192,6 +1222,8 @@
   storageSelectListener();
 
   backupButtonListener();
+
+  dhcpStaticListener();
 
   navbarListener();
 
