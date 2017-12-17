@@ -85,6 +85,7 @@
   (prinl "X-Frame-Options: deny")
   (prinl "X-XSS-Protection: 1")
   (prinl "X-Content-Type-Options: nosniff")
+  (prinl "Content-Security-Policy: object-src 'self';")
   (prin "Date: ")
   (httpDate (date T) (time T))
   (when Size
@@ -122,7 +123,8 @@
     (prinl "Strict-Transport-Security: max-age=31536000 ; includeSubDomains")
     (prinl "X-Frame-Options: deny")
     (prinl "X-XSS-Protection: 1")
-    (prinl "X-Content-Type-Options: nosniff") )
+    (prinl "X-Content-Type-Options: nosniff")
+    (prinl "Content-Security-Policy: object-src 'self';") )
 
 # Extensions for json.l (32-bit only)
 [unless *CPU
