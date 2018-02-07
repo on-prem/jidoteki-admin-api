@@ -2,27 +2,29 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (c) 2015-2017 Alexander Williams, Unscramble <license@unscramble.jp>
+# Copyright (c) 2015-2018 Alexander Williams, Unscramble <license@unscramble.jp>
 
 [de update-log (Lines)
   (in (list 'tail "-n" Lines (pack *Admin_path "log/update.log")) (pack (replace (till (eof)) "^J" "\\n") ]
 
 [de update-status ()
-  (in (list 'cat (pack *Admin_path "etc/status_update.txt")) (pack (till "^J") ]
+  (let Jsonfile (pack *Admin_path "etc/status_update.json")
+    (if (info Jsonfile)
+        (chain (decode Jsonfile T))
+        (link (cons "status" (in (pack *Admin_path "etc/status_update.txt") (line T)))) ]
 
 [de update-error-message ()
-  (in (list 'cat (pack *Admin_path "etc/status_error_message.txt")) (pack (till "^J") ]
+  (in (pack *Admin_path "etc/status_error_message.txt") (line T)) ]
 
 [de update-error-code ()
-  (in (list 'cat (pack *Admin_path "etc/status_error_code.txt")) (pack (till "^J") ]
+  (in (pack *Admin_path "etc/status_error_code.txt") (line T)) ]
 
 [de update-process ()
   (let (Log     (update-log 10)
-        Status  (update-status)
         Message (when (info (pack *Admin_path "etc/status_error_message.txt")) (update-error-message))
         Code    (when (info (pack *Admin_path "etc/status_error_code.txt")) (update-error-code)) )
 
-    (make (link (cons "status" Status)) (link (cons "log" Log)) (when Message (link (cons "error-message" Message))) (when Code (link (cons "error-code" Code) ]
+    (make (update-status) (link (cons "log" Log)) (when Message (link (cons "error-message" Message))) (when Code (link (cons "error-code" Code) ]
 
 (de api-request-get ()
   (response-json (encode (update-process))) )

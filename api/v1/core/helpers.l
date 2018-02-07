@@ -2,7 +2,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (c) 2015 Alexander Williams, Unscramble <license@unscramble.jp>
+# Copyright (c) 2015-2018 Alexander Williams, Unscramble <license@unscramble.jp>
 
 (de *Http_codes
   (200 . "OK")
@@ -18,7 +18,8 @@
   *Ascii_codes_fqdn         (pack *Ascii_codes_alphanumeric ".-") )
 
 (setq
-  *Range_ipaddress  (3 . 45)
+  *Range_netmask    (2 . 45) # (ex: /8, or ::1)
+  *Range_ipaddress  (3 . 45) # (ex: ::1, or 127.0.0.1)
   *Range_fqdn       (3 . 255) )
 
 (de http-code (Code)
@@ -126,18 +127,6 @@
     (prinl "X-Content-Type-Options: nosniff")
     (prinl "Content-Security-Policy: object-src 'self';") )
 
-# Extensions for json.l (32-bit only)
-[unless *CPU
-  (de encode (Value)
-    (pipe (printJson Value) (line T)) )
-
-  (de decode (Value Type)
-    (let Json
-      (if Type
-          (when (info Value) (in Value (till NIL T)))
-          Value )
-      (parseJson Json T) ]
-
 # API endpoint helpers
 [de log-plaintext (Filename)
   (response-json-generic (pack *Admin_path "log/" Filename) 200 T '(("Content-Type" . "text/plain") ("Cache-Control" . "no-cache") ]
@@ -172,3 +161,11 @@
 # returns NIL if not in range
 (de in-range? (Value Min Max)
   (and Value (>= (length Value) Min) (<= (length Value) Max)) )
+
+# checks if a string is an IPv4 address or not
+# returns T if IPv4
+# returns NIL if not
+(de is-ipv4? (Ip_address)
+  (let Ip (split (chop Ip_address) ".")
+    (when (and (= 4 (length Ip)) (= 4 (length (extract format Ip))))
+          T ) ) )

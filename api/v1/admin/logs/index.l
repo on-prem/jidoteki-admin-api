@@ -7,7 +7,9 @@
 [de api-request-get ()
   (sys "SSH_ORIGINAL_COMMAND" "logs")
   (if (call (pack *Admin_path "bin/wrapper.sh"))
-      (httpEcho (pack *Upload_path "logs.tar.gz") "application/octet-stream" 1 T)
+      (and
+        (httpEcho (pack *Upload_path "logs.tar.gz") "application/octet-stream" 1 T)
+        (audit-log "web" "admin" "logs.get" "logs.tar.gz") )
       (http-msg 404) ]
 
 (check-auth "GET")

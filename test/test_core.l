@@ -141,4 +141,7 @@
   '(assert-nil    (in-range? "1" (car *Range_ipaddress) (cdr *Range_ipaddress)) "Ensure IPv4 address is not within range")
   '(assert-nil    (test-validate-string-range-valid) "Ensure string is valid, and range is between 1 and 8 characters")
   '(assert-t      (test-validate-string-range-invalid) "Ensure string is valid, but range is not between 1 and 7 characters")
+  '(assert-t      (is-ipv4? "127.0.0.1") "Ensure IPv4 address is detected")
+  '(assert-nil    (is-ipv4? "::1") "Ensure IPv6 address is detected")
+  '(assert-nil    (is-ipv4? "2001:db8::127.0.0.1") "Ensure IPv4-mapped IPv6 is detected")
   ]

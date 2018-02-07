@@ -21,7 +21,9 @@
         (prinl "interface=" Interface)
         (prinl "interface=eth0") )
     (prinl "ip=" Ip_address)
-    (prinl "subnet=" Netmask)
+    (if (is-ipv4? Ip_address)
+        (prinl "subnet=" Netmask)
+        (prinl "subnet_ipv6=" Netmask) )
     (prinl "router=" Gateway)
     (prin "dns=\"") (when Dns1 (prin @)) (when Dns2 (prin " " @)) (prinl "\"")
     (prin "hostname=\"") (when Hostname (prin @)) (prinl "\"")
@@ -62,7 +64,7 @@
 
           # optional
           (when Ip_address  (validate-string-range Ip_address 'ip_address *Ascii_codes_ipaddress *Range_ipaddress))
-          (when Netmask     (validate-string-range Netmask    'netmask *Ascii_codes_ipaddress *Range_ipaddress))
+          (when Netmask     (validate-string-range Netmask    'netmask (pack *Ascii_codes_ipaddress "/") *Range_netmask))
           (when Gateway     (validate-string-range Gateway    'gateway *Ascii_codes_ipaddress *Range_ipaddress))
           (when Dns1        (validate-string-range Dns1       'dns1 *Ascii_codes_ipaddress *Range_ipaddress))
           (when Dns2        (validate-string-range Dns2       'dns2 *Ascii_codes_ipaddress *Range_ipaddress))

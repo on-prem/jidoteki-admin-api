@@ -2,7 +2,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (c) 2017 Alexander Williams, Unscramble <license@unscramble.jp>
+# Copyright (c) 2017-2018 Alexander Williams, Unscramble <license@unscramble.jp>
 
 [de storage-save (Settings)
   (out (pack *Upload_path "storage.json")
@@ -13,7 +13,7 @@
             (prinl (pack (car N) "=\"" (cdr N) "\"")))
             (cdr (assoc "storage" Settings)) ) )
 
-  (response-async "storage") ]
+  (response-async "storage" (cdr (assoc "type" Settings))) ]
 
 [de storage-validate-nfs (Mount_options Ip Share)
   (or (validate-string-range Mount_options 'mount_options (pack *Ascii_codes_fqdn "=,") *Range_fqdn)
