@@ -9,11 +9,9 @@
 (load "module.l")
 
 # Load dependencies
-(if *CPU
-  (and (load ".modules/picolisp-json/HEAD/json.l") (symbols 'json))
-  (load "@lib/json.l") )
-
-(load ".modules/picolisp-semver/HEAD/semver.l")
+(unless *Tc_functions_loaded
+  (chdir (if (sys "TC_LIB_PATH") @ "/opt/jidoteki/tinyadmin/lib")
+    (load "tc-functions.l") ) )
 
 (setq
   *API_VERSION  (if (format (sys "JIDO_API_VERSION")) @ 1)

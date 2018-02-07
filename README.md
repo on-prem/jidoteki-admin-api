@@ -1,6 +1,6 @@
 # Jidoteki Admin Dashboard and REST API
 
-[![GitHub release](https://img.shields.io/github/release/unscramble/jidoteki-admin-api.svg)](https://github.com/unscramble/jidoteki-admin-api) [![Build Status](https://travis-ci.org/unscramble/jidoteki-admin-api.svg?branch=master)](https://travis-ci.org/unscramble/jidoteki-admin-api) [![Dependency](https://img.shields.io/badge/[deps]&#32;picolisp--semver-v0.9.0-ff69b4.svg)](https://github.com/aw/picolisp-semver) [![Dependency](https://img.shields.io/badge/[deps]&#32;picolisp--json-v2.2.0-ff69b4.svg)](https://github.com/aw/picolisp-json) [![Dependency](https://img.shields.io/badge/[deps]&#32;picolisp--unit-v2.1.0-ff69b4.svg)](https://github.com/aw/picolisp-unit.git)
+[![GitHub release](https://img.shields.io/github/release/unscramble/jidoteki-admin-api.svg)](https://github.com/unscramble/jidoteki-admin-api) [![Build Status](https://travis-ci.org/unscramble/jidoteki-admin-api.svg?branch=master)](https://travis-ci.org/unscramble/jidoteki-admin-api) [![Dependency](https://img.shields.io/badge/[deps]&#32;jidoteki--admin-v1.20.0-ff69b4.svg)](https://github.com/unscramble/jidoteki-admin)
 
 This API enables simple management of a [Jidoteki](https://jidoteki.com) system.
 
@@ -31,13 +31,12 @@ In combination with the [jidoteki-admin](https://github.com/unscramble/jidoteki-
   * UNIX/Linux development/build tools (gcc, make/gmake, etc..)
   * OpenSSL command line tool (openssl)
   * Stunnel4 (for HTTPS only)
-  * _(optional)_ `jidoteki-admin` deployment in `/opt/jidoteki/admin/`
+  * _(required)_ `jidoteki-admin v1.20.0+` deployment in `/opt/jidoteki/tinyadmin/`
 
 # Getting started
 
-  1. Type `make` to pull and compile the dependencies
-  2. Type `./run.l` to launch the HTTP listener
-  3. View the API documentation at: `http://enterprise.vm:8080` or `https://enterprise.vm:8443`
+  1. Type `./run.l` to launch the HTTP listener
+  2. View the API documentation at: `http://enterprise.vm:8080` or `https://enterprise.vm:8443`
 
 # File and directory permissions
 
@@ -49,31 +48,12 @@ If using the [jidoteki-admin](https://github.com/unscramble/jidoteki-admin), it 
 
 It is possible to specify a few environment variables at runtime.
 
-### JIDO_API_VERSION
-
-There is only one API version (`1`), but this makes it possible to load a completely different set of API endpoints, ex: `JIDO_API_VERSION=2 ./run.l`.
-
-### JIDO_API_PORT
-
-The default port for the HTTP listener is `8080`.
-
-### JIDO_WITH_SSL
-
-By default, only the HTTP listener will be launched. If you want to start an HTTPS server as well, you can set `JIDO_WITH_SSL=true`.
-
-It will launch an `stunnel4` process on port `8443`, so ensure an `enterprise.pem` SSL certificate exists in the same directory as `stunnel.conf`.
-
-### JIDO_STUNNEL_BIN
-
-The name of the stunnel binary. On CentOS it's `stunnel`, but on Debian it's `stunnel4`. Defaults to `stunnel4`.
-
-### JIDO_ADMIN_PATH
-
-The full path to the Admin application. In most cases it refers to `/opt/jidoteki/admin/`, but it may be different depending on the application.
-
-### JIDO_API_CUSTOM
-
-When this is set (ex: `JIDO_API_CUSTOM=yourapp`), the API will load `custom.l` from the `yourapp/api/v1/core/` directory.
+  * **JIDO_API_VERSION**: There is only one API version (`1`), but this makes it possible to load a completely different set of API endpoints, ex: `JIDO_API_VERSION=2 ./run.l`.
+  * **JIDO_API_PORT**: The default port for the HTTP listener is `8080`.
+  * **JIDO_WITH_SSL**: By default, only the HTTP listener will be launched. If you want to start an HTTPS server as well, you can set `JIDO_WITH_SSL=true`. It will launch an `stunnel4` process on port `8443`, so ensure an `enterprise.pem` SSL certificate exists in the same directory as `stunnel.conf`.
+  * **JIDO_STUNNEL_BIN**: The name of the stunnel binary. On CentOS it's `stunnel`, but on Debian it's `stunnel4`. Defaults to `stunnel4`.
+  * **JIDO_ADMIN_PATH**: The full path to the Admin application. In most cases it refers to `/opt/jidoteki/admin/`, but it may be different depending on the application.
+  * **JIDO_API_CUSTOM**: When this is set (ex: `JIDO_API_CUSTOM=yourapp`), the API will load `custom.l` from the `yourapp/api/v1/core/` directory.
 
 # API Endpoints
 
