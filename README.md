@@ -82,6 +82,7 @@ To do everything at once, type: `make ui`
 # Changelogs
 
 * [Changelog](CHANGELOG.md)
+* [Changelog 2017](CHANGELOG-2017.md)
 * [Changelog 2016](CHANGELOG-2016.md)
 * [Changelog 2015](CHANGELOG-2015.md)
 
@@ -123,4 +124,4 @@ To do everything at once, type: `make ui`
 
 [MPL-2.0 License](LICENSE)
 
-Copyright (c) 2015-2017 Alexander Williams, Unscramble <license@unscramble.jp>
+Copyright (c) 2015-2018 Alexander Williams, Unscramble <license@unscramble.jp>
