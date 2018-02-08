@@ -1,7 +1,8 @@
 #!/usr/bin/env pil
 
-(load (pack (if (sys "TC_LIB_PATH") @ "/opt/jidoteki/tinyadmin/lib") "/.modules/picolisp-unit/HEAD/unit.l"))
-(unless *Tc_functions_loaded (load (pack (if (sys "TC_LIB_PATH") @ "/opt/jidoteki/tinyadmin/lib") "/tc-functions.l")))
+(unless *Tc_functions_loaded
+  (chdir (pack (if (sys "JIDO_ADMIN_PATH") @ "/opt/jidoteki/tinyadmin") "/lib")
+    (load "tc-functions.l" ".modules/picolisp-unit/HEAD/unit.l") ) )
 
 (sys "JIDO_API_PORT" "49888") # set the PORT as a string
 (sys "JIDO_API_VERSION" "1") # set the API VERSION as a string

@@ -8,11 +8,6 @@
 
 (load "module.l")
 
-# Load dependencies
-(unless *Tc_functions_loaded
-  (chdir (if (sys "TC_LIB_PATH") @ "/opt/jidoteki/tinyadmin/lib")
-    (load "tc-functions.l") ) )
-
 (setq
   *API_VERSION  (if (format (sys "JIDO_API_VERSION")) @ 1)
   *API_PATH     (pack "api/v" *API_VERSION)
@@ -20,6 +15,11 @@
   *Admin_path   (if (sys "JIDO_ADMIN_PATH") @ "/opt/jidoteki/admin/")
   *Upload_path  (pack *Admin_path "home/sftp/uploads/")
   *Audit_log    (pack *Admin_path "log/jidoteki-audit.log") )
+
+# Load dependencies
+(unless *Tc_functions_loaded
+  (chdir (pack *Admin_path "/lib")
+    (load "tc-functions.l") ) )
 
 # Load core
 (chdir (pack *API_PATH "/core")

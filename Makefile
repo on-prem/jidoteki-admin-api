@@ -1,7 +1,5 @@
 # Makefile
 
-TC_LIB_PATH ?= /opt/jidoteki/tinyadmin/lib
-
 # Generic
 .PHONY: all check run-tests html javascript js minify ui
 
@@ -10,7 +8,7 @@ all: check
 check: run-tests
 
 run-tests:
-		TC_LIB_PATH=$(TC_LIB_PATH) PIL_NAMESPACES=false ./test.l
+		JIDO_ADMIN_PATH=$(PREFIX_DIR)/opt/jidoteki/tinyadmin PIL_NAMESPACES=false ./test.l
 
 html:
 		jade -o . -P -E html ui/index.jade

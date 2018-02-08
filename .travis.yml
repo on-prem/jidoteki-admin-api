@@ -13,4 +13,4 @@ before_script:
   - cd /tmp/jidoteki-admin && git checkout merge-scripts && make PREFIX_DIR=/tmp
 
 script:
-  - cd ${TRAVIS_BUILD_DIR} && make check TC_LIB_PATH=/tmp/opt/jidoteki/tinyadmin/lib
+  - cd ${TRAVIS_BUILD_DIR} && make check PREFIX_DIR=/tmp
