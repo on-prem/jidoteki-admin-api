@@ -126,18 +126,6 @@
     (prinl "X-Content-Type-Options: nosniff")
     (prinl "Content-Security-Policy: object-src 'self';") )
 
-# Extensions for json.l (32-bit only)
-[unless *CPU
-  (de encode (Value)
-    (pipe (printJson Value) (line T)) )
-
-  (de decode (Value Type)
-    (let Json
-      (if Type
-          (when (info Value) (in Value (till NIL T)))
-          Value )
-      (parseJson Json T) ]
-
 # API endpoint helpers
 [de log-plaintext (Filename)
   (response-json-generic (pack *Admin_path "log/" Filename) 200 T '(("Content-Type" . "text/plain") ("Cache-Control" . "no-cache") ]
