@@ -8,7 +8,7 @@ all: check
 check: run-tests
 
 run-tests:
-		JIDO_ADMIN_PATH=$(PREFIX_DIR)/opt/jidoteki/tinyadmin PIL_NAMESPACES=false ./test.l
+		JIDO_ADMIN_PATH=$(PREFIX_DIR)/opt/jidoteki/tinyadmin ./test.l
 
 html:
 		jade -o . -P -E html ui/index.jade

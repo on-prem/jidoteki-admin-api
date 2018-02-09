@@ -8,8 +8,6 @@
 
 (load "module.l")
 
-(sys "PIL_NAMESPACES" "false")
-
 (setq
   *API_VERSION  (if (format (sys "JIDO_API_VERSION")) @ 1)
   *API_PATH     (pack "api/v" *API_VERSION)
