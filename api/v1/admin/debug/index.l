@@ -7,7 +7,9 @@
 [de api-request-get ()
   (sys "SSH_ORIGINAL_COMMAND" "debug")
   (if (call (pack *Admin_path "bin/wrapper.sh"))
-      (httpEcho (pack *Upload_path "debug-bundle.tar") "application/octet-stream" 1 T)
+      (and
+        (httpEcho (pack *Upload_path "debug-bundle.tar") "application/octet-stream" 1 T)
+        (audit-log "web" "admin" "debug.get" "debug-bundle.tar") )
       (http-msg 404) ]
 
 (check-auth "GET")
