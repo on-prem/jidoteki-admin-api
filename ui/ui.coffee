@@ -110,7 +110,7 @@ loadNetwork = ->
 
       networkSettings = for key, value of result.network
         value = "" if typeof value is 'object'
-        $("##{key}-input").val validator.escape(value)
+        $("##{key}-input").val value
 
         "<li class=\"list-group-item\">#{capitalize key} <span class=\"pull-right label label-primary\">#{validator.escape(value)}</span></li>"
 
