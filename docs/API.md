@@ -304,6 +304,7 @@ HTTP/1.1 200 OK
 Content-Type: application/json
 {
     "status": "success",
+    "percentage": 100,
     "log": "[1432140922][SYSTEM] Updating system successful"
 }
 ```
@@ -315,6 +316,7 @@ HTTP/1.1 200 OK
 Content-Type: application/json
 {
     "status": "failed",
+    "percentage": 20,
     "log": "[1432140922][SYSTEM] Failed updating...",
     "error-message": "Missing update package",
     "error-code": "E1003"
@@ -840,6 +842,8 @@ POST
 /settings
 ```
 
+**Note:** IPv4 and IPv6 addresses are supported.
+
 **Parameters**
 
 * `settings` **(required)**: JSON settings file
@@ -851,7 +855,7 @@ POST
 - **hostname (required)**: `a-zA-Z0-9` (alphanumeric) + `.-`, between 3 and 255 characters
     (Not required prior to `v1.18.0`)
 - **ip_address**: `abcdef0123456789ABCDEF.:`, between 3 and 45 characters
-- **netmask**: `abcdef0123456789ABCDEF.:`, between 3 and 45 characters
+- **netmask**: `abcdef0123456789ABCDEF.:/`, between 2 and 45 characters
 - **gateway**: `abcdef0123456789ABCDEF.:`, between 3 and 45 characters
 - **dns1**: `abcdef0123456789ABCDEF.:`, between 3 and 45 characters
 - **dns2**: `abcdef0123456789ABCDEF.:`, between 3 and 45 characters
