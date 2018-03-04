@@ -1,14 +1,14 @@
-# Jidoteki Admin Dashboard and REST API
+# On-Prem Admin Dashboard and REST API
 
-[![GitHub release](https://img.shields.io/github/release/unscramble/jidoteki-admin-api.svg)](https://github.com/unscramble/jidoteki-admin-api) [![Build Status](https://travis-ci.org/unscramble/jidoteki-admin-api.svg?branch=master)](https://travis-ci.org/unscramble/jidoteki-admin-api) [![Dependency](https://img.shields.io/badge/[deps]&#32;jidoteki--admin-v1.20.0-ff69b4.svg)](https://github.com/unscramble/jidoteki-admin)
+[![GitHub release](https://img.shields.io/github/release/on-prem/jidoteki-admin-api.svg)](https://github.com/on-prem/jidoteki-admin-api) [![Build Status](https://travis-ci.org/on-prem/jidoteki-admin-api.svg?branch=master)](https://travis-ci.org/on-prem/jidoteki-admin-api) [![Dependency](https://img.shields.io/badge/[deps]&#32;jidoteki--admin-v1.20.0-ff69b4.svg)](https://github.com/on-prem/jidoteki-admin)
 
-This API enables simple management of a [Jidoteki](https://jidoteki.com) system.
+This API enables simple management of a [On-Prem](https://on-premises.com) system.
 
 An Admin Dashboard is included, and enables simpler management through a web-based interface:
 
 ![Admin Dashboard](https://user-images.githubusercontent.com/153401/31997699-69b65a34-b97c-11e7-9eef-fb09b296fbb3.png)
 
-In combination with the [jidoteki-admin](https://github.com/unscramble/jidoteki-admin), it is possible to use the REST API to:
+In combination with the [jidoteki-admin](https://github.com/on-prem/jidoteki-admin), it is possible to use the REST API to:
 
   * Upload and validate a license file
   * Upload a software update package
@@ -42,7 +42,7 @@ In combination with the [jidoteki-admin](https://github.com/unscramble/jidoteki-
 
 The API does not need to run as root.
 
-If using the [jidoteki-admin](https://github.com/unscramble/jidoteki-admin), it requires `sudo` access to commands in `/opt/jidoteki/admin/bin`, write access to `/opt/jidoteki/admin/home/sftp/uploads`, and read access to files in `/opt/jidoteki/admin/etc/`.
+If using the [jidoteki-admin](https://github.com/on-prem/jidoteki-admin), it requires `sudo` access to commands in `/opt/jidoteki/admin/bin`, write access to `/opt/jidoteki/admin/home/sftp/uploads`, and read access to files in `/opt/jidoteki/admin/etc/`.
 
 # Environment variables
 
@@ -61,7 +61,7 @@ See the [API Documentation](docs/API.md).
 
 # Contributing
 
-If you find any bugs or issues, please [create an issue](https://github.com/unscramble/jidoteki-admin-api/issues/new).
+If you find any bugs or issues, please [create an issue](https://github.com/on-prem/jidoteki-admin-api/issues/new).
 
 If you want to improve this application, please make a pull-request.
 
