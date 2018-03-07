@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.21.0 (TBD)
+## 1.21.0 (2018-03-07)
 
   ### New features
 
