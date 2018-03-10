@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.21.1 (2018-03-10)
+
+  ### Minor fixes
+
+  * [frontend] Ensure progress bar is displayed while uploading files
+
 ## 1.21.0 (2018-03-07)
 
   ### New features

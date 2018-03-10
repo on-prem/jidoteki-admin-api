@@ -381,8 +381,8 @@
       formData = new FormData();
       formData.append('newtoken', pass1);
       if (formData) {
+        $('.jido-page-content-token .jido-panel').show();
         return putFile('token', '/api/v1/admin/setup', formData, function(err, result) {
-          $('.jido-page-content-token .jido-panel').show();
           if (err) {
             $('.jido-data-token-status').html('failed');
             $('.jido-data-token-status').removeClass('label-danger');
@@ -744,8 +744,8 @@
       formData = new FormData();
       formData.append('update', $('#update-input[type=file]')[0].files[0]);
       if (formData) {
+        $('.jido-page-content-update .jido-panel').show();
         return putFile('update', "/api/v1/admin/update", formData, function(err, result) {
-          $('.jido-page-content-update .jido-panel').show();
           if (!err) {
             return pollStatus('update');
           }
@@ -852,9 +852,9 @@
       blob.lastModifiedDate = new Date();
       formData.append('settings', blob, 'settings.json');
       if (formData) {
+        $('.jido-page-content-network .jido-panel').show();
         return putFile('network', '/api/v1/admin/settings', formData, function(err, result) {
           var newIP, newUrl;
-          $('.jido-page-content-network .jido-panel').show();
           if (!err) {
             successUpload('network');
             if (json.network.ip_address) {
@@ -882,8 +882,8 @@
         formData.append('ca', $('#ca-key-input[type=file]')[0].files[0]);
       }
       if (formData) {
+        $('.jido-page-content-certs .jido-panel').show();
         return putFile('certs', "/api/v1/admin/certs", formData, function(err, result) {
-          $('.jido-page-content-certs .jido-panel').show();
           if (!err) {
             return pollStatus('certs');
           }
@@ -1042,8 +1042,8 @@
       blob.lastModifiedDate = new Date();
       formData.append('settings', blob, 'settings.json');
       if (formData) {
+        $('.jido-page-content-storage .jido-panel').show();
         return putFile('storage', '/api/v1/admin/storage', formData, function(err, result) {
-          $('.jido-page-content-storage .jido-panel').show();
           if (!err) {
             successUpload('storage');
             $(".storage-alert").html("Please Restart to apply storage settings.");
@@ -1069,9 +1069,9 @@
       formData = new FormData();
       formData.append('action', "START");
       if (formData) {
+        $(".backup-alert").html("The backup will complete shortly.");
+        $('.jido-page-content-backup .jido-panel').show();
         return putFile('backup', '/api/v1/admin/backup', formData, function(err, result) {
-          $(".backup-alert").html("The backup will complete shortly.");
-          $('.jido-page-content-backup .jido-panel').show();
           if (err) {
             $('.jido-data-backup-status').html('failed');
             $('.jido-data-backup-status').removeClass('label-danger');
@@ -1093,8 +1093,8 @@
       formData = new FormData();
       formData.append('action', "STOP");
       if (formData) {
+        $('.jido-page-content-backup .jido-panel').show();
         return putFile('backup', '/api/v1/admin/backup', formData, function(err, result) {
-          $('.jido-page-content-backup .jido-panel').show();
           if (err) {
             $('.jido-data-backup-status').html('failed');
             $('.jido-data-backup-status').removeClass('label-danger');
@@ -1125,8 +1125,8 @@
       formData = new FormData();
       formData.append('archive', $('#backup-restore-input[type=file]')[0].files[0]);
       if (formData) {
+        $('.jido-page-content-backup .jido-panel').show();
         return putFile('backup', "/api/v1/admin/backup/restore", formData, function(err, result) {
-          $('.jido-page-content-backup .jido-panel').show();
           if (err) {
             $('.jido-data-backup-status').html('failed');
             $('.jido-data-backup-status').removeClass('label-danger');

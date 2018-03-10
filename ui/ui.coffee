@@ -249,8 +249,8 @@ updateButtonListener = ->
     formData.append 'update', $('#update-input[type=file]')[0].files[0]
 
     if formData
+      $('.jido-page-content-update .jido-panel').show()
       putFile 'update', "/api/v1/admin/update", formData, (err, result) ->
-        $('.jido-page-content-update .jido-panel').show()
         unless err
           pollStatus 'update'
 
@@ -343,8 +343,8 @@ networkButtonListener = ->
     formData.append 'settings', blob, 'settings.json'
 
     if formData
+      $('.jido-page-content-network .jido-panel').show()
       putFile 'network', '/api/v1/admin/settings', formData, (err, result) ->
-        $('.jido-page-content-network .jido-panel').show()
         unless err
           successUpload 'network'
 
@@ -365,8 +365,8 @@ certsButtonListener = ->
     formData.append 'ca', $('#ca-key-input[type=file]')[0].files[0] if $('#ca-key-input[type=file]')[0].files[0]
 
     if formData
+      $('.jido-page-content-certs .jido-panel').show()
       putFile 'certs', "/api/v1/admin/certs", formData, (err, result) ->
-        $('.jido-page-content-certs .jido-panel').show()
         unless err
           pollStatus 'certs'
 
@@ -505,8 +505,8 @@ storageButtonListener = ->
     formData.append 'settings', blob, 'settings.json'
 
     if formData
+      $('.jido-page-content-storage .jido-panel').show()
       putFile 'storage', '/api/v1/admin/storage', formData, (err, result) ->
-        $('.jido-page-content-storage .jido-panel').show()
         unless err
           successUpload 'storage'
 
@@ -525,9 +525,9 @@ backupButtonListener = () ->
     formData.append 'action', "START"
 
     if formData
+      $(".backup-alert").html "The backup will complete shortly."
+      $('.jido-page-content-backup .jido-panel').show()
       putFile 'backup', '/api/v1/admin/backup', formData, (err, result) ->
-        $(".backup-alert").html "The backup will complete shortly."
-        $('.jido-page-content-backup .jido-panel').show()
         if err
           $('.jido-data-backup-status').html 'failed'
           $('.jido-data-backup-status').removeClass 'label-danger'
@@ -547,8 +547,8 @@ backupButtonListener = () ->
     formData.append 'action', "STOP"
 
     if formData
+      $('.jido-page-content-backup .jido-panel').show()
       putFile 'backup', '/api/v1/admin/backup', formData, (err, result) ->
-        $('.jido-page-content-backup .jido-panel').show()
         if err
           $('.jido-data-backup-status').html 'failed'
           $('.jido-data-backup-status').removeClass 'label-danger'
@@ -576,8 +576,8 @@ backupButtonListener = () ->
     formData.append 'archive', $('#backup-restore-input[type=file]')[0].files[0]
 
     if formData
+      $('.jido-page-content-backup .jido-panel').show()
       putFile 'backup', "/api/v1/admin/backup/restore", formData, (err, result) ->
-        $('.jido-page-content-backup .jido-panel').show()
         if err
           $('.jido-data-backup-status').html 'failed'
           $('.jido-data-backup-status').removeClass 'label-danger'
