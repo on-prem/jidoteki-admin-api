@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.22.0 (TBD)
+
+  ### Minor fixes
+
+  * [deps] Update`jidoteki-admin` dep to v1.21.0
+
 ## 1.21.1 (2018-03-10)
 
   ### Minor fixes

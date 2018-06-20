@@ -1,6 +1,6 @@
 [de MODULE_INFO
   ("name"       "jidoteki-admin-api")
-  ("version"    "1.21.1")
+  ("version"    "1.22.0")
   ("summary"    "On-Prem Admin API")
   ("source"     "https://jidoteki.com")
   ("author"     "Alexander Williams")
@@ -8,4 +8,4 @@
   ("copyright"  "(c) 2015-2018 Alexander Williams, Unscramble <license@unscramble.jp>")
   ("install"    "make")
   ("requires"
-    ("jidoteki-admin"    "v1.20.0"    "https://github.com/on-prem/jidoteki-admin.git") ]
+    ("jidoteki-admin"    "v1.21.0"    "https://github.com/on-prem/jidoteki-admin.git") ]
