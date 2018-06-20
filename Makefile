@@ -1,7 +1,7 @@
 # Makefile
 
 # Generic
-.PHONY: all check run-tests html javascript js minify ui
+.PHONY: all check run-tests html javascript js minify ui docs
 
 all: check
 
@@ -21,5 +21,11 @@ js: javascript
 minify:
 		head -n 8 docs/ui.js > docs/ui.min.js
 		minify docs/ui.js >> docs/ui.min.js
+
+docs:
+		cd docs && \
+		marked --gfm -i API.md -o api.html && \
+		cat strapdown-prefix.html api.html strapdown-suffix.html > index.html && \
+		rm api.html
 
 ui: html javascript minify

@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>API documentation</title>
+    <link href="/docs/themes/cerulean.min.css?v=1.22.0" rel="stylesheet">
+    <link href="/docs/themes/bootstrap.min.css?v=1.22.0" rel="stylesheet">
+  </head>
+  <body style="">
+    <div id="content" class="container">
+<p><a href="/">&lt;&lt; return to the Admin Dashboard</a></p>
+<h1 id="api-documentation">API documentation</h1>
+<p>The API enables programmable system administration. It is possible to remotely manage network,
+system, and application settings using well-known tools such as <em>curl</em>, or <em>REST API libraries</em>.</p>
+<h2 id="-a-name-menu-a-menu"><a name="menu"></a>Menu</h2>
+<p>Individual API endpoints are documented in separate sections listed below.</p>
+<p><strong>HTTP Prefix</strong></p>
+<pre><code>/api/v1/admin</code></pre><blockquote>
+<p><strong>Note:</strong> All API endpoints must be prefixed with <code>/api/v1/admin</code></p>
+</blockquote>
+<h3 id="default-api-endpoints">Default API Endpoints</h3>
+<p>These endpoints can not be disabled.</p>
+<table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th align="left">Section</th>
+<th align="left">API Endpoints <br> /api/v1/admin</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">1. <a href="#setup">Setup</a></td>
+<td align="left"><code>POST /setup</code></td>
+<td align="left">Initial setup for using the API</td>
+</tr>
+<tr>
+<td align="left">2. <a href="#authentication">Authentication</a></td>
+<td align="left"><code>POST /setup</code></td>
+<td align="left">How to authenticate to the API, and change the API token.</td>
+</tr>
+<tr>
+<td align="left">3. <a href="#updates">Updates</a></td>
+<td align="left"><code>POST /update</code> <br/> <code>GET /update</code> <br/> <code>GET /update/log</code></td>
+<td align="left">Updating the system using encrypted software update packages, and viewing the status of an update.</td>
+</tr>
+<tr>
+<td align="left">4. <a href="#support">Support</a></td>
+<td align="left"><code>GET /logs</code> <br/> <code>GET /debug</code></td>
+<td align="left">Retrieving log files and debug bundles to help troubleshoot various issues.</td>
+</tr>
+<tr>
+<td align="left">5. <a href="#administration">Administration</a></td>
+<td align="left"><code>GET /reboot</code></td>
+<td align="left">System administration, such as rebooting the system.</td>
+</tr>
+<tr>
+<td align="left">6. <a href="#services">Services</a></td>
+<td align="left"><code>GET /services</code></td>
+<td align="left">Retrieving the status of system services.</td>
+</tr>
+<tr>
+<td align="left">7. <a href="#information">Information</a></td>
+<td align="left"><code>GET /version</code> <br/> <code>GET /changelog</code> <br/> <code>GET /build</code> <br/> <code>GET /health</code><br/> <code>GET /endpoints</code></td>
+<td align="left">Viewing system information, such as the version, changelog, build, health, and endpoints.</td>
+</tr>
+</tbody></table>
+<h3 id="optional-api-endpoints">Optional API Endpoints</h3>
+<p>These endpoints are optional and can only be enabled through <code>/usr/local/etc/jidoteki-admin-api.json</code>.</p>
+<p><strong>Example</strong></p>
+<pre><code>{
+    &quot;endpoints&quot;: [&quot;settings&quot;, &quot;certs&quot;, &quot;license&quot;, &quot;storage&quot;, &quot;backup&quot;],
+    &quot;parameters&quot;: [&quot;public&quot;, &quot;private&quot;, &quot;ca&quot;, &quot;license&quot;, &quot;action&quot;, &quot;archive&quot;]
+}</code></pre><blockquote>
+<p><strong>Note:</strong> Disabled API endpoints will return <code>404 Not Found</code></p>
+</blockquote>
+<table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th align="left">Section</th>
+<th align="left">API Endpoints <br> /api/v1/admin</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">8. <a href="#network">Network</a></td>
+<td align="left"><code>POST /settings</code> <br/> <code>GET /settings</code></td>
+<td align="left">Viewing and changing network/application settings.</td>
+</tr>
+<tr>
+<td align="left">9. <a href="#tls">TLS</a></td>
+<td align="left"><code>POST /certs</code> <br/> <code>GET /certs</code></td>
+<td align="left">Updating the system&#39;s TLS certificates to replace the default self-signed certificates.</td>
+</tr>
+<tr>
+<td align="left">10. <a href="#license">License</a></td>
+<td align="left"><code>POST /license</code> <br/> <code>GET /license</code></td>
+<td align="left">Viewing and changing the system license.</td>
+</tr>
+<tr>
+<td align="left">11. <a href="#storage">Storage</a></td>
+<td align="left"><code>POST /storage</code> <br/> <code>GET /storage</code></td>
+<td align="left">Viewing and changing persistent storage options.</td>
+</tr>
+<tr>
+<td align="left">12. <a href="#backup">Backup</a></td>
+<td align="left"><code>POST /backup</code> <br/> <code>GET /backup</code> <br/> <code>GET /backup/download</code> <br/> <code>GET /backup/log</code> <br/> <code>POST /backup/restore</code></td>
+<td align="left">Generating a backup, and viewing its status and log. Restore a backup</td>
+</tr>
+</tbody></table>
+<h1 id="-a-name-setup-a-1-setup"><a name="setup"></a>1. Setup</h1>
+<p>Before using the API, it is necessary to perform the <strong>initial setup</strong> of the <code>API token</code>. This procedure is only required once.</p>
+<p><strong>Since</strong></p>
+<p><code>&gt;= v1.0.0</code></p>
+<p><strong>HTTP Method</strong></p>
+<pre><code>POST</code></pre><p><strong>Endpoint</strong></p>
+<pre><code>/setup</code></pre><p><strong>Parameters</strong></p>
+<ul>
+<li><code>newtoken</code> <strong>(required)</strong>: New API token, between 1 and 255 printable ASCII characters between codes 33 and 126 inclusively.</li>
+</ul>
+<p><strong>Content-type</strong></p>
+<pre><code>multipart/form-data</code></pre><p><strong>Example</strong></p>
+<pre><code>curl -X POST https://[hostname]:8443/api/v1/admin/setup -F newtoken=[yourtoken]</code></pre><p><strong>Success response</strong></p>
+<pre><code>HTTP/1.1 200 OK
+Content-Type: application/json
+{&quot;Status&quot;:&quot;200 OK&quot;}</code></pre><p><strong>Error response</strong></p>
+<p>If setting the new API token fails, <code>400 Bad Request</code> will be returned.</p>
+<p><a href="#menu">^ return to menu</a></p>
+<hr>
+<h1 id="-a-name-authentication-a-2-authentication"><a name="authentication"></a>2. Authentication</h1>
+<p>There are two methods to perform authentication: <code>token</code> and <code>hash</code>.</p>
+<p>Every API endpoint requires a valid <code>API token</code> or <code>HMAC hash</code> to be sent as a query parameter, <strong>except during initial setup</strong>.</p>
+<p>Once the <code>token</code> is set, it is recommended to only use <code>hash</code> authentication, to avoid sending the cleartext <code>token</code> on every request.</p>
+<h2 id="api-token-authentication">API token authentication</h2>
+<p><strong>Since</strong></p>
+<p><code>&gt;= v1.0.0</code></p>
+<p>Query parameter: <code>?token=[yourtoken]</code></p>
+<h2 id="hmac-hash-authentication">HMAC hash authentication</h2>
+<p><strong>Since</strong></p>
+<p><code>&gt;= v1.9.0</code></p>
+<p>Query parameter: <code>?hash=[sha256hmachash]</code></p>
+<p>To use <code>hash</code> authentication, an HMAC hash must be generated for each API endpoint, using the steps below.</p>
+<h4 id="i-generate-a-secret-key-of-your-api-token-">i. Generate a secret key of your API token:</h4>
+<p>Hash your API token without a newline at the end.</p>
+<pre><code>echo -n &quot;yourtoken&quot; | openssl dgst -sha256</code></pre><p>This should return the SHA256 <em>secret key</em> hash: <code>13e2ff941bbc8692cad141c8d293dda2c4f1c1a3c51b93d54f1a1693e1206107</code></p>
+<h4 id="ii-generate-an-hmac-hash-using-your-secret-key-">ii. Generate an HMAC hash using your secret key:</h4>
+<p>Concatenate the <strong>HTTP Method</strong>, <strong>Prefix</strong>, and <strong>Endpoint</strong>, then HMAC hash it without a newline at the end.</p>
+<pre><code>echo -n &quot;GET/api/v1/admin/version&quot; | openssl dgst -sha256 -hmac 13e2ff941bbc8692cad141c8d293dda2c4f1c1a3c51b93d54f1a1693e1206107</code></pre><p>This should return the SHA256 <em>HMAC</em> hash: <code>b714a60732e096ccef06e360eefe0f1ba4fa5d16ef7da726612e2026e5523241</code></p>
+<h4 id="iii-append-the-hmac-hash-as-a-query-parameter-">iii. Append the HMAC hash as a query parameter:</h4>
+<pre><code>GET /api/v1/admin/version?hash=b714a60732e096ccef06e360eefe0f1ba4fa5d16ef7da726612e2026e5523241</code></pre><h2 id="authentication-errors">Authentication errors</h2>
+<p>Authentication errors always return <code>403 Forbidden</code>, except in situations which may leak private information.</p>
+<h2 id="change-the-api-token">Change the API token</h2>
+<p>Changing the API token is similar to the <a href="#setup">initial setup</a> procedure, except the API call requires <a href="#authentication">authentication</a>.</p>
+<p><strong>Since</strong></p>
+<p><code>&gt;= v1.0.0</code></p>
+<p><strong>HTTP Method</strong></p>
+<pre><code>POST</code></pre><p><strong>Endpoint</strong></p>
+<pre><code>/setup</code></pre><p><strong>Parameters</strong></p>
+<ul>
+<li><code>newtoken</code> <strong>(required)</strong>: New API token, between 1 and 255 printable ASCII characters between codes 33 and 126 inclusively.</li>
+</ul>
+<p><strong>Content-type</strong></p>
+<pre><code>multipart/form-data</code></pre><p><strong>Example</strong></p>
+<pre><code>curl -X POST https://[hostname]:8443/api/v1/admin/setup?hash=[sha256hmachash] -F newtoken=[yourtoken]
+or
+curl -X POST https://[hostname]:8443/api/v1/admin/setup?token=[yourtoken] -F newtoken=[yourtoken]</code></pre><p><strong>Success response</strong></p>
+<pre><code>HTTP/1.1 200 OK
+Content-Type: application/json
+{&quot;Status&quot;:&quot;200 OK&quot;}</code></pre><p><strong>Error response</strong></p>
+<p>If changing the API token fails, <code>400 Bad Request</code> will be returned.</p>
+<p><a href="#menu">^ return to menu</a></p>
+<hr>
+<h1 id="-a-name-updates-a-3-updates"><a name="updates"></a>3. Updates</h1>
+<h3 id="updating-the-system">Updating the system</h3>
+<p>Updating the system is an asynchronous procedure. The API will return a response immediately while the system updates itself in the background. Only one update can run at any given time.</p>
+<p><strong>Since</strong></p>
+<p><code>&gt;= v1.0.0</code></p>
+<p><strong>HTTP Method</strong></p>
+<pre><code>POST</code></pre><p><strong>Endpoint</strong></p>
+<pre><code>/update</code></pre><p><strong>Parameters</strong></p>
+<ul>
+<li><code>update</code> <strong>(required)</strong>: Encrypted software update package</li>
+</ul>
+<p><strong>Content-type</strong></p>
+<pre><code>multipart/form-data</code></pre><p><strong>Example</strong></p>
+<pre><code>curl -X POST https://[hostname]:8443/api/v1/admin/update?hash=[sha256hmachash] -F update=@[software_package-name.enc]
+or
+curl -X POST https://[hostname]:8443/api/v1/admin/update?token=[yourtoken] -F update=@[software_package-name.enc]</code></pre><p><strong>Success response</strong></p>
+<pre><code>HTTP/1.1 202 Accepted
+Location: /api/v1/admin/update
+Content-Type: application/json
+{&quot;Status&quot;:&quot;202 Accepted&quot;,&quot;Location&quot;:&quot;/api/v1/admin/update&quot;}</code></pre><p><strong>Error response</strong></p>
+<p>If the system update API call fails, <code>400 Bad Request</code> will be returned.</p>
+<h3 id="viewing-the-system-update-status">Viewing the system update status</h3>
+<p>This API endpoint will return the status of the system update, and the last 10 lines of the update log. It can be polled repeatedly until the update is complete.</p>
+<p><strong>Since</strong></p>
+<p><code>&gt;= v1.0.0</code></p>
+<p><strong>HTTP Method</strong></p>
+<pre><code>GET</code></pre><p><strong>Endpoint</strong></p>
+<pre><code>/update</code></pre><p><strong>Example</strong></p>
+<pre><code>curl -X GET https://[hostname]:8443/api/v1/admin/update?hash=[sha256hmachash]
+or
+curl -X GET https://[hostname]:8443/api/v1/admin/update?token=[yourtoken]</code></pre><p><strong>Success response</strong></p>
+<pre><code>HTTP/1.1 200 OK
+Content-Type: application/json
+{
+    &quot;status&quot;: &quot;success&quot;,
+    &quot;percentage&quot;: 100,
+    &quot;log&quot;: &quot;[1432140922][SYSTEM] Updating system successful&quot;
+}</code></pre><p><strong>Error response</strong></p>
+<pre><code>HTTP/1.1 200 OK
+Content-Type: application/json
+{
+    &quot;status&quot;: &quot;failed&quot;,
+    &quot;percentage&quot;: 20,
+    &quot;log&quot;: &quot;[1432140922][SYSTEM] Failed updating...&quot;,
+    &quot;error-message&quot;: &quot;Missing update package&quot;,
+    &quot;error-code&quot;: &quot;E1003&quot;
+}</code></pre><p><strong>Status values</strong></p>
+<ul>
+<li><code>running</code>: The system update is currently running.</li>
+<li><code>success</code>: The system update completed successfully.</li>
+<li><code>failed</code>: The system update failed.</li>
+</ul>
+<p><strong>Error codes</strong></p>
+<ul>
+<li><code>E1000</code>: There was a scripting error in the update script.</li>
+<li><code>E1001</code>: There was a version error in the update package.</li>
+<li><code>E1002</code>: There was an error during the update process.</li>
+<li><code>E1003</code>: The update package was missing.</li>
+<li><code>E1004</code>: The update process was already running.</li>
+<li><code>E1005</code>: The update package couldn&#39;t be decrypted or extracted.</li>
+</ul>
+<h3 id="viewing-the-system-update-log">Viewing the system update log</h3>
+<p>This API endpoint will return the full system update log in plain text format.</p>
+<p><strong>Since</strong></p>
+<p><code>&gt;= v1.0.0</code></p>
+<p><strong>HTTP Method</strong></p>
+<pre><code>GET</code></pre><p><strong>Endpoint</strong></p>
+<pre><code>/update/log</code></pre><p><strong>Example</strong></p>
+<pre><code>curl -X GET https://[hostname]:8443/api/v1/admin/update/log?hash=[sha256hmachash]
+or
+curl -X GET https://[hostname]:8443/api/v1/admin/update/log?token=[yourtoken]</code></pre><p><strong>Success response</strong></p>
+<pre><code>HTTP/1.1 200 OK
+Content-Type: text/plain
+[1433080791][SYSTEM] Updating system. Please wait..
+[1433080791][SYSTEM] Updating system successful
+...</code></pre><p><strong>Error response</strong></p>
+<p>If the log file doesn&#39;t exist, <code>404 Not Found</code> will be returned.</p>
+<p><a href="#menu">^ return to menu</a></p>
+<hr>
+<h1 id="-a-name-support-a-4-support"><a name="support"></a>4. Support</h1>
+<h3 id="retrieving-log-files">Retrieving log files</h3>
+<p>Retrieving compressed log files can help troubleshoot issues with the system. The log files generally don&#39;t contain sensitive information, therefore they are not encrypted. This will start a download of <code>logs.tar.gz</code>.</p>
+<p><strong>Since</strong></p>
+<p><code>&gt;= v1.1.1</code></p>
+<p><strong>HTTP Method</strong></p>
+<pre><code>GET</code></pre><p><strong>Endpoint</strong></p>
+<pre><code>/logs</code></pre><p><strong>Example</strong></p>
+<pre><code>curl -X GET https://[hostname]:8443/api/v1/admin/logs?hash=[sha256hmachash]
+or
+curl -X GET https://[hostname]:8443/api/v1/admin/logs?token=[yourtoken]</code></pre><p><strong>Success response</strong></p>
+<pre><code>HTTP/1.1 200 OK
+Content-Type: application/octet-stream
+Filename: logs.tar.gz</code></pre><p><strong>Error response</strong></p>
+<p>If the logs.tar.gz file doesn&#39;t exist, <code>404 Not Found</code> will be returned.</p>
+<p>If an error occurs when compressing the logs, <code>400 Bad Request</code> will be returned.</p>
+<h3 id="retrieve-a-debug-bundle">Retrieve a debug bundle</h3>
+<p>Retrieving a debug bundle can help the system developpers troubleshoot issues with the system. The debug bundle can contain sensitive information, therefore it is encrypted. This will start a download of <code>debug-bundle.tar</code>.</p>
+<p><strong>Since</strong></p>
+<p><code>&gt;= v1.7.0</code></p>
+<p><strong>HTTP Method</strong></p>
+<pre><code>GET</code></pre><p><strong>Endpoint</strong></p>
+<pre><code>/debug</code></pre><p><strong>Example</strong></p>
+<pre><code>curl -X GET https://[hostname]:8443/api/v1/admin/debug?hash=[sha256hmachash]
+or
+curl -X GET https://[hostname]:8443/api/v1/admin/debug?token=[yourtoken]</code></pre><p><strong>Success response</strong></p>
+<pre><code>HTTP/1.1 200 OK
+Content-Type: application/octet-stream
+Filename: debug-bundle.tar</code></pre><p><strong>Error response</strong></p>
+<p>If the debug-bundle.tar file doesn&#39;t exist, <code>404 Not Found</code> will be returned.</p>
+<p>If an error occurs when creating the debug bundle, <code>400 Bad Request</code> will be returned.</p>
+<p><a href="#menu">^ return to menu</a></p>
+<hr>
+<h1 id="-a-name-administration-a-5-administration"><a name="administration"></a>5. Administration</h1>
+<h3 id="rebooting-the-system">Rebooting the system</h3>
+<p>This API endpoint will reboot the system immediately after performing a system backup.</p>
+<p>The API will return a response immediately while the system reboots in the background.</p>
+<p><strong>Since</strong></p>
+<p><code>&gt;= v1.5.0</code></p>
+<p><strong>HTTP Method</strong></p>
+<pre><code>GET</code></pre><p><strong>Endpoint</strong></p>
+<pre><code>/reboot</code></pre><p><strong>Example</strong></p>
+<pre><code>curl -X GET https://[hostname]:8443/api/v1/admin/reboot?hash=[sha256hmachash]
+or
+curl -X GET https://[hostname]:8443/api/v1/admin/reboot?token=[yourtoken]</code></pre><p><strong>Success response</strong></p>
+<pre><code>HTTP/1.1 202 Accepted
+Content-Type: application/json
+{&quot;Status&quot;: &quot;202 Accepted&quot;}</code></pre><p><a href="#menu">^ return to menu</a></p>
+<hr>
+<h1 id="-a-name-services-a-6-services"><a name="services"></a>6. Services</h1>
+<h3 id="retrieving-service-status">Retrieving service status</h3>
+<p>This API endpoint will retrieve the status of various system services.</p>
+<p>The API will return a response immediately.</p>
+<p><strong>Since</strong></p>
+<p><code>&gt;= v1.12.0</code></p>
+<p><strong>HTTP Method</strong></p>
+<pre><code>GET</code></pre><p><strong>Endpoint</strong></p>
+<pre><code>/services</code></pre><p><strong>Example</strong></p>
+<pre><code>curl -X GET https://[hostname]:8443/api/v1/admin/services?hash=[sha256hmachash]
+or
+curl -X GET https://[hostname]:8443/api/v1/admin/services?token=[yourtoken]</code></pre><p><strong>Success response</strong></p>
+<pre><code>HTTP/1.1 200 OK
+Content-Type: application/json
+{
+    &quot;services&quot;: [{
+        &quot;openssh&quot;: &quot;running&quot;
+    }, {
+        &quot;jidoteki-admin-api&quot;: &quot;running&quot;
+    }]
+}</code></pre><p><a href="#menu">^ return to menu</a></p>
+<hr>
+<h1 id="-a-name-information-a-7-information"><a name="information"></a>7. Information</h1>
+<h3 id="viewing-the-system-s-version">Viewing the system&#39;s version</h3>
+<p>The system&#39;s version can be used to determine if an update can be applied. It can only be changed during the <a href="#updates">updates</a> procedure.</p>
+<p><strong>Since</strong></p>
+<p><code>&gt;= v1.1.3</code></p>
+<p><strong>HTTP Method</strong></p>
+<pre><code>GET</code></pre><p><strong>Endpoint</strong></p>
+<pre><code>/version</code></pre><p><strong>Example</strong></p>
+<pre><code>curl -X GET https://[hostname]:8443/api/v1/admin/version?hash=[sha256hmachash]
+or
+curl -X GET https://[hostname]:8443/api/v1/admin/version?token=[yourtoken]</code></pre><p><strong>Success response</strong></p>
+<pre><code>HTTP/1.1 200 OK
+Content-Type: application/json
+{
+    &quot;version&quot;: &quot;1.0.0&quot;
+}</code></pre><p><strong>Error response</strong></p>
+<p>If the version file doesn&#39;t exist, <code>404 Not Found</code> will be returned.</p>
+<h3 id="viewing-the-system-s-changelog">Viewing the system&#39;s changelog</h3>
+<p>This API endpoint will return the system&#39;s changelog since the last update, in plain text format. It can only be changed during the <a href="#updates">updates</a> procedure.</p>
+<p><strong>Since</strong></p>
+<p><code>&gt;= v1.1.6</code></p>
+<p><strong>HTTP Method</strong></p>
+<pre><code>GET</code></pre><p><strong>Endpoint</strong></p>
+<pre><code>/changelog</code></pre><p><strong>Example</strong></p>
+<pre><code>curl -X GET https://[hostname]:8443/api/v1/admin/changelog?hash=[sha256hmachash]
+or
+curl -X GET https://[hostname]:8443/api/v1/admin/changelog?token=[yourtoken]</code></pre><p><strong>Success response</strong></p>
+<pre><code>HTTP/1.1 200 OK
+Content-Type: text/plain
+# Changelog
+
+## 1.0.9 (2015-08-21)
+
+  * Update app to version 2.1.2
+  * Update nodejs modules
+  * Update system packages
+  * Update API to version 1.1.6</code></pre><p><strong>Error response</strong></p>
+<p>If the changelog file doesn&#39;t exist, <code>404 Not Found</code> will be returned.</p>
+<h3 id="viewing-the-system-s-build-information">Viewing the system&#39;s build information</h3>
+<p>This API endpoint will return the system&#39;s current build information, in JSON format. It can only be changed during the <a href="#updates">updates</a> procedure.</p>
+<p><strong>Since</strong></p>
+<p><code>&gt;= v1.14.0</code></p>
+<p><strong>HTTP Method</strong></p>
+<pre><code>GET</code></pre><p><strong>Endpoint</strong></p>
+<pre><code>/build</code></pre><p><strong>Example</strong></p>
+<pre><code>curl -X GET https://[hostname]:8443/api/v1/admin/build?hash=[sha256hmachash]
+or
+curl -X GET https://[hostname]:8443/api/v1/admin/build?token=[yourtoken]</code></pre><p><strong>Success response</strong></p>
+<pre><code>HTTP/1.1 200 OK
+Content-Type: application/json
+{
+    &quot;builddate&quot;:&quot;123456789&quot;
+}</code></pre><p><strong>Error response</strong></p>
+<p>If the system&#39;s <code>build.json</code> file doesn&#39;t exist, <code>404 Not Found</code> will be returned.</p>
+<h3 id="viewing-the-system-s-health-information">Viewing the system&#39;s health information</h3>
+<p>This API endpoint will return the system&#39;s current health information (disk/memory/cpu), in JSON format.</p>
+<p><strong>Since</strong></p>
+<p><code>&gt;= v1.15.0</code></p>
+<p><strong>HTTP Method</strong></p>
+<pre><code>GET</code></pre><p><strong>Endpoint</strong></p>
+<pre><code>/health</code></pre><p><strong>Example</strong></p>
+<pre><code>curl -X GET https://[hostname]:8443/api/v1/admin/health?hash=[sha256hmachash]
+or
+curl -X GET https://[hostname]:8443/api/v1/admin/health?token=[yourtoken]</code></pre><p><strong>Success response</strong></p>
+<pre><code>HTTP/1.1 200 OK
+Content-Type: application/json
+{
+    &quot;disk&quot;: {
+        &quot;used&quot;: &quot;3.4G&quot;,
+        &quot;total&quot;: &quot;234G&quot;,
+        &quot;percentage&quot;: 2
+    },
+    &quot;memory&quot;: {
+        &quot;used&quot;: &quot;260M&quot;,
+        &quot;total&quot;: &quot;1000M&quot;,
+        &quot;percentage&quot;: 26
+    },
+    &quot;cpu&quot;: {
+        &quot;num&quot;: 1,
+        &quot;load&quot;: &quot;0.66, 0.28, 0.14&quot;,
+        &quot;cpu5min&quot;: 0
+    }
+}</code></pre><p><strong>Error response</strong></p>
+<p>If the system&#39;s <code>health.json</code> file doesn&#39;t exist, <code>404 Not Found</code> will be returned.</p>
+<h3 id="viewing-the-system-s-api-endpoints">Viewing the system&#39;s API endpoints</h3>
+<p>This API endpoint will return the list of available API endpoints (first-level only).</p>
+<blockquote>
+<p><strong>Note:</strong> Optional API endpoints are configured in <code>/usr/local/etc/jidoteki-admin-api.json</code></p>
+</blockquote>
+<p><strong>Since</strong></p>
+<p><code>&gt;= v1.18.0</code></p>
+<p><strong>HTTP Method</strong></p>
+<pre><code>GET</code></pre><p><strong>Endpoint</strong></p>
+<pre><code>/endpoints</code></pre><p><strong>Example</strong></p>
+<pre><code>curl -X GET https://[hostname]:8443/api/v1/admin/endpoints?hash=[sha256hmachash]
+or
+curl -X GET https://[hostname]:8443/api/v1/admin/endpoints?token=[yourtoken]</code></pre><p><strong>Success response</strong></p>
+<pre><code>HTTP/1.1 200 OK
+Content-Type: application/json
+{
+    &quot;endpoints&quot;: [
+        &quot;/api/v1/admin/backup&quot;,
+        &quot;/api/v1/admin/build&quot;,
+        &quot;/api/v1/admin/certs&quot;,
+        &quot;/api/v1/admin/changelog&quot;,
+        &quot;/api/v1/admin/debug&quot;,
+        &quot;/api/v1/admin/endpoints&quot;,
+        &quot;/api/v1/admin/health&quot;,
+        &quot;/api/v1/admin/logs&quot;,
+        &quot;/api/v1/admin/reboot&quot;,
+        &quot;/api/v1/admin/services&quot;,
+        &quot;/api/v1/admin/settings&quot;,
+        &quot;/api/v1/admin/setup&quot;,
+        &quot;/api/v1/admin/storage&quot;,
+        &quot;/api/v1/admin/update&quot;,
+        &quot;/api/v1/admin/version&quot;,
+        &quot;/docs&quot;
+    ]
+}</code></pre><p><a href="#menu">^ return to menu</a></p>
+<hr>
+<h1 id="-a-name-network-a-8-network"><a name="network"></a>8. Network</h1>
+<h3 id="updating-the-network-application-settings">Updating the network/application settings</h3>
+<p>Updating the network/application settings is an asynchronous procedure. The API will return a response immediately while the settings are updated in the background. Only one update can run at any given time.</p>
+<p>Network settings can be set to <code>DHCP</code> or <code>STATIC</code> by uploading a <em>settings.json</em> file.</p>
+<p><strong>Since</strong></p>
+<p><code>&gt;= v1.0.0</code></p>
+<p><strong>HTTP Method</strong></p>
+<pre><code>POST</code></pre><p><strong>Endpoint</strong></p>
+<pre><code>/settings</code></pre><p><strong>Note:</strong> IPv4 and IPv6 addresses are supported.</p>
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>settings</code> <strong>(required)</strong>: JSON settings file</li>
+</ul>
+<p><strong>Settings validation (network)</strong></p>
+<ul>
+<li><strong>interface (required)</strong>: <code>a-zA-Z0-9</code> (alphanumeric), between 3 and 14 characters
+  (Not required prior to <code>v1.18.0</code>)</li>
+<li><strong>hostname (required)</strong>: <code>a-zA-Z0-9</code> (alphanumeric) + <code>.-</code>, between 3 and 255 characters
+  (Not required prior to <code>v1.18.0</code>)</li>
+<li><strong>ip_address</strong>: <code>abcdef0123456789ABCDEF.:</code>, between 3 and 45 characters</li>
+<li><strong>netmask</strong>: <code>abcdef0123456789ABCDEF.:/</code>, between 2 and 45 characters</li>
+<li><strong>gateway</strong>: <code>abcdef0123456789ABCDEF.:</code>, between 3 and 45 characters</li>
+<li><strong>dns1</strong>: <code>abcdef0123456789ABCDEF.:</code>, between 3 and 45 characters</li>
+<li><strong>dns2</strong>: <code>abcdef0123456789ABCDEF.:</code>, between 3 and 45 characters</li>
+<li><strong>ntpserver</strong>: <code>a-zA-Z0-9</code> (alphanumeric) + <code>.-:</code>, between 3 and 255 characters</li>
+</ul>
+<p><strong>Content-type</strong></p>
+<pre><code>multipart/form-data</code></pre><p><strong>Example <code>STATIC</code> <em>settings.json</em> file</strong></p>
+<pre><code>{
+    &quot;network&quot;: {
+        &quot;interface&quot;: &quot;eth0&quot;,
+        &quot;hostname&quot;: &quot;test.host&quot;,
+        &quot;ip_address&quot;: &quot;192.168.1.100&quot;,
+        &quot;netmask&quot;: &quot;255.255.255.0&quot;,
+        &quot;gateway&quot;: &quot;192.168.1.1&quot;,
+        &quot;dns1&quot;: &quot;192.168.1.2&quot;,
+        &quot;dns2&quot;: &quot;192.168.1.3&quot;,
+        &quot;ntpserver&quot;: &quot;pool.ntp.org&quot;
+    },
+    &quot;app&quot;: {
+        &quot;name&quot;: &quot;testapp&quot;
+    }
+}</code></pre><p><strong>Example <code>DHCP</code> <em>settings.json</em> file</strong></p>
+<p>Omit the <code>ip_address, netmask, gateway</code> fields, and the network settings will automatically switch to DHCP.</p>
+<pre><code>{
+    &quot;network&quot;: {
+        &quot;interface&quot;: &quot;eth0&quot;,
+        &quot;hostname&quot;: &quot;test.host&quot;
+    },
+    &quot;app&quot;: {
+        &quot;name&quot;: &quot;testapp&quot;
+    }
+}</code></pre><p><strong>Example</strong></p>
+<pre><code>curl -X POST https://[hostname]:8443/api/v1/admin/settings?hash=[sha256hmachash] -F settings=@[settings.json]
+or
+curl -X POST https://[hostname]:8443/api/v1/admin/settings?token=[yourtoken] -F settings=@[settings.json]</code></pre><p><strong>Success response</strong></p>
+<pre><code>HTTP/1.1 202 Accepted
+Location: /api/v1/admin/settings
+Content-Type: application/json
+{&quot;Status&quot;:&quot;202 Accepted&quot;,&quot;Location&quot;:&quot;/api/v1/admin/settings&quot;}</code></pre><p><strong>Error response</strong></p>
+<p>If the network/application settings update API call fails, <code>400 Bad Request</code> will be returned.</p>
+<h3 id="viewing-the-network-application-settings">Viewing the network/application settings</h3>
+<p>This API endpoint will return the network/application settings. It can be polled repeatedly to monitor changes to the network settings.</p>
+<p><strong>Since</strong></p>
+<p><code>&gt;= v1.0.0</code></p>
+<p><strong>HTTP Method</strong></p>
+<pre><code>GET</code></pre><p><strong>Endpoint</strong></p>
+<pre><code>/settings</code></pre><p><strong>Example</strong></p>
+<pre><code>curl -X GET https://[hostname]:8443/api/v1/admin/settings?hash=[sha256hmachash]
+or
+curl -X GET https://[hostname]:8443/api/v1/admin/settings?token=[yourtoken]</code></pre><p><strong>Success response</strong></p>
+<pre><code>HTTP/1.1 200 OK
+Content-Type: application/json
+{
+    &quot;network&quot;: {
+        &quot;interface&quot;: &quot;eth0&quot;,
+        &quot;hostname&quot;: &quot;test.host&quot;,
+        &quot;ip_address&quot;: &quot;192.168.1.100&quot;,
+        &quot;netmask&quot;: &quot;255.255.255.0&quot;,
+        &quot;gateway&quot;: &quot;192.168.1.1&quot;,
+        &quot;dns1&quot;: &quot;192.168.1.2&quot;,
+        &quot;dns2&quot;: &quot;192.168.1.3&quot;,
+        &quot;ntpserver&quot;: &quot;pool.ntp.org&quot;
+    },
+    &quot;app&quot;: {
+        &quot;name&quot;: &quot;testapp&quot;
+    }
+}</code></pre><p><a href="#menu">^ return to menu</a></p>
+<hr>
+<h1 id="-a-name-tls-a-9-tls"><a name="tls"></a>9. TLS</h1>
+<h3 id="updating-tls-certificates">Updating TLS certificates</h3>
+<p>Update TLS certificates to replace the default self-signed certificates.</p>
+<p>Updating the TLS certificates is an asynchronous procedure. The API will return a response immediately while the system updates the certificates in the background. Only one update can run at any given time.</p>
+<p><strong>Since</strong></p>
+<p><code>&gt;= v1.8.0</code></p>
+<p><strong>HTTP Method</strong></p>
+<pre><code>POST</code></pre><p><strong>Endpoint</strong></p>
+<pre><code>/certs</code></pre><p><strong>Parameters</strong></p>
+<ul>
+<li><code>public</code> <strong>(required)</strong>: Public TLS certificate (PEM format)</li>
+<li><code>private</code> <strong>(required)</strong>: Private TLS certificate key (unencrypted RSA format)</li>
+<li><code>ca</code> <strong>(optional)</strong>: Intermediate or Root TLS certificate (PEM format)</li>
+</ul>
+<p><strong>Content-type</strong></p>
+<pre><code>multipart/form-data</code></pre><p><strong>Example PEM format <code>public/ca</code> <em>cert</em> file</strong></p>
+<pre><code>-----BEGIN CERTIFICATE-----
+MIIDXTCCAkWgAwIBAgIJAJC1HiIAZAiIMA0GCSqGSIb3Df
+BAYTAkFVMRMwEQYDVQQIDApTb21lLVN0YXRlMSEwHwYDVx
+aWRnaXRzIFB0eSBMdGQwHhcNMTExMjMxMDg1OTQ0WhcNMT
+A .... MANY LINES LIKE THAT ....
+JjyzfN746vaInA1KxYEeI1Rx5KXY8zIdj6a7hhphpj2E04
+C3Fayua4DRHyZOLmlvQ6tIChY0ClXXuefbmVSDeUHwc8Yu
+B7xxt8BVc69rLeHV15A0qyx77CLSj3tCx2IUXVqRs5mlSb
+vA==
+-----END CERTIFICATE-----</code></pre><p><strong>Example RSA format <code>private</code> <em>key</em> file</strong></p>
+<p>The RSA private key should be unencrypted to avoid being prompted for a passphrase</p>
+<pre><code>-----BEGIN RSA PRIVATE KEY-----
+MIIFDjBABgkqhkiG9w0BBQ0wMzAbBgkqhkiG9w0BBQwwDg
+MBQGCCqGSIb3DQMHBAgD1kGN4ZslJgSCBMi1xk9jhlPxPc
+9g73NQbtqZwI+9X5OhpSg/2ALxlCCjbqvzgSu8gfFZ4yo+
+A .... MANY LINES LIKE THAT ....
+X0R+meOaudPTBxoSgCCM51poFgaqt4l6VlTN4FRpj+c/Wc
+blK948UAda/bWVmZjXfY4Tztah0CuqlAldOQBzu8TwE7WD
+H0ga/iLNvWYexG7FHLRiq5hTj0g9mUPEbeTXuPtOkTEb/0
+GEs=
+-----END RSA PRIVATE KEY-----</code></pre><p><strong>Example</strong></p>
+<pre><code>curl -X POST https://[hostname]:8443/api/v1/admin/certs?hash=[sha256hmachash] -F public=@[hostname.pem] -F private=@[hostname.key] -F ca=@[ca-cert.pem]
+or
+curl -X POST https://[hostname]:8443/api/v1/admin/certs?token=[yourtoken] -F public=@[hostname.pem] -F private=@[hostname.key] -F ca=@[ca-cert.pem]</code></pre><p><strong>Success response</strong></p>
+<pre><code>HTTP/1.1 202 Accepted
+Location: /api/v1/admin/certs
+{&quot;Status&quot;:&quot;202 Accepted&quot;,&quot;Location&quot;:&quot;/api/v1/admin/certs&quot;}</code></pre><p><strong>Error response</strong></p>
+<p>If the certificates update API call fails, <code>400 Bad Request</code> will be returned.</p>
+<h3 id="viewing-the-tls-certificates-update-status">Viewing the TLS certificates update status</h3>
+<p>This API endpoint will return the status of the certificates update, and the last 10 lines of the certificates update log. It can be polled repeatedly until the update is complete.</p>
+<p><strong>Since</strong></p>
+<p><code>&gt;= v1.8.0</code></p>
+<p><strong>HTTP Method</strong></p>
+<pre><code>GET</code></pre><p><strong>Endpoint</strong></p>
+<pre><code>/certs</code></pre><p><strong>Example</strong></p>
+<pre><code>curl -X GET https://[hostname]:8443/api/v1/admin/certs?hash=[sha256hmachash]
+or
+curl -X GET https://[hostname]:8443/api/v1/admin/certs?token=[yourtoken]</code></pre><p><strong>Success response</strong></p>
+<pre><code>HTTP/1.1 200 OK
+Content-Type: application/json
+{
+    &quot;status&quot;: &quot;success&quot;,
+    &quot;log&quot;: &quot;[1459884203][SYSTEM] Validating and adding TLS certificates&quot;
+}</code></pre><p><strong>Status values</strong></p>
+<ul>
+<li><code>running</code>: The certificates update is currently running.</li>
+<li><code>success</code>: The certificates update completed successfully.</li>
+<li><code>failed</code>: The certificates update failed.</li>
+</ul>
+<p><a href="#menu">^ return to menu</a></p>
+<hr>
+<h1 id="-a-name-license-a-10-license"><a name="license"></a>10. License</h1>
+<h3 id="changing-the-system-license">Changing the system license</h3>
+<p>This API endpoint can be used to change the system license supplied by the system developpers.</p>
+<p><strong>Since</strong></p>
+<p><code>&gt;= v1.0.0</code></p>
+<p><strong>HTTP Method</strong></p>
+<pre><code>POST</code></pre><p><strong>Endpoint</strong></p>
+<pre><code>/license</code></pre><p><strong>Parameters</strong></p>
+<ul>
+<li><code>license</code> <strong>(required)</strong>: Encrypted license file</li>
+</ul>
+<p><strong>Content-type</strong></p>
+<pre><code>multipart/form-data</code></pre><p><strong>Example</strong></p>
+<pre><code>curl -X POST https://[hostname]:8443/api/v1/admin/license?hash=[sha256hmachash] -F license=@[license.asc]
+or
+curl -X POST https://[hostname]:8443/api/v1/admin/license?token=[yourtoken] -F license=@[license.asc]</code></pre><p><strong>Success response</strong></p>
+<pre><code>HTTP/1.1 200 OK
+Content-Type: application/json
+{
+    &quot;app&quot;: &quot;enterprise&quot;,
+    &quot;users&quot;: 20,
+    &quot;expires&quot;: &quot;19 January 2038&quot;,
+    &quot;name&quot;: &quot;Enterprise Company&quot;,
+    &quot;contact&quot;: &quot;cto@enterprise&quot;
+}</code></pre><p><strong>Error response</strong></p>
+<p>If the license file is invalid or doesn&#39;t exist, <code>404 Not Found</code> will be returned.</p>
+<p>If an error occurs when updating the license, <code>400 Bad Request</code> will be returned.</p>
+<h3 id="viewing-the-license-details">Viewing the license details</h3>
+<p>This API endpoint will return the details of the license.</p>
+<p><strong>Since</strong></p>
+<p><code>&gt;= v1.0.0</code></p>
+<p><strong>HTTP Method</strong></p>
+<pre><code>GET</code></pre><p><strong>Endpoint</strong></p>
+<pre><code>/license</code></pre><p><strong>Example</strong></p>
+<pre><code>curl -X GET https://[hostname]:8443/api/v1/admin/license?hash=[sha256hmachash]
+or
+curl -X GET https://[hostname]:8443/api/v1/admin/license?token=[yourtoken]</code></pre><p><strong>Success response</strong></p>
+<pre><code>HTTP/1.1 200 OK
+Content-Type: application/json
+{
+    &quot;app&quot;: &quot;enterprise&quot;,
+    &quot;users&quot;: 20,
+    &quot;expires&quot;: &quot;19 January 2038&quot;,
+    &quot;name&quot;: &quot;Enterprise Company&quot;,
+    &quot;contact&quot;: &quot;cto@enterprise&quot;
+}</code></pre><p><strong>Error response</strong></p>
+<p>If the license file is invalid or doesn&#39;t exist, <code>404 Not Found</code> will be returned.</p>
+<p><a href="#menu">^ return to menu</a></p>
+<hr>
+<h1 id="-a-name-storage-a-11-storage"><a name="storage"></a>11. Storage</h1>
+<h3 id="changing-persistent-storage-options">Changing persistent storage options</h3>
+<p>Changing the storage options is an asynchronous procedure. The API will return a response immediately while the settings are updated in the background. Only one update can run at any given time.</p>
+<blockquote>
+<p><strong>Note:</strong> Storage types are only available based on options found in <code>/usr/local/etc/storage-options.json</code>.</p>
+</blockquote>
+<p><strong>Example</strong></p>
+<pre><code>{
+    &quot;options&quot;: [&quot;local&quot;, &quot;aoe&quot;, &quot;nfs&quot;, &quot;nbd&quot;, &quot;iscsi&quot;]
+}</code></pre><p>Settings are only applied after a reboot.</p>
+<p><strong>Since</strong></p>
+<p><code>&gt;= v1.13.0</code></p>
+<p><strong>HTTP Method</strong></p>
+<pre><code>POST</code></pre><p><strong>Endpoint</strong></p>
+<pre><code>/storage</code></pre><p><strong>Parameters</strong></p>
+<ul>
+<li><code>settings</code> <strong>(required)</strong>: JSON settings file</li>
+</ul>
+<p><strong>Settings validation (storage)</strong></p>
+<ul>
+<li><strong>type (required)</strong>: Allowed: <code>local</code>, <code>nfs</code>, <code>aoe</code>, <code>iscsi</code>, <code>nbd</code></li>
+</ul>
+<p>[nfs]</p>
+<ul>
+<li><strong>mount_options (required)</strong>: <code>a-zA-Z0-9</code> (alphanumeric) + <code>.-=,</code>, between 3 and 255 characters</li>
+<li><strong>ip (required)</strong>: <code>abcdef0123456789ABCDEF.:</code>, between 3 and 45 characters</li>
+<li><strong>share (required)</strong>: <code>a-zA-Z0-9</code> (alphanumeric) + <code>.-_/</code>, between 3 and 255 characters</li>
+</ul>
+<p>[aoe]</p>
+<ul>
+<li><strong>device (required)</strong>: <code>a-zA-Z0-9</code> (alphanumeric) + <code>.-</code>, between 3 and 255 characters</li>
+</ul>
+<p>[iscsi]</p>
+<ul>
+<li><strong>target (required)</strong>: <code>a-zA-Z0-9</code> (alphanumeric) + <code>.-_:</code>, between 3 and 255 characters</li>
+<li><strong>ip (required)</strong>: <code>abcdef0123456789ABCDEF.:</code>, between 3 and 45 characters</li>
+<li><strong>username (required)</strong>: printable ASCII characters (ASCII codes 33-126, no spaces), between 3 and 255 characters</li>
+<li><strong>password (required)</strong>: printable ASCII characters (ASCII codes 33-126, no spaces), between 3 and 255 characters</li>
+</ul>
+<p>[nbd]</p>
+<ul>
+<li><strong>export_name (required)</strong>: <code>a-zA-Z0-9</code> (alphanumeric) + <code>.-_/</code>, between 3 and 255 characters</li>
+<li><strong>ip (required)</strong>: <code>abcdef0123456789ABCDEF.:</code>, between 3 and 45 characters</li>
+<li><strong>port (required)</strong>: <code>0-9</code> (numeric) + <code>.-_/</code>, between 1 and 5 characters</li>
+</ul>
+<p><strong>Content-type</strong></p>
+<pre><code>multipart/form-data</code></pre><p><strong>Example <code>local</code> <em>settings.json</em> file (Local Disk)</strong></p>
+<pre><code>{
+    &quot;storage&quot;: {
+        &quot;type&quot;: &quot;local&quot;
+    }
+}</code></pre><p><strong>Example <code>nfs</code> <em>settings.json</em> file (Network File System)</strong></p>
+<pre><code>{
+    &quot;storage&quot;: {
+        &quot;type&quot;: &quot;nfs&quot;,
+        &quot;mount_options&quot;: &quot;noacl,sync&quot;,
+        &quot;ip&quot;: &quot;192.168.1.100&quot;,
+        &quot;share&quot;: &quot;/nfs/storage&quot;
+    }
+}</code></pre><p><strong>Example <code>aoe</code> <em>settings.json</em> file (ATA-over-Ethernet)</strong></p>
+<pre><code>{
+    &quot;storage&quot;: {
+        &quot;type&quot;: &quot;aoe&quot;,
+        &quot;device&quot;: &quot;e0.1&quot;
+    }
+}</code></pre><p><strong>Example <code>iscsi</code> <em>settings.json</em> file (iSCSI)</strong></p>
+<pre><code>{
+    &quot;storage&quot;: {
+        &quot;type&quot;: &quot;iscsi&quot;,
+        &quot;target&quot;: &quot;iqn.2016-01.com.example:storage.lun1&quot;,
+        &quot;ip&quot;: &quot;192.168.1.100&quot;,
+        &quot;username&quot;: &quot;user&quot;,
+        &quot;password&quot;: &quot;pass&quot;
+    }
+}</code></pre><p><strong>Example <code>nbd</code> <em>settings.json</em> file (Network Block Device)</strong></p>
+<pre><code>{
+    &quot;storage&quot;: {
+        &quot;type&quot;: &quot;nbd&quot;,
+        &quot;export_name&quot;: &quot;otherexport&quot;,
+        &quot;ip&quot;: &quot;192.168.1.100&quot;,
+        &quot;port&quot;: &quot;1043&quot;
+    }
+}</code></pre><p><strong>Example</strong></p>
+<pre><code>curl -X POST https://[hostname]:8443/api/v1/admin/storage?hash=[sha256hmachash] -F settings=@[settings.json]
+or
+curl -X POST https://[hostname]:8443/api/v1/admin/storage?token=[yourtoken] -F settings=@[settings.json]</code></pre><p><strong>Success response</strong></p>
+<pre><code>HTTP/1.1 202 Accepted
+Location: /api/v1/admin/storage
+Content-Type: application/json
+{&quot;Status&quot;:&quot;202 Accepted&quot;,&quot;Location&quot;:&quot;/api/v1/admin/storage&quot;}</code></pre><p><strong>Error response</strong></p>
+<p>If the storage settings update API call fails, <code>400 Bad Request</code> will be returned.</p>
+<h3 id="viewing-the-persistent-storage-settings">Viewing the persistent storage settings</h3>
+<p>This API endpoint will return the storage options.</p>
+<p><strong>Since</strong></p>
+<p><code>&gt;= v1.13.0</code></p>
+<p><strong>HTTP Method</strong></p>
+<pre><code>GET</code></pre><p><strong>Endpoint</strong></p>
+<pre><code>/storage</code></pre><p><strong>Example</strong></p>
+<pre><code>curl -X GET https://[hostname]:8443/api/v1/admin/storage?hash=[sha256hmachash]
+or
+curl -X GET https://[hostname]:8443/api/v1/admin/storage?token=[yourtoken]</code></pre><p><strong>Success response</strong></p>
+<pre><code>HTTP/1.1 200 OK
+Content-Type: application/json
+{
+    &quot;storage&quot;: {
+        &quot;type&quot;: &quot;nfs&quot;,
+        &quot;mount_options&quot;: &quot;noacl,sync&quot;,
+        &quot;ip&quot;: &quot;192.168.1.100&quot;,
+        &quot;share&quot;: &quot;/nfs/storage&quot;
+    },
+    &quot;options&quot;: [&quot;local&quot;, &quot;nfs&quot;, &quot;nbd&quot;, &quot;iscsi&quot;, &quot;aoe&quot;]
+}</code></pre><p><a href="#menu">^ return to menu</a></p>
+<hr>
+<h1 id="-a-name-backup-a-12-backup"><a name="backup"></a>12. Backup</h1>
+<h3 id="generating-a-backup">Generating a backup</h3>
+<p>Generating a backup is an asynchronous procedure. The API will return a response immediately while the backup is created in the background. Only one backup can run at any given time.</p>
+<p>The backup file is stored in memory, and can be stopped or deleted at any time.</p>
+<p><strong>Since</strong></p>
+<p><code>&gt;= v1.18.0</code></p>
+<p><strong>HTTP Method</strong></p>
+<pre><code>POST</code></pre><p><strong>Endpoint</strong></p>
+<pre><code>/backup</code></pre><p><strong>Parameters</strong></p>
+<ul>
+<li><code>action</code> <strong>(required)</strong>: <code>START</code> to start a backup, <code>STOP</code> to stop or delete a backup</li>
+</ul>
+<p><strong>Content-type</strong></p>
+<pre><code>multipart/form-data</code></pre><p><strong>Example</strong></p>
+<pre><code>curl -X POST https://[hostname]:8443/api/v1/admin/backup?hash=[sha256hmachash] -F action=START
+or
+curl -X POST https://[hostname]:8443/api/v1/admin/backup?token=[yourtoken] -F action=START</code></pre><p><strong>Success response</strong></p>
+<pre><code>HTTP/1.1 202 Accepted
+Location: /api/v1/admin/backup
+Content-Type: application/json
+{&quot;Status&quot;:&quot;202 Accepted&quot;,&quot;Location&quot;:&quot;/api/v1/admin/backup&quot;}</code></pre><p><strong>Error response</strong></p>
+<p><code>400 Bad Request</code> if the backup API call fails</p>
+<h3 id="viewing-the-backup-status">Viewing the backup status</h3>
+<p>This API endpoint will return the status of the backup.</p>
+<p><strong>Since</strong></p>
+<p><code>&gt;= v1.18.0</code></p>
+<p><strong>HTTP Method</strong></p>
+<pre><code>GET</code></pre><p><strong>Endpoint</strong></p>
+<pre><code>/backup</code></pre><p><strong>Example</strong></p>
+<pre><code>HTTP/1.1 200 OK
+Content-Type: application/json
+{
+    &quot;status&quot;: &quot;running&quot;
+}</code></pre><p>or</p>
+<pre><code>HTTP/1.1 200 OK
+Content-Type: application/json
+{
+    &quot;status&quot;: &quot;success&quot;,
+    &quot;filesize&quot;: &quot;128.0K&quot;,
+    &quot;sha256&quot;: &quot;6e31a817eb93270848e3c0b3c1d0c2bfa077fbb318f58a2bcbdec8f69f0dd420&quot;
+}</code></pre><p><strong>Status values</strong></p>
+<ul>
+<li><code>running</code>: The backup is currently running.</li>
+<li><code>success</code>: The backup completed successfully.</li>
+<li><code>failed</code>: The backup failed.</li>
+</ul>
+<p><strong>Error response</strong></p>
+<p><code>404 Not Found</code> if the backup status file doesn&#39;t exist</p>
+<h3 id="retrieving-a-backup">Retrieving a backup</h3>
+<p>This will start a download of <code>backup.tar</code>.</p>
+<p><strong>Since</strong></p>
+<p><code>&gt;= v1.18.0</code></p>
+<p><strong>HTTP Method</strong></p>
+<pre><code>GET</code></pre><p><strong>Endpoint</strong></p>
+<pre><code>/backup/download</code></pre><p><strong>Example</strong></p>
+<pre><code>HTTP/1.1 200 OK
+Content-Type: application/octet-stream
+Filename: backup.tar</code></pre><p><strong>Error response</strong></p>
+<p><code>404 Not Found</code> if the <code>backup.tar</code> file doesn&#39;t exist</p>
+<h3 id="viewing-the-backup-log">Viewing the backup log</h3>
+<p>This API endpoint will return the log of the backup.</p>
+<p><strong>Since</strong></p>
+<p><code>&gt;= v1.18.0</code></p>
+<p><strong>HTTP Method</strong></p>
+<pre><code>GET</code></pre><p><strong>Endpoint</strong></p>
+<pre><code>/backup/log</code></pre><p><strong>Example</strong></p>
+<pre><code>HTTP/1.1 200 OK
+Content-Type: text/plain
+[1507206605][LIVE IMAGE] Validating backup file size
+[1507206605][LIVE IMAGE] Starting backup
+Created file: /opt/jidoteki/admin/home/sftp/uploads/backup.tar - size: 128.0K - hash: 6e31a817eb93270848e3c0b3c1d0c2bfa077fbb318f58a2bcbdec8f69f0dd420
+[1507206606][LIVE IMAGE] Backup complete
+[1507212882][LIVE IMAGE] Deleting backup archive
+...</code></pre><p><strong>Error response</strong></p>
+<p><code>404 Not Found</code> if the backup log file doesn&#39;t exist</p>
+<h3 id="restoring-a-backup">Restoring a backup</h3>
+<p>Restoring a backup is a synchronous procedure. The API will wait until the restore completes. Only one restore can run at any given time.</p>
+<p><strong>Since</strong></p>
+<p><code>&gt;= v1.18.0</code></p>
+<p><strong>HTTP Method</strong></p>
+<pre><code>POST</code></pre><p><strong>Endpoint</strong></p>
+<pre><code>/backup/restore</code></pre><p><strong>Parameters</strong></p>
+<ul>
+<li><code>archive</code> <strong>(required)</strong>: tar backup archive, ex: <code>backup.tar</code></li>
+</ul>
+<p><strong>Content-type</strong></p>
+<pre><code>multipart/form-data</code></pre><p><strong>Example</strong></p>
+<pre><code>curl -X POST https://[hostname]:8443/api/v1/admin/backup/restore?hash=[sha256hmachash] -F archive=@[backup.tar]
+or
+curl -X POST https://[hostname]:8443/api/v1/admin/backup/restore?token=[yourtoken] -F archive=@[backup.tar]</code></pre><p><strong>Success response</strong></p>
+<pre><code>HTTP/1.1 200 OK
+Content-Type: application/json
+{&quot;Status&quot;:&quot;200 OK&quot;}</code></pre><p><strong>Error response</strong></p>
+<p><code>400 Bad Request</code> if the backup archive is missing or invalid</p>
+<p><a href="#menu">^ return to menu</a></p>
+<hr>
+<p>Powered by on-premises.com - v1.22.0 - <a href="/docs/NOTICE.TXT">Copyright notices</a></p>
+    </div>
+  </body>
+</html>
