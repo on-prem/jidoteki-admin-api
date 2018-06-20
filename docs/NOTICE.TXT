@@ -1,16 +1,8 @@
 API Documentation and UI licensing:
 
-* 'strapdown.js' licensed under the MIT License and
-  Copyright (c) 2012 Artur B. Adib
-  https://github.com/arturadib/strapdown
-
 * 'Marked' is licensed under the MIT License and
   Copyright (c) 2011-2014, Christopher Jeffrey
   https://github.com/chjj/marked
-
-* 'Google Code Prettify' is licensed under the Apache License v2.0 and
-  Copyright (c) Google Inc.
-  https://github.com/google/code-prettify
 
 * 'Twitter Bootstrap' is licensed under the MIT License and
   Copyright (c) 2011-2015 Twitter, Inc

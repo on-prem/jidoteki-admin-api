@@ -6,6 +6,7 @@
 
   * [frontend] Generate static HTML help docs, without JavaScript
   * [deps] Update`jidoteki-admin` dep to v1.21.0
+  * [deps] Remove 'strapdown' and 'google prettify' deps
 
 ## 1.21.1 (2018-03-10)
 
