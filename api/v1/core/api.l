@@ -13,14 +13,15 @@
 
 (mime "md" "text/markdown; charset=UTF-8" 60)
 
+
 [de https-start ()
-  (when (sys "JIDO_WITH_SSL")
+  (when (= "true" (sys "JIDO_WITH_SSL"))
     (if (sys "JIDO_STUNNEL_BIN")
         (call @ "stunnel.conf")
         (call '/usr/bin/stunnel4 "stunnel.conf") ]
 
 [de https-stop ()
-  (when (sys "JIDO_WITH_SSL")
+  (when (= "true" (sys "JIDO_WITH_SSL"))
     (if (sys "JIDO_STUNNEL_BIN")
         (call 'killall @)
         (call 'killall "stunnel4") ]

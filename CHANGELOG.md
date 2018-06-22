@@ -4,6 +4,7 @@
 
   ### Minor fixes
 
+  * [api] Fix longstanding bug: stunnel starts regardless of the value of JIDO_WITH_SSL
   * [frontend] Generate static HTML help docs, without JavaScript
   * [deps] Update`jidoteki-admin` dep to v1.21.0
   * [deps] Remove 'strapdown' and 'google prettify' deps
