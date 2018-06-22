@@ -10,7 +10,7 @@ before_script:
   - export PATH=$PATH:/tmp/picoLisp
   - git clone https://github.com/on-prem/jidoteki-admin /tmp/jidoteki-admin
   - sudo pip install ansible==1.8.4
-  - cd /tmp/jidoteki-admin && git checkout merge-scripts && make PREFIX_DIR=/tmp
+  - cd /tmp/jidoteki-admin && git checkout master && make PREFIX_DIR=/tmp
 
 script:
   - cd ${TRAVIS_BUILD_DIR} && make check PREFIX_DIR=/tmp
