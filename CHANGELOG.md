@@ -1,12 +1,12 @@
 # Changelog
 
-## 1.22.0 (TBD)
+## 1.22.0 (2018-06-29)
 
   ### Minor fixes
 
   * [api] Fix longstanding bug: stunnel starts regardless of the value of JIDO_WITH_SSL
   * [frontend] Generate static HTML help docs, without JavaScript
-  * [deps] Update`jidoteki-admin` dep to v1.21.0
+  * [deps] Update`jidoteki-admin` dep to v1.22.0
   * [deps] Remove 'strapdown' and 'google prettify' deps
 
 ## 1.21.1 (2018-03-10)

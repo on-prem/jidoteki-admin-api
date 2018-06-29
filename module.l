@@ -8,4 +8,4 @@
   ("copyright"  "(c) 2015-2018 Alexander Williams, Unscramble <license@unscramble.jp>")
   ("install"    "make")
   ("requires"
-    ("jidoteki-admin"    "v1.21.0"    "https://github.com/on-prem/jidoteki-admin.git") ]
+    ("jidoteki-admin"    "v1.22.0"    "https://github.com/on-prem/jidoteki-admin.git") ]
