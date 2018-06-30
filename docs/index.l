@@ -6,7 +6,7 @@
 
 [de default-request ()
   (use Info Size Date Body
-    (json-file "docs/API.html")
+    (json-file *API_DOC)
     (response-generic 200 Size Date Body '(("Content-Type" . "text/html") ]
 
 (default-request)

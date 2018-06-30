@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.22.1 (2018-06-30)
+
+  ### Bug fix
+
+  * [frontend] Fix regression, ensure /docs is read from a variable
+
 ## 1.22.0 (2018-06-29)
 
   ### Minor fixes

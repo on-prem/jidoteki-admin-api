@@ -11,7 +11,7 @@
 (setq
   *API_VERSION  (if (format (sys "JIDO_API_VERSION")) @ 1)
   *API_PATH     (pack "api/v" *API_VERSION)
-  *API_DOC      (if (sys "JIDO_API_CUSTOM") (pack @ "/docs/API.md") "docs/API.md")
+  *API_DOC      (if (sys "JIDO_API_CUSTOM") (pack @ "/docs/API.html") "docs/API.html")
   *Admin_path   (if (sys "JIDO_ADMIN_PATH") @ "/opt/jidoteki/tinyadmin/")
   *Upload_path  (pack *Admin_path "home/sftp/uploads/")
   *Audit_log    (pack *Admin_path "log/jidoteki-audit.log") )
