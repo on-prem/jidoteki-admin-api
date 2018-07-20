@@ -5,10 +5,12 @@
 # Copyright (c) 2015-2017 Alexander Williams, Unscramble <license@unscramble.jp>
 
 [de settings-fetch ()
-  (let (App     (decode (pack *Admin_path "etc/app.json") T)
-        Network (decode (pack *Admin_path "etc/network.json") T) )
+  (if (and (info (pack *Admin_path "etc/app.json")) (info (pack *Admin_path "etc/network.json")))
+      (let (App     (decode (pack *Admin_path "etc/app.json") T)
+            Network (decode (pack *Admin_path "etc/network.json") T) )
 
-    (list (append '("network") Network) (append '("app") App)) ]
+        (response-json (encode (list (append '("network") Network) (append '("app") App)))) )
+      (http-msg 404) ]
 
 (de settings-static (Network App Interface Ip_address Netmask Gateway Dns1 Dns2 Hostname Ntpserver)
   # output JSON files if validation success
@@ -85,7 +87,7 @@
   (http-file 'settings) ]
 
 (de api-request-get ()
-  (response-json (encode (settings-fetch))) )
+  (settings-fetch) )
 
 (check-auth)
 

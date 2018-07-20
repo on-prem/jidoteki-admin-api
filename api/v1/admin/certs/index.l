@@ -11,8 +11,8 @@
   (in (list 'cat (pack *Admin_path "etc/status_certs.txt")) (pack (till "^J") ]
 
 [de certs-process ()
-  (let (Log     (certs-log 10)
-        Status  (certs-status) )
+  (let (Log     (if (info (pack *Admin_path "log/update_certs.log")) (certs-log 10) 'null)
+        Status  (if (info (pack *Admin_path "etc/status_certs.txt")) (certs-status) 'null) )
 
     (list (append '("status") Status) (append '("log") Log) ]
 

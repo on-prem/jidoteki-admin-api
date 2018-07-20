@@ -11,7 +11,10 @@
   (let Jsonfile (pack *Admin_path "etc/status_update.json")
     (if (info Jsonfile)
         (chain (decode Jsonfile T))
-        (link (cons "status" (in (pack *Admin_path "etc/status_update.txt") (line T)))) ]
+        (link (cons "status" (if (info (pack *Admin_path "etc/status_update.txt")) (update-status-update) 'null) ]
+
+[de update-status-update ()
+  (in (pack *Admin_path "etc/status_update.txt") (line T)) ]
 
 [de update-error-message ()
   (in (pack *Admin_path "etc/status_error_message.txt") (line T)) ]
@@ -20,7 +23,7 @@
   (in (pack *Admin_path "etc/status_error_code.txt") (line T)) ]
 
 [de update-process ()
-  (let (Log     (update-log 10)
+  (let (Log     (if (info (pack *Admin_path "log/update.log")) (update-log 10) 'null)
         Message (when (info (pack *Admin_path "etc/status_error_message.txt")) (update-error-message))
         Code    (when (info (pack *Admin_path "etc/status_error_code.txt")) (update-error-code)) )
 

@@ -50,9 +50,56 @@
         (= (line) '("H" "T" "T" "P" "/" "1" "." "1" " " "2" "0" "2" " " "A" "c" "c" "e" "p" "t" "e" "d"))
         T ]
 
+# Authenticated API endpoints return invalid responses - https://github.com/on-prem/jidoteki-admin-api/issues/38
+[de test-gh-issue-38 (Testname)
+  (use *Url *Post
+    (off *Post)
+    (put 'token 'http "testtoken")
+    (Testname) ]
+
+[de test-gh-issue-38-certs ()
+  (setq *Url "api/v1/admin/certs/index.l")
+  (pipe
+    (chdir ".." (load "api/v1/admin/certs/index.l"))
+    (and
+      (= (line) '("H" "T" "T" "P" "/" "1" "." "1" " " "2" "0" "0" " " "O" "K"))
+      (until (eof) (line))
+      (= @ '("{" "\"" "s" "t" "a" "t" "u" "s" "\"" ":" "n" "u" "l" "l" "," "\"" "l" "o" "g" "\"" ":" "n" "u" "l" "l" "}")) ]
+
+[de test-gh-issue-38-settings ()
+  (setq *Url "api/v1/admin/settings/index.l")
+  (pipe
+    (chdir ".." (load "api/v1/admin/settings/index.l"))
+    (and
+      (= (line) '("H" "T" "T" "P" "/" "1" "." "1" " " "4" "0" "4" " " "N" "o" "t" " " "F" "o" "u" "n" "d"))
+      (until (eof) (line))
+      (= @ '("{" "\"" "S" "t" "a" "t" "u" "s" "\"" ":" "\"" "4" "0" "4" " " "N" "o" "t" " " "F" "o" "u" "n" "d" "\"" "}")) ]
+
+[de test-gh-issue-38-storage ()
+  (setq *Url "api/v1/admin/storage/index.l")
+  (pipe
+    (chdir ".." (load "api/v1/admin/storage/index.l"))
+    (and
+      (= (line) '("H" "T" "T" "P" "/" "1" "." "1" " " "4" "0" "4" " " "N" "o" "t" " " "F" "o" "u" "n" "d"))
+      (until (eof) (line))
+      (= @ '("{" "\"" "S" "t" "a" "t" "u" "s" "\"" ":" "\"" "4" "0" "4" " " "N" "o" "t" " " "F" "o" "u" "n" "d" "\"" "}")) ]
+
+[de test-gh-issue-38-update ()
+  (setq *Url "api/v1/admin/update/index.l")
+  (pipe
+    (chdir ".." (load "api/v1/admin/update/index.l"))
+    (and
+      (= (line) '("H" "T" "T" "P" "/" "1" "." "1" " " "2" "0" "0" " " "O" "K"))
+      (until (eof) (line))
+      (= @ '("{" "\"" "s" "t" "a" "t" "u" "s" "\"" ":" "n" "u" "l" "l" "," "\"" "l" "o" "g" "\"" ":" "n" "u" "l" "l" "}")) ]
+
 [execute
   '(test-gh-issue-12)
   '(test-gh-issue-17)
   '(assert-t (test-jidoteki-issue-416 'test-jidoteki-issue-416-invalid) "Regression test (a) Jidoteki issue #416 - Authenticated API endpoint validation")
   '(assert-t (test-jidoteki-issue-416 'test-jidoteki-issue-416-valid) "Regression test (b) Jidoteki issue #416 - Authenticated API endpoint validation")
+  '(assert-t (test-gh-issue-38 'test-gh-issue-38-certs) "Regression test GH issue #38 - Invalid response from GET /certs")
+  '(assert-t (test-gh-issue-38 'test-gh-issue-38-settings) "Regression test GH issue #38 - Invalid response from GET /settings")
+  '(assert-t (test-gh-issue-38 'test-gh-issue-38-storage) "Regression test GH issue #38 - Invalid response from GET /storage")
+  '(assert-t (test-gh-issue-38 'test-gh-issue-38-update) "Regression test GH issue #38 - Invalid response from GET /update")
   ]

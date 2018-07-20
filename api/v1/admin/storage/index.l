@@ -71,10 +71,12 @@
   (http-file 'settings) ]
 
 [de storage-options ()
-  (let (Options   (if (decode "/usr/local/etc/storage-options.json" T) @ (list (cons "options" T '("local"))))
-        Settings  (decode (pack *Admin_path "etc/storage.json") T) )
+  (if (and (info "/usr/local/etc/storage-options.json") (info (pack *Admin_path "etc/storage.json")))
+      (let (Options   (if (decode "/usr/local/etc/storage-options.json" T) @ (list (cons "options" T '("local"))))
+            Settings  (decode (pack *Admin_path "etc/storage.json") T) )
 
-    (encode (append Settings Options) ]
+        (encode (append Settings Options)) )
+        (http-msg 404) ]
 
 (de api-request-get ()
   (response-json-nocache (storage-options)) )
