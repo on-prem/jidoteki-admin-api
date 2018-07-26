@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.23.0 (2018-07-26)
+
+  ### Bug fix
+
+  * [api] Add bugfixes for endpoints with invalid responses. #38
+
 ## 1.22.1 (2018-06-30)
 
   ### Bug fix

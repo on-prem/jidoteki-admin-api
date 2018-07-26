@@ -5,6 +5,15 @@
 The API enables programmable system administration. It is possible to remotely manage network,
 system, and application settings using well-known tools such as _curl_, or _REST API libraries_.
 
+## <a name="changelog"></a>ChangeLog
+
+### v1.23.0
+
+* `GET /certs` returns "200 OK" and null values if status and log don't exist
+* `GET /settings` returns "404 Not Found" network settings don't exist
+* `GET /storage` returns "404 Not Found" if storage settings don't exist
+* `GET /update` returns "200 OK" and null values if status and log don't exist
+
 ## <a name="menu"></a>Menu
 
 Individual API endpoints are documented in separate sections listed below.
@@ -305,7 +314,7 @@ Content-Type: application/json
 {
     "status": "success",
     "percentage": 100,
-    "log": "[1432140922][SYSTEM] Updating system successful"
+    "log": "[1432140922][SYSTEM] Updating system successful" # null if no log. Since `>= v1.23.0`
 }
 ```
 
@@ -328,6 +337,7 @@ Content-Type: application/json
 * `running`: The system update is currently running.
 * `success`: The system update completed successfully.
 * `failed`: The system update failed.
+* `null`: No status value was found. Since `>= v1.23.0`
 
 **Error codes**
 
@@ -974,6 +984,10 @@ Content-Type: application/json
 }
 ```
 
+**Error response**
+
+`404 Not Found` If no network or app settings are found. Since `>= v1.23.0`
+
 [^ return to menu](#menu)
 
 ----
@@ -1101,7 +1115,7 @@ HTTP/1.1 200 OK
 Content-Type: application/json
 {
     "status": "success",
-    "log": "[1459884203][SYSTEM] Validating and adding TLS certificates"
+    "log": "[1459884203][SYSTEM] Validating and adding TLS certificates" # null if no log. Since `>= v1.23.0`
 }
 ```
 
@@ -1110,6 +1124,7 @@ Content-Type: application/json
 * `running`: The certificates update is currently running.
 * `success`: The certificates update completed successfully.
 * `failed`: The certificates update failed.
+* `null`: No status value was found. Since `>= v1.23.0`
 
 [^ return to menu](#menu)
 
@@ -1422,6 +1437,10 @@ Content-Type: application/json
 }
 ```
 
+**Error response**
+
+`404 Not Found` If no storage settings are found. Since `>= v1.23.0`
+
 [^ return to menu](#menu)
 
 ----
@@ -1656,4 +1675,4 @@ Content-Type: application/json
 
 ----
 
-Powered by on-premises.com - v1.22.0 - [Copyright notices](/docs/NOTICE.TXT)
+Powered by on-premises.com - v1.23.0 - [Copyright notices](/docs/NOTICE.TXT)

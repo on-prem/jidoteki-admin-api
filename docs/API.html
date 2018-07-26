@@ -13,6 +13,14 @@
 <h1 id="api-documentation">API documentation</h1>
 <p>The API enables programmable system administration. It is possible to remotely manage network,
 system, and application settings using well-known tools such as <em>curl</em>, or <em>REST API libraries</em>.</p>
+<h2 id="-a-name-changelog-a-changelog"><a name="changelog"></a>ChangeLog</h2>
+<h3 id="v1-23-0">v1.23.0</h3>
+<ul>
+<li><code>GET /certs</code> returns &quot;200 OK&quot; and null values if status and log don&#39;t exist</li>
+<li><code>GET /settings</code> returns &quot;404 Not Found&quot; network settings don&#39;t exist</li>
+<li><code>GET /storage</code> returns &quot;404 Not Found&quot; if storage settings don&#39;t exist</li>
+<li><code>GET /update</code> returns &quot;200 OK&quot; and null values if status and log don&#39;t exist</li>
+</ul>
 <h2 id="-a-name-menu-a-menu"><a name="menu"></a>Menu</h2>
 <p>Individual API endpoints are documented in separate sections listed below.</p>
 <p><strong>HTTP Prefix</strong></p>
@@ -206,7 +214,7 @@ Content-Type: application/json
 {
     &quot;status&quot;: &quot;success&quot;,
     &quot;percentage&quot;: 100,
-    &quot;log&quot;: &quot;[1432140922][SYSTEM] Updating system successful&quot;
+    &quot;log&quot;: &quot;[1432140922][SYSTEM] Updating system successful&quot; # null if no log. Since `&gt;= v1.23.0`
 }</code></pre><p><strong>Error response</strong></p>
 <pre><code>HTTP/1.1 200 OK
 Content-Type: application/json
@@ -221,6 +229,7 @@ Content-Type: application/json
 <li><code>running</code>: The system update is currently running.</li>
 <li><code>success</code>: The system update completed successfully.</li>
 <li><code>failed</code>: The system update failed.</li>
+<li><code>null</code>: No status value was found. Since <code>&gt;= v1.23.0</code></li>
 </ul>
 <p><strong>Error codes</strong></p>
 <ul>
@@ -527,7 +536,9 @@ Content-Type: application/json
     &quot;app&quot;: {
         &quot;name&quot;: &quot;testapp&quot;
     }
-}</code></pre><p><a href="#menu">^ return to menu</a></p>
+}</code></pre><p><strong>Error response</strong></p>
+<p><code>404 Not Found</code> If no network or app settings are found. Since <code>&gt;= v1.23.0</code></p>
+<p><a href="#menu">^ return to menu</a></p>
 <hr>
 <h1 id="-a-name-tls-a-9-tls"><a name="tls"></a>9. TLS</h1>
 <h3 id="updating-tls-certificates">Updating TLS certificates</h3>
@@ -587,12 +598,13 @@ curl -X GET https://[hostname]:8443/api/v1/admin/certs?token=[yourtoken]</code><
 Content-Type: application/json
 {
     &quot;status&quot;: &quot;success&quot;,
-    &quot;log&quot;: &quot;[1459884203][SYSTEM] Validating and adding TLS certificates&quot;
+    &quot;log&quot;: &quot;[1459884203][SYSTEM] Validating and adding TLS certificates&quot; # null if no log. Since `&gt;= v1.23.0`
 }</code></pre><p><strong>Status values</strong></p>
 <ul>
 <li><code>running</code>: The certificates update is currently running.</li>
 <li><code>success</code>: The certificates update completed successfully.</li>
 <li><code>failed</code>: The certificates update failed.</li>
+<li><code>null</code>: No status value was found. Since <code>&gt;= v1.23.0</code></li>
 </ul>
 <p><a href="#menu">^ return to menu</a></p>
 <hr>
@@ -756,7 +768,9 @@ Content-Type: application/json
         &quot;share&quot;: &quot;/nfs/storage&quot;
     },
     &quot;options&quot;: [&quot;local&quot;, &quot;nfs&quot;, &quot;nbd&quot;, &quot;iscsi&quot;, &quot;aoe&quot;]
-}</code></pre><p><a href="#menu">^ return to menu</a></p>
+}</code></pre><p><strong>Error response</strong></p>
+<p><code>404 Not Found</code> If no storage settings are found. Since <code>&gt;= v1.23.0</code></p>
+<p><a href="#menu">^ return to menu</a></p>
 <hr>
 <h1 id="-a-name-backup-a-12-backup"><a name="backup"></a>12. Backup</h1>
 <h3 id="generating-a-backup">Generating a backup</h3>
@@ -854,7 +868,7 @@ Content-Type: application/json
 <p><code>400 Bad Request</code> if the backup archive is missing or invalid</p>
 <p><a href="#menu">^ return to menu</a></p>
 <hr>
-<p>Powered by on-premises.com - v1.22.0 - <a href="/docs/NOTICE.TXT">Copyright notices</a></p>
+<p>Powered by on-premises.com - v1.23.0 - <a href="/docs/NOTICE.TXT">Copyright notices</a></p>
     </div>
   </body>
 </html>

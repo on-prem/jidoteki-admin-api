@@ -1,8 +1,8 @@
 [de MODULE_INFO
   ("name"       "jidoteki-admin-api")
-  ("version"    "1.22.1")
+  ("version"    "1.23.0")
   ("summary"    "On-Prem Admin API")
-  ("source"     "https://jidoteki.com")
+  ("source"     "https://on-premises.com")
   ("author"     "Alexander Williams")
   ("license"    "MPL-2.0")
   ("copyright"  "(c) 2015-2018 Alexander Williams, Unscramble <license@unscramble.jp>")

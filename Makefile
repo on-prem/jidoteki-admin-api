@@ -25,7 +25,7 @@ minify:
 docs:
 		cd docs && \
 		marked --gfm -i API.md -o api.tmp.html && \
-		cat strapdown-prefix.html api.tmp.html strapdown-suffix.html > api.html && \
+		cat strapdown-prefix.html api.tmp.html strapdown-suffix.html > API.html && \
 		rm api.tmp.html
 
 ui: html javascript minify
