@@ -17,10 +17,11 @@
       "changelog"
       "build"
       "health"
-      "endpoints" ) )
+      "endpoints"
+      "logfiles" ) )
 
   # default actions
-  "index.html" "v" "newtoken" "token" "hash" "update" "settings" )
+  "index.html" "v" "newtoken" "token" "hash" "update" "settings" "filename" "lines" )
 
 (allow "docs" T)
 
