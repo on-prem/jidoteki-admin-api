@@ -15,7 +15,7 @@
   *Admin_path   (if (sys "JIDO_ADMIN_PATH") @ "/opt/jidoteki/tinyadmin/")
   *Upload_path  (pack *Admin_path "home/sftp/uploads/")
   *Audit_log    (pack *Admin_path "log/jidoteki-audit.log")
-  *Paths_txt    (pack *Admin_path "log_paths.txt") )
+  *Log_paths    (pack *Admin_path "etc/log_paths.txt") )
 
 # Load dependencies
 (unless *Tc_functions_loaded

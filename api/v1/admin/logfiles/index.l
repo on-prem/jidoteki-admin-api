@@ -12,16 +12,17 @@
         T
         (mapcar '((N)
                   (list
-                    (cons "name"        (; N 1))
-                    (cons "modified"    (; N 2))
-                    (cons "size"        (; N 3)) ) )
+                    (cons "path"        (; N 1))
+                    (cons "name"        (; N 2))
+                    (cons "modified"    (; N 3))
+                    (cons "size"        (; N 4)) ) )
                   Json ) )
       (cons "num" (length Json)) ]
 
 # returns the list of all logfiles and their filesize and modified date
 [de logfiles-list ()
   (make
-    (in *Paths_txt (until (eof)
+    (in *Log_paths (until (eof)
       (let Dir (line T)
         (when (=T (car (info Dir)))
           (chdir Dir
@@ -33,7 +34,7 @@
                          Size   (car Info)
                          Ts     (pack (datStr (cadr Info)) "T" (tim$ (cddr Info) T) "Z") )
 
-                        (link (list S Ts Size)) ]
+                        (link (list Dir S Ts Size)) ]
                   (sort (dir)) ]
 
 [de api-request-get ()
