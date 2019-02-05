@@ -21,19 +21,20 @@
 # returns the list of all logfiles and their filesize and modified date
 [de logfiles-list ()
   (make
-    (let Dir (pack *Admin_path "log/")
-      (when (=T (car (info Dir)))
-        (chdir Dir
-          (mapc '[(S)
-                  (when (sub? ".log" S)
-                    (let
-                      (X      (chop S)
-                       Info   (info S)
-                       Size   (car Info)
-                       Ts     (pack (datStr (cadr Info)) "T" (tim$ (cddr Info) T) "Z") )
+    (in *Paths_txt (until (eof)
+      (let Dir (line T)
+        (when (=T (car (info Dir)))
+          (chdir Dir
+            (mapc '[(S)
+                    (when (sub? ".log" S)
+                      (let
+                        (X      (chop S)
+                         Info   (info S)
+                         Size   (car Info)
+                         Ts     (pack (datStr (cadr Info)) "T" (tim$ (cddr Info) T) "Z") )
 
-                      (link (list S Ts Size)) ]
-                (sort (dir)) ]
+                        (link (list S Ts Size)) ]
+                  (sort (dir)) ]
 
 [de api-request-get ()
   (response-json (logfiles-response (logfiles-list))) ]
