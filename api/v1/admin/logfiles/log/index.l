@@ -12,7 +12,8 @@
   (member Filename Files) ]
 
 [de logfiles-log-list ()
-  (let Dir (pack *Admin_path "log/")
+  (in *Log_paths (until (eof)
+    (let Dir (line T)
       (when (=T (car (info Dir)))
         (dir Dir) ]
 
