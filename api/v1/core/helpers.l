@@ -129,7 +129,7 @@
 
 # API endpoint helpers
 [de log-plaintext (Filename)
-  (response-json-generic (pack *Admin_path "log/" Filename) 200 T '(("Content-Type" . "text/plain") ("Cache-Control" . "no-cache") ]
+  (response-json-generic Filename 200 T '(("Content-Type" . "text/plain") ("Cache-Control" . "no-cache") ]
 
 [de http-file (Type)
   (let (Data (get Type 'http)
