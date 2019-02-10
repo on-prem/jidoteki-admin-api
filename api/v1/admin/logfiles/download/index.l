@@ -9,7 +9,9 @@
 
 # ensure the file is allowed
 [de logfiles-log-validate (Filename)
-  (member (basename Filename) (dir (dirname Filename))) ]
+  (let (Path  (dirname Filename)
+        Name  (basename Filename) )
+    (and (member Path (make (in *Log_paths (until (eof) (link (line T)))))) (member Name (dir Path)) ]
 
 [de api-request-get ()
   (let Filename  (get 'filename 'http)
