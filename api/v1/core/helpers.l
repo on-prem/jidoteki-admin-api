@@ -128,6 +128,11 @@
     (prinl "Content-Security-Policy: object-src 'self';") )
 
 # API endpoint helpers
+[de log-pathformater (Path)
+  (if (= "/" (last (chop Path)))
+      Path
+      (pack Path "/") ]
+
 [de log-plaintext (Filename)
   (response-json-generic Filename 200 T '(("Content-Type" . "text/plain") ("Cache-Control" . "no-cache") ]
 

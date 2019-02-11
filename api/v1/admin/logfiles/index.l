@@ -23,7 +23,7 @@
 [de logfiles-list ()
   (make
     (in *Log_paths (until (eof)
-      (let Dir (line T)
+      (let Dir (log-pathformater (line T))
         (when (=T (car (info Dir)))
           (chdir Dir
             (mapc '[(S)
