@@ -11,7 +11,7 @@
 [de logfiles-log-validate (Filename)
   (let (Path  (dirname Filename)
         Name  (basename Filename) )
-    (and (member (log-pathformater Path) (make (in *Log_paths (until (eof) (link (log-pathformater (line T))))))) (member Name (dir Path)) ]
+    (and (member Path (make (in *Log_paths (until (eof) (link (log-pathformater (line))))))) (member Name (dir Path)) ]
 
 [de api-request-get ()
   (let Filename  (get 'filename 'http)

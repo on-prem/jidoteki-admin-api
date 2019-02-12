@@ -12,10 +12,9 @@
         T
         (mapcar '((N)
                   (list
-                    (cons "path"        (; N 1))
-                    (cons "name"        (; N 2))
-                    (cons "modified"    (; N 3))
-                    (cons "size"        (; N 4)) ) )
+                    (cons "name"        (; N 1))
+                    (cons "modified"    (; N 2))
+                    (cons "size"        (; N 3)) ) )
                   Json ) )
       (cons "num" (length Json)) ]
 
@@ -23,7 +22,7 @@
 [de logfiles-list ()
   (make
     (in *Log_paths (until (eof)
-      (let Dir (log-pathformater (line T))
+      (let Dir (log-pathformater (line))
         (when (=T (car (info Dir)))
           (chdir Dir
             (mapc '[(S)
@@ -35,7 +34,7 @@
                          Fn     (pack Dir S)
                          Ts     (pack (datStr (cadr Info)) "T" (tim$ (cddr Info) T) "Z") )
 
-                        (link (list Dir Fn Ts Size)) ]
+                        (link (list Fn Ts Size)) ]
                   (sort (dir)) ]
 
 [de api-request-get ()

@@ -129,9 +129,7 @@
 
 # API endpoint helpers
 [de log-pathformater (Path)
-  (if (= "/" (last (chop Path)))
-      Path
-      (pack Path "/") ]
+  (pack Path (unless (= "/" (last Path)) "/")) ]
 
 [de log-plaintext (Filename)
   (response-json-generic Filename 200 T '(("Content-Type" . "text/plain") ("Cache-Control" . "no-cache") ]
