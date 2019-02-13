@@ -12,9 +12,10 @@
         T
         (mapcar '((N)
                   (list
-                    (cons "name"        (; N 1))
-                    (cons "modified"    (; N 2))
-                    (cons "size"        (; N 3)) ) )
+                    (cons "path"        (; N 1))
+                    (cons "name"        (; N 2))
+                    (cons "modified"    (; N 3))
+                    (cons "size"        (; N 4)) ) )
                   Json ) )
       (cons "num" (length Json)) ]
 
@@ -34,7 +35,7 @@
                          Fn     (pack Dir S)
                          Ts     (pack (datStr (cadr Info)) "T" (tim$ (cddr Info) T) "Z") )
 
-                        (link (list Fn Ts Size)) ]
+                        (link (list Dir Fn Ts Size)) ]
                   (sort (dir)) ]
 
 [de api-request-get ()
