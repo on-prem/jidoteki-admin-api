@@ -5,7 +5,7 @@
 # Copyright (c) 2018 Alexander Williams, Unscramble <license@unscramble.jp>
 
 [de logfiles-response (Json)
-  (encode
+  (json-encode
     (list
       (cons
         "logfiles"

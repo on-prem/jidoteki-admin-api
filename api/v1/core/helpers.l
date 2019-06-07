@@ -27,7 +27,7 @@
 
 [de http-error (Code Error)
   (response-json-generic
-    (encode (list (cons "Status" (pack Code " " (http-code Code))) (cons "Error-Message" Error)))
+    (json-encode (list (cons "Status" (pack Code " " (http-code Code))) (cons "Error-Message" Error)))
     Code
     NIL
     (list (cons "Content-Type" "application/json") (cons "Error-Message" Error)) ]
