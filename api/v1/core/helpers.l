@@ -35,7 +35,7 @@
 (de http-msg (Code Error)
   (if Error
       (http-error Code Error)
-      (response-json [encode (list (cons "Status" (pack Code " " (http-code Code)] Code) ) )
+      (response-json [json-encode (list (cons "Status" (pack Code " " (http-code Code)] Code) ) )
 
 [de json-file (Json)
   (if (info Json)
@@ -75,7 +75,7 @@
       (exec 'nohup (pack *Admin_path "bin/wrapper.sh") Action) )
 
     (use Size Date Body
-      (json-string [encode (list (cons "Status" (pack 202 " " (http-code 202))) Location])
+      (json-string [json-encode (list (cons "Status" (pack 202 " " (http-code 202))) Location])
       (response-generic 202 Size Date Body (list Location '("Content-Type" . "application/json")))
       (audit-log "web" "admin" (pack Endpoint ".post") Action) ]
 
