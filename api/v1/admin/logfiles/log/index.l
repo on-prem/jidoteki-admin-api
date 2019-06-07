@@ -5,22 +5,19 @@
 # Copyright (c) 2018 Alexander Williams, Unscramble <license@unscramble.jp>
 
 [de logfiles-log (Filename Lines)
-  (in (list 'tail "-n" Lines (pack *Admin_path "log/" Filename)) (till NIL T) ]
+  (in (list 'tail "-n" Lines Filename) (till NIL T) ]
 
 # ensure the file is allowed
-[de logfiles-log-validate (Filename Files)
-  (member Filename Files) ]
-
-[de logfiles-log-list ()
-  (let Dir (pack *Admin_path "log/")
-      (when (=T (car (info Dir)))
-        (dir Dir) ]
+[de logfiles-log-validate (Filename)
+  (let (Path  (dirname Filename)
+        Name  (basename Filename) )
+    (and (member Path (make (in *Log_paths (until (eof) (link (log-pathformater (line))))))) (member Name (dir Path)) ]
 
 [de api-request-get ()
   (let (Filename  (get 'filename 'http)
         Lines     (get 'lines 'http) )
 
-    (if (and Filename (logfiles-log-validate Filename (logfiles-log-list)))
+    (if (and Filename (logfiles-log-validate Filename))
         (if Lines
             (response-json-generic (logfiles-log Filename Lines) 200 NIL '(("Content-Type" . "text/plain") ("Cache-Control" . "no-cache")))
             (log-plaintext Filename) )

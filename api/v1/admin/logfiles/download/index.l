@@ -5,20 +5,17 @@
 # Copyright (c) 2018 Alexander Williams, Unscramble <license@unscramble.jp>
 
 [de logfiles-log (Filename)
-  (in (pack *Admin_path "log/" Filename) (till NIL T) ]
+  (in Filename (till NIL T) ]
 
 # ensure the file is allowed
-[de logfiles-log-validate (Filename Files)
-  (member Filename Files) ]
-
-[de logfiles-log-list ()
-  (let Dir (pack *Admin_path "log/")
-      (when (=T (car (info Dir)))
-        (dir Dir) ]
+[de logfiles-log-validate (Filename)
+  (let (Path  (dirname Filename)
+        Name  (basename Filename) )
+    (and (member Path (make (in *Log_paths (until (eof) (link (log-pathformater (line))))))) (member Name (dir Path)) ]
 
 [de api-request-get ()
   (let Filename  (get 'filename 'http)
-    (if (and Filename (logfiles-log-validate Filename (logfiles-log-list)))
+    (if (and Filename (logfiles-log-validate Filename)
         (response-json-generic (logfiles-log Filename) 200 NIL (list (cons "Content-Type" "text/plain") (cons "Content-Disposition" (pack "attachment; filename=" Filename)) (cons "Cache-Control" "no-cache")))
         (http-error 404 "Invalid or missing logfile") ]
 
