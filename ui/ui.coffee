@@ -639,4 +639,11 @@ dhcpStaticListener()
 navbarListener()
 
 authenticate (err) ->
-  if err then loadLogin() else loadHome()
+  if err and typeof err.responseJSON is 'object' and err.responseJSON['First-Run'] is true
+    loadFirstrun()
+  else if err and typeof err.responseJSON is 'object' and err.responseJSON['First-Run'] is false
+    loadLogin()
+  else if err
+    loadLogin()
+  else
+    loadHome()

@@ -27,7 +27,11 @@
 
 [de http-error (Code Error)
   (response-json-generic
-    (encode (list (cons "Status" (pack Code " " (http-code Code))) (cons "Error-Message" Error)))
+    (encode
+      (make
+        (link (cons "Status" (pack Code " " (http-code Code))))
+        (link (cons "Error-Message" Error))
+        (when (is-first-run?) (link (cons "First-Run" @))) ) )
     Code
     NIL
     (list (cons "Content-Type" "application/json") (cons "Error-Message" Error)) ]
@@ -169,3 +173,16 @@
   (let Ip (split (chop Ip_address) ".")
     (when (and (= 4 (length Ip)) (= 4 (length (extract format Ip))))
           T ) ) )
+
+# Checks if the first-run token setup is required
+# returns 'true if required
+# returns 'false if not required
+# returns NIL if there's no first-run process
+[de is-first-run? ()
+  (and
+    *First_run
+    (=  (cdr (assoc "enabled" *First_run)) 'true)
+    (>= (cdr (assoc "word-length" *First_run)) 1)
+    (if (gt0 (car (info (pack *Admin_path "etc/api.token.setup"))))
+        'true
+        'false ]

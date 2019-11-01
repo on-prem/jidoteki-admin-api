@@ -2,7 +2,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (c) 2015-2017 Alexander Williams, Unscramble <license@unscramble.jp>
+# Copyright (c) 2015-2019 Alexander Williams, Unscramble <license@unscramble.jp>
 
 [de get-sha256 (String Key)
   # works around output diff between openssl 0.9.8 and 1.0.x
@@ -17,6 +17,12 @@
 # Chop the end of the requested URL
 [de get-http-url ()
   (glue "/" (head -1 (mapcar pack (split (chop *Url) "/") ]
+
+[de validate-first-run ()
+  (when (= 'true (is-first-run?))
+        (audit-log "web" "admin" "token.firstrun.failed" (get-http-url))
+        (http-msg 403 "Authentication error")
+        (bye) ]
 
 [de validate-hash (Hash)
   (let (Path      (pack *Admin_path "etc/api.token")
@@ -55,6 +61,7 @@
 # returns 400 if "GET" and "POST" methods are reversed
 # returns NIL otherwise
 (de check-auth-request (Method)
+ (validate-first-run)
  (if (validate-auth)
      (case Method
        ("GET"  (when   *Post (http-msg 400 "Invalid authentication method. Expected GET") (bye)))
@@ -68,3 +75,6 @@
  (case Method
    ("GET"  (api-request-get))
    ("POST" (api-request-post)) ]
+
+[de make-random-passphrase (N)
+  (in (list '/usr/local/bin/shuf "-n" N *JIDO_WORDLIST) (make (do N (read) (link (read) ]

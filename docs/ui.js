@@ -8,7 +8,7 @@
 
 (function() {
   'use strict';
-  var apiEndpoints, apiServer, apiType, authenticate, backupButtonListener, capitalize, certsButtonListener, clearToken, debugButtonListener, dhcpStaticListener, drawGraphs, failedUpload, fetchData, fetchFile, getHmac, getSha256, getStatus, getToken, loadBackup, loadHome, loadLogin, loadMonitor, loadNetwork, loadSetup, loadStorage, loadSupport, loadToken, loadUpdateCerts, loginButtonListener, logoutButtonListener, logsButtonListener, monitorButtonListener, monitorClick, navbarListener, networkButtonListener, newTokenButtonListener, pollStatus, putFile, putToken, redirectUrl, reloadEndpoints, reloadHealth, restartButtonListener, runningUpload, storageButtonListener, storageSelectListener, successUpload, tokenButtonListener, updateButtonListener, updateCertsButtonListener,
+  var apiEndpoints, apiServer, apiType, authenticate, backupButtonListener, capitalize, certsButtonListener, clearToken, debugButtonListener, dhcpStaticListener, drawGraphs, failedUpload, fetchData, fetchFile, getHmac, getSha256, getStatus, getToken, loadBackup, loadFirstrun, loadHome, loadLogin, loadMonitor, loadNetwork, loadSetup, loadStorage, loadSupport, loadToken, loadUpdateCerts, loginButtonListener, logoutButtonListener, logsButtonListener, monitorButtonListener, monitorClick, navbarListener, networkButtonListener, newTokenButtonListener, pollStatus, putFile, putToken, redirectUrl, reloadEndpoints, reloadHealth, restartButtonListener, runningUpload, setuptokenButtonListener, storageButtonListener, storageSelectListener, successUpload, tokenButtonListener, updateButtonListener, updateCertsButtonListener,
     indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
   apiServer = window.location.origin != null ? window.location.origin : window.location.protocol + "//" + window.location.hostname + (window.location.port != null ? ':' + window.location.port : '');
@@ -64,7 +64,7 @@
       return $.get("" + apiServer + endpoint + "?hash=" + hmac).done(function(response) {
         return callback(null, response);
       }).fail(function(err) {
-        return callback(new Error(err));
+        return callback(err);
       });
     } else {
       return callback(new Error("Missing or invalid API token"));
@@ -229,6 +229,9 @@
     return fetchData("/api/v1/admin/version", function(err, result) {
       if (err) {
         clearToken();
+        if (typeof err.responseJSON === 'object' && typeof err.responseJSON['First-Run'] === 'boolean') {
+          $('#new-token').hide();
+        }
         return callback(err);
       } else {
         return callback(null);
@@ -272,6 +275,16 @@
 
   /* generic content functions */
 
+  loadFirstrun = function() {
+    $('#jido-page-login').hide();
+    $('.jido-page-content').hide();
+    $('#jido-page-navbar').hide();
+    $('#jido-page-firstrun').show();
+    $('.jido-page-content-firstrun .jido-panel-network').show();
+    $('.token-form .token-setuptoken-label').focus();
+    return $('.token-form input.form-control').val('');
+  };
+
   loadToken = function() {
     $('#jido-page-login').hide();
     $('.jido-page-content').hide();
@@ -307,7 +320,7 @@
   logoutButtonListener = function() {
     return $('#jido-button-logout').click(function() {
       clearToken();
-      return loadLogin();
+      return location.reload();
     });
   };
 
@@ -409,6 +422,82 @@
     });
   };
 
+  setuptokenButtonListener = function() {
+    return $('#jido-button-firstrun-upload').click(function() {
+      var formData, pass1, pass2, setup, setupsha256, sha256;
+      setup = $('#setuptoken-input').val();
+      pass1 = $('#setuptoken1-input').val();
+      pass2 = $('#setuptoken2-input').val();
+      if (!setup) {
+        $('.token-form .token-setuptoken-label').parent().addClass('has-error');
+        $('.token-form .token-setuptoken-label').html('Setup Token (required)');
+        $('.token-form .token-setuptoken-label').focus();
+        return;
+      }
+      if (!pass1) {
+        $('.token-form .token-token1-label').parent().addClass('has-error');
+        $('.token-form .token-token1-label').html('API Token (required)');
+        $('.token-form .token-token1-label').focus();
+        return;
+      }
+      if (!pass2) {
+        $('.token-form .token-token2-label').parent().addClass('has-error');
+        $('.token-form .token-token2-label').html('Confirm API Token (required)');
+        $('.token-form .token-token2-label').focus();
+        return;
+      }
+      if (pass1 !== pass2) {
+        $('.token-alert').html('API Token mismatch. Please verify the API Token.');
+        $(".token-alert").show();
+        return;
+      }
+      if (pass1.length > 0 && pass1.length <= 255) {
+        sha256 = getSha256(pass1);
+      }
+      if (sha256 == null) {
+        $(".token-alert").html('Invalid API Token. Must be between 1 and 255 characters');
+        $(".token-alert").show();
+        $('.token-form .token-token1-label').parent().addClass('has-error');
+        $('.token-form .token-token1-label').html('API Token (required)');
+        $('.token-form .token-token2-label').parent().addClass('has-error');
+        $('.token-form .token-token2-label').html('Confirm API Token (required)');
+        $('.token-form .token-token1-label').focus();
+        return;
+      }
+      formData = new FormData();
+      formData.append('newtoken', pass1);
+      if (formData) {
+        setupsha256 = getSha256(setup);
+        putToken(setupsha256);
+        $('.jido-page-content-firstrun .jido-panel').show();
+        return putFile('firstrun', '/api/v1/admin/setup', formData, function(err, result) {
+          if (err) {
+            $('.jido-data-firstrun-status').html('failed');
+            $('.jido-data-firstrun-status').removeClass('label-danger');
+            $('.jido-data-firstrun-status').removeClass('label-success');
+            $('.jido-data-firstrun-status').removeClass('label-default');
+            $('.jido-data-firstrun-status').addClass('label-danger');
+            return failedUpload('firstrun');
+          } else {
+            $('.jido-data-firstrun-status').html('changed');
+            $('.jido-data-firstrun-status').removeClass('label-danger');
+            $('.jido-data-firstrun-status').removeClass('label-success');
+            $('.jido-data-firstrun-status').removeClass('label-default');
+            $('.jido-data-firstrun-status').addClass('label-success');
+            $(".token-alert").hide();
+            putToken(sha256);
+            successUpload('firstrun');
+            $('#setuptoken-input').val('');
+            $('#setuptoken1-input').val('');
+            $('#setuptoken2-input').val('');
+            $('.jido-page-content-firstrun .jido-panel-network').hide();
+            return loadHome();
+          }
+        });
+      }
+    });
+  };
+
 
   /* generic start here */
 
@@ -419,6 +508,8 @@
   newTokenButtonListener();
 
   tokenButtonListener();
+
+  setuptokenButtonListener();
 
   apiType = 'admin';
 
@@ -1228,7 +1319,11 @@
   navbarListener();
 
   authenticate(function(err) {
-    if (err) {
+    if (err && typeof err.responseJSON === 'object' && err.responseJSON['First-Run'] === true) {
+      return loadFirstrun();
+    } else if (err && typeof err.responseJSON === 'object' && err.responseJSON['First-Run'] === false) {
+      return loadLogin();
+    } else if (err) {
       return loadLogin();
     } else {
       return loadHome();

@@ -56,7 +56,7 @@ fetchData = (endpoint, callback) ->
       callback null, response
 
     .fail (err) ->
-      callback new Error err
+      callback err
   else
     callback new Error "Missing or invalid API token"
 
@@ -189,6 +189,9 @@ authenticate = (callback) ->
   fetchData "/api/v1/admin/version", (err, result) ->
     if err
       clearToken()
+      if typeof err.responseJSON is 'object' and typeof err.responseJSON['First-Run'] is 'boolean'
+        # hide the 'API Token Setup' button
+        $('#new-token').hide()
       callback err
     else
       callback null
@@ -214,6 +217,16 @@ reloadEndpoints = () ->
           $("#jido-button-#{value}").show()
 
 ### generic content functions ###
+
+loadFirstrun = ->
+  $('#jido-page-login').hide()
+  $('.jido-page-content').hide()
+  $('#jido-page-navbar').hide()
+  $('#jido-page-firstrun').show()
+  $('.jido-page-content-firstrun .jido-panel-network').show()
+  $('.token-form .token-setuptoken-label').focus()
+
+  $('.token-form input.form-control').val '' # reset all token input fields
 
 loadToken = ->
   $('#jido-page-login').hide()
@@ -247,7 +260,7 @@ loadLogin = ->
 logoutButtonListener = ->
   $('#jido-button-logout').click ->
     clearToken()
-    loadLogin()
+    location.reload() # reload the page on logout
 
 loginButtonListener = ->
   $('#jido-button-login').click ->
@@ -333,9 +346,82 @@ tokenButtonListener = ->
           $('.jido-page-content-token .jido-panel-network').hide()
           loadToken()
 
+setuptokenButtonListener = ->
+  $('#jido-button-firstrun-upload').click ->
+    setup = $('#setuptoken-input').val()
+    pass1 = $('#setuptoken1-input').val()
+    pass2 = $('#setuptoken2-input').val()
+
+    unless setup
+      $('.token-form .token-setuptoken-label').parent().addClass 'has-error'
+      $('.token-form .token-setuptoken-label').html 'Setup Token (required)'
+      $('.token-form .token-setuptoken-label').focus()
+      return
+
+    unless pass1
+      $('.token-form .token-token1-label').parent().addClass 'has-error'
+      $('.token-form .token-token1-label').html 'API Token (required)'
+      $('.token-form .token-token1-label').focus()
+      return
+
+    unless pass2
+      $('.token-form .token-token2-label').parent().addClass 'has-error'
+      $('.token-form .token-token2-label').html 'Confirm API Token (required)'
+      $('.token-form .token-token2-label').focus()
+      return
+
+    unless pass1 is pass2
+      $('.token-alert').html 'API Token mismatch. Please verify the API Token.'
+      $(".token-alert").show()
+      return
+
+    sha256 = getSha256 pass1 if pass1.length > 0 && pass1.length <= 255
+    unless sha256?
+      $(".token-alert").html 'Invalid API Token. Must be between 1 and 255 characters'
+      $(".token-alert").show()
+      $('.token-form .token-token1-label').parent().addClass 'has-error'
+      $('.token-form .token-token1-label').html 'API Token (required)'
+      $('.token-form .token-token2-label').parent().addClass 'has-error'
+      $('.token-form .token-token2-label').html 'Confirm API Token (required)'
+      $('.token-form .token-token1-label').focus()
+      return
+
+    formData = new FormData()
+    formData.append 'newtoken', pass1
+
+    if formData
+      setupsha256 = getSha256 setup
+      putToken setupsha256
+      $('.jido-page-content-firstrun .jido-panel').show()
+      putFile 'firstrun', '/api/v1/admin/setup', formData, (err, result) ->
+        if err
+          $('.jido-data-firstrun-status').html 'failed'
+          $('.jido-data-firstrun-status').removeClass 'label-danger'
+          $('.jido-data-firstrun-status').removeClass 'label-success'
+          $('.jido-data-firstrun-status').removeClass 'label-default'
+          $('.jido-data-firstrun-status').addClass 'label-danger'
+
+          failedUpload 'firstrun'
+        else
+          $('.jido-data-firstrun-status').html 'changed'
+          $('.jido-data-firstrun-status').removeClass 'label-danger'
+          $('.jido-data-firstrun-status').removeClass 'label-success'
+          $('.jido-data-firstrun-status').removeClass 'label-default'
+          $('.jido-data-firstrun-status').addClass 'label-success'
+          $(".token-alert").hide()
+
+          putToken sha256
+          successUpload 'firstrun'
+          $('#setuptoken-input').val ''
+          $('#setuptoken1-input').val ''
+          $('#setuptoken2-input').val ''
+          $('.jido-page-content-firstrun .jido-panel-network').hide()
+          loadHome()
+
 ### generic start here ###
 
 logoutButtonListener()
 loginButtonListener()
 newTokenButtonListener()
 tokenButtonListener()
+setuptokenButtonListener()

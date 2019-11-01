@@ -8,11 +8,11 @@
     <meta name="author" content="">
     <title>Admin Dashboard</title>
     <!-- Bootstrap Core CSS-->
-    <link href="/docs/themes/bootstrap.min.css?v=1.23.0" rel="stylesheet">
+    <link href="/docs/themes/bootstrap.min.css?v=1.24.0" rel="stylesheet">
     <!-- Fontello / Font Awesome CSS-->
-    <link href="/docs/font-awesome/css/fontello.min.css?v=1.23.0" rel="stylesheet" type="text/css">
+    <link href="/docs/font-awesome/css/fontello.min.css?v=1.24.0" rel="stylesheet" type="text/css">
     <!-- UI CSS-->
-    <link href="/docs/ui.css?v=1.23.0" rel="stylesheet">
+    <link href="/docs/ui.css?v=1.24.0" rel="stylesheet">
   </head>
   <body>
     <div id="jido-page-navbar" style="display:none">
@@ -49,6 +49,59 @@
       </nav>
     </div>
     <div style="display:none;" class="alert alert-danger restart-alert">System is restarting. Please Refresh the page in 1 minute.</div>
+    <!-- #firstrun container-->
+    <div id="jido-page-firstrun" style="display:none" class="container-fluid jido-page-content jido-page-content-firstrun">
+      <div class="row">
+        <div class="col-lg-10 col-md-10 col-sm-10 col-lg-offset-1 col-md-offset-1">
+          <h1 class="page-header">First Run</h1>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-12 col-lg-offset-3 col-md-offset-3">
+          <div style="display:none;" class="panel panel-default jido-panel">
+            <div class="panel-heading">
+              <h4>Status: <span class="label label-default jido-data-firstrun-status">...waiting for setup token</span></h4>
+              <div style="display:none; margin-top: 20px" class="progress">
+                <div role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width: 33%" class="progress-bar progress-bar-striped active">...updating, please wait</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-12 col-lg-offset-3 col-md-offset-3">
+          <div class="panel panel-default jido-panel jido-panel-network">
+            <div class="panel-body">Set your new<em> API Token</em> below.<br><br>
+              <div style="display:none;" class="alert alert-danger token-alert">API Token mismatch. Please verify the API Token.</div>
+              <div class="row">
+                <form role="form" autocomplete="off" class="token-form">
+                  <fieldset>
+                    <div class="col-lg-8 col-md-8 col-sm-8 col-md-offset-2">
+                      <div class="form-group has-success">
+                        <label for="setuptoken-input" class="control-label token-setuptoken-label">Setup Token</label>
+                        <input id="setuptoken-input" placeholder="Setup Token" name="setuptoken" type="text" class="form-control">
+                      </div>
+                      <div class="form-group has-success">
+                        <label for="setuptoken1-input" class="control-label token-token1-label">API Token</label>
+                        <input id="setuptoken1-input" placeholder="API Token" name="setuptoken1" type="password" class="form-control">
+                      </div>
+                      <div class="form-group has-success">
+                        <label for="setuptoken2-input" class="control-label token-token2-label">Confirm API Token</label>
+                        <input id="setuptoken2-input" placeholder="Confirm API Token" name="setuptoken2" type="password" class="form-control">
+                      </div>
+                      <div class="form-group"><br>
+                        <input id="jido-button-firstrun-upload" type="submit" value="Update" onclick="return event.preventDefault();" class="btn btn-lg btn-primary btn-block">
+                      </div>
+                    </div>
+                  </fieldset>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /#firstrun container-->
     <!-- #login container-->
     <div id="jido-page-login" style="display:none" class="container-fluid">
       <div class="row">
@@ -758,23 +811,23 @@ GEs=
         </div>
       </div>
     </div>
-    <script src="/docs/jquery/jquery.min.js?v=1.23.0"></script>
-    <script src="/docs/forge/forge.min.js?v=1.23.0"></script>
-    <script src="/docs/validator/validator.min.js?v=1.23.0"></script>
-    <script src="/docs/themes/bootstrap.min.js?v=1.23.0"></script>
-    <script src="/docs/jsrrdgraph/binaryxhr.js?v=1.23.0"></script>
-    <script src="/docs/jsrrdgraph/rrdcmdline.js?v=1.23.0"></script>
-    <script src="/docs/jsrrdgraph/rrddatafile.js?v=1.23.0"></script>
-    <script src="/docs/jsrrdgraph/rrdfile.js?v=1.23.0"></script>
-    <script src="/docs/jsrrdgraph/rrdgfxcanvas.js?v=1.23.0"></script>
-    <script src="/docs/jsrrdgraph/rrdgraph.min.js?v=1.23.0"></script>
-    <script src="/docs/jsrrdgraph/rrdrpn.js?v=1.23.0"></script>
-    <script src="/docs/jsrrdgraph/rrdtime.js?v=1.23.0"></script>
-    <script src="/docs/jsrrdgraph/sprintf.js?v=1.23.0"></script>
-    <script src="/docs/jsrrdgraph/strftime.js?v=1.23.0"></script>
-    <script src="/docs/jsrrdgraph/draw.js?v=1.23.0"></script>
-    <script src="/docs/ui.min.js?v=1.23.0"></script>
-    <div style="margin-bottom:0;margin-top:3em;position:relative;bottom:0px;width:100%;" class="well text-right text-muted jido-smalltext">Powered by on-premises.com - v1.23.0 - <a href="/docs/NOTICE.TXT">Copyright notices</a></div>
+    <script src="/docs/jquery/jquery.min.js?v=1.24.0"></script>
+    <script src="/docs/forge/forge.min.js?v=1.24.0"></script>
+    <script src="/docs/validator/validator.min.js?v=1.24.0"></script>
+    <script src="/docs/themes/bootstrap.min.js?v=1.24.0"></script>
+    <script src="/docs/jsrrdgraph/binaryxhr.js?v=1.24.0"></script>
+    <script src="/docs/jsrrdgraph/rrdcmdline.js?v=1.24.0"></script>
+    <script src="/docs/jsrrdgraph/rrddatafile.js?v=1.24.0"></script>
+    <script src="/docs/jsrrdgraph/rrdfile.js?v=1.24.0"></script>
+    <script src="/docs/jsrrdgraph/rrdgfxcanvas.js?v=1.24.0"></script>
+    <script src="/docs/jsrrdgraph/rrdgraph.min.js?v=1.24.0"></script>
+    <script src="/docs/jsrrdgraph/rrdrpn.js?v=1.24.0"></script>
+    <script src="/docs/jsrrdgraph/rrdtime.js?v=1.24.0"></script>
+    <script src="/docs/jsrrdgraph/sprintf.js?v=1.24.0"></script>
+    <script src="/docs/jsrrdgraph/strftime.js?v=1.24.0"></script>
+    <script src="/docs/jsrrdgraph/draw.js?v=1.24.0"></script>
+    <script src="/docs/ui.min.js?v=1.24.0"></script>
+    <div style="margin-bottom:0;margin-top:3em;position:relative;bottom:0px;width:100%;" class="well text-right text-muted jido-smalltext">Powered by on-premises.com - v1.24.0 - <a href="/docs/NOTICE.TXT">Copyright notices</a></div>
     <!-- This Source Code Form is subject to the terms of the Mozilla Public-->
     <!-- License, v. 2.0. If a copy of the MPL was not distributed with this-->
     <!-- file, You can obtain one at http://mozilla.org/MPL/2.0/.-->

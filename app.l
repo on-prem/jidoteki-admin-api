@@ -2,7 +2,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (c) 2015-2018 Alexander Williams, Unscramble <license@unscramble.jp>
+# Copyright (c) 2015-2019 Alexander Williams, Unscramble <license@unscramble.jp>
 
 # On-Prem Admin API
 
@@ -21,11 +21,12 @@
   (chdir (pack *Admin_path "/lib")
     (load "tc-functions.l") ) )
 
+# Load endpoints
+(load (pack *API_PATH "/core/allowed.l"))
+
 # Load core
 (chdir (pack *API_PATH "/core")
   (load "api.l" "auth.l" "helpers.l") )
-
-(load (pack *API_PATH "/core/allowed.l"))
 
 # Load custom code
 (when (sys "JIDO_API_CUSTOM")

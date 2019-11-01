@@ -1,6 +1,6 @@
 # On-Prem Admin Dashboard and REST API
 
-[![GitHub release](https://img.shields.io/github/release/on-prem/jidoteki-admin-api.svg)](https://github.com/on-prem/jidoteki-admin-api) [![Build Status](https://travis-ci.org/on-prem/jidoteki-admin-api.svg?branch=master)](https://travis-ci.org/on-prem/jidoteki-admin-api) [![Dependency](https://img.shields.io/badge/[deps]&#32;jidoteki--admin-v1.21.0-ff69b4.svg)](https://github.com/on-prem/jidoteki-admin)
+[![GitHub release](https://img.shields.io/github/release/on-prem/jidoteki-admin-api.svg)](https://github.com/on-prem/jidoteki-admin-api) [![Build Status](https://travis-ci.org/on-prem/jidoteki-admin-api.svg?branch=master)](https://travis-ci.org/on-prem/jidoteki-admin-api) [![Dependency](https://img.shields.io/badge/[deps]&#32;jidoteki--admin-v1.24.0-ff69b4.svg)](https://github.com/on-prem/jidoteki-admin)
 
 This API enables simple management of a [On-Prem](https://on-premises.com) system.
 
@@ -73,6 +73,8 @@ The HTML and JavaScript files are written in Jade and CoffeeScript, respectively
 
 To compile the HTML, type: `make html`
 
+To compile the Docs, type: `make docs`
+
 To compile the JavaScript, type: `make javascript`
 
 To minify the JavaScript, type: `make minify`
@@ -124,4 +126,4 @@ To do everything at once, type: `make ui`
 
 [MPL-2.0 License](LICENSE)
 
-Copyright (c) 2015-2018 Alexander Williams, Unscramble <license@unscramble.jp>
+Copyright (c) 2015-2019 Alexander Williams, Unscramble <license@unscramble.jp>

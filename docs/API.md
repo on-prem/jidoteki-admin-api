@@ -7,6 +7,10 @@ system, and application settings using well-known tools such as _curl_, or _REST
 
 ## <a name="changelog"></a>ChangeLog
 
+### v1.24.0
+
+* `POST /setup` Add audit logging and 2s pause between failed token updates
+
 ### v1.23.0
 
 * `GET /certs` returns "200 OK" and null values if status and log don't exist
@@ -49,7 +53,8 @@ These endpoints are optional and can only be enabled through `/usr/local/etc/jid
 ```
 {
     "endpoints": ["settings", "certs", "license", "storage", "backup"],
-    "parameters": ["public", "private", "ca", "license", "action", "archive"]
+    "parameters": ["public", "private", "ca", "license", "action", "archive"],
+    "first-run":{"word-length":4,"enabled":true}
 }
 ```
 
@@ -65,7 +70,7 @@ These endpoints are optional and can only be enabled through `/usr/local/etc/jid
 
 # <a name="setup"></a>1. Setup
 
-Before using the API, it is necessary to perform the **initial setup** of the `API token`. This procedure is only required once.
+Before using the API, it is necessary to perform the **initial setup** of the `API token`, unless `first-run` is enabled through `/usr/local/etc/jidoteki-admin-api.json`. This procedure is only required once.
 
 **Since**
 
@@ -1675,4 +1680,4 @@ Content-Type: application/json
 
 ----
 
-Powered by on-premises.com - v1.23.0 - [Copyright notices](/docs/NOTICE.TXT)
+Powered by on-premises.com - v1.24.0 - [Copyright notices](/docs/NOTICE.TXT)

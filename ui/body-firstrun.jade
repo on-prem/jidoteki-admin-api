@@ -1,0 +1,51 @@
+//- This Source Code Form is subject to the terms of the Mozilla Public
+//- License, v. 2.0. If a copy of the MPL was not distributed with this
+//- file, You can obtain one at http://mozilla.org/MPL/2.0/.
+//- 
+//- Copyright (c) 2015-2019 Alexander Williams, Unscramble <license@unscramble.jp>
+
+// #firstrun container
+#jido-page-firstrun.container-fluid.jido-page-content.jido-page-content-firstrun(style='display:none')
+  .row
+    .col-lg-10.col-md-10.col-sm-10.col-lg-offset-1.col-md-offset-1
+      h1.page-header First Run
+  .row
+    .col-lg-6.col-md-6.col-sm-12.col-lg-offset-3.col-md-offset-3
+      .panel.panel-default.jido-panel(style='display:none;')
+        .panel-heading
+          h4 Status: 
+            span.label.label-default.jido-data-firstrun-status ...waiting for setup token
+          .progress(style='display:none; margin-top: 20px')
+            .progress-bar.progress-bar-striped.active(role='progressbar', aria-valuenow='33', aria-valuemin='0', aria-valuemax='100', style='width: 33%')
+              | ...updating, please wait
+  .row
+    .col-lg-6.col-md-6.col-sm-12.col-lg-offset-3.col-md-offset-3
+      .panel.panel-default.jido-panel.jido-panel-network
+        .panel-body
+          | Set your new
+          em  API Token
+          |  below.
+          br
+          br
+          .alert.alert-danger.token-alert(style='display:none;')
+            | API Token mismatch. Please verify the API Token.
+          .row
+            form.token-form(role='form', autocomplete='off')
+              fieldset
+                .col-lg-8.col-md-8.col-sm-8.col-md-offset-2
+                  .form-group.has-success
+                    label.control-label.token-setuptoken-label(for='setuptoken-input')
+                      | Setup Token
+                    input#setuptoken-input.form-control(placeholder='Setup Token', name='setuptoken', type='text')
+                  .form-group.has-success
+                    label.control-label.token-token1-label(for='setuptoken1-input')
+                      | API Token
+                    input#setuptoken1-input.form-control(placeholder='API Token', name='setuptoken1', type='password')
+                  .form-group.has-success
+                    label.control-label.token-token2-label(for='setuptoken2-input')
+                      | Confirm API Token
+                    input#setuptoken2-input.form-control(placeholder='Confirm API Token', name='setuptoken2', type='password')
+                  .form-group
+                    br
+                    input#jido-button-firstrun-upload.btn.btn-lg.btn-primary.btn-block(type='submit', value='Update', onclick='return event.preventDefault();')
+// /#firstrun container
