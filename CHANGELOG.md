@@ -5,10 +5,11 @@
   ### Minor fixes
 
   * [api] Add audit logging and 2s pause between failed token updates
+  * [api] Reorder some functions in the `core` api files
+  * [deps] Update `jidoteki-admin` dep to v1.24.0
 
   ### New features
 
-  * [api] Reorder some functions in the `core` api files
   * [api/frontend] Add _First Run_ setup process when first accessing the Admin Dashboard.
     On first run, the API will generate a random passphrase and store it in the 
     `api.token.setup` file. The passphrase uses 4 of 7776 words from the _EFF large wordlist_,
@@ -16,7 +17,6 @@
     must be enabled by adding `"first-run":{"word-length":4,"enabled":true}` to 
     the `/usr/local/etc/jidoteki-admin-api.json` file.
   * [api] When _First Run_ is `enabled`, error responses now contain a `First-Run` key and boolean value
-  * [deps] Update `jidoteki-admin` dep to v1.24.0
 
 ## 1.23.0 (2018-07-26)
 
