@@ -6,6 +6,7 @@
 
   * [api] Add audit logging and 2s pause between failed token updates
   * [api] Reorder some functions in the `core` api files
+  * [api] Harden `stunnel.conf` by adding ciphers list and disabling renegotiation
   * [deps] Update `jidoteki-admin` dep to v1.24.0
 
   ### New features
