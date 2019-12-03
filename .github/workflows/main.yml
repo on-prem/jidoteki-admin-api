@@ -1,0 +1,41 @@
+name: CI
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    timeout-minutes: 5
+
+    strategy:
+      matrix:
+        arch: ['src64']
+        version: ['17.12', '18.6', '18.12', '19.6', 'latest']
+        ansible: ['1.8.4', '2.7']
+
+    steps:
+      - uses: aw/picolisp-action@v1
+        with:
+          version: ${{matrix.version}}
+          architecture: ${{matrix.arch}}
+
+      - name: Install Ansible (old version)
+        run: sudo pip install ansible==${{matrix.ansible}}
+
+      - uses: actions/checkout@v1
+        with:
+          repository: on-prem/jidoteki-admin
+          ref: refs/heads/master
+
+      - name: Install Jidoteki Admin
+        run: |
+          echo $PWD
+          cd ../jidoteki-admin
+          make PREFIX_DIR=/tmp
+
+      - uses: actions/checkout@v1
+
+      - name: Run the tests on PicoLisp ${{matrix.arch}} v${{matrix.version}} with Ansible v${{matrix.ansible}}
+        run: make check PREFIX_DIR=/tmp

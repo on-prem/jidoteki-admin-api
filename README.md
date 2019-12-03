@@ -1,6 +1,6 @@
 # On-Prem Admin Dashboard and REST API
 
-[![GitHub release](https://img.shields.io/github/release/on-prem/jidoteki-admin-api.svg)](https://github.com/on-prem/jidoteki-admin-api) [![Build Status](https://travis-ci.org/on-prem/jidoteki-admin-api.svg?branch=master)](https://travis-ci.org/on-prem/jidoteki-admin-api) [![Dependency](https://img.shields.io/badge/[deps]&#32;jidoteki--admin-v1.24.0-ff69b4.svg)](https://github.com/on-prem/jidoteki-admin)
+[![GitHub release](https://img.shields.io/github/release/on-prem/jidoteki-admin-api.svg)](https://github.com/on-prem/jidoteki-admin-api)  [![Dependency](https://img.shields.io/badge/[deps]&#32;jidoteki--admin-v1.24.0-ff69b4.svg)](https://github.com/on-prem/jidoteki-admin) ![Build status](https://github.com/on-prem/jidoteki-admin-api/workflows/CI/badge.svg?branch=master)
 
 This API enables simple management of a [On-Prem](https://on-premises.com) system.
 
@@ -26,7 +26,8 @@ In combination with the [jidoteki-admin](https://github.com/on-prem/jidoteki-adm
 
 # Requirements
 
-  * PicoLisp 32-bit or 64-bit v3.1.11+
+  * PicoLisp 32-bit or 64-bit `v3.1.11+`
+  * Tested up to PicoLisp `v19.11.25`, [see test runs](https://github.com/on-prem/jidoteki-admin-api/commit/98f3d03cc4315bd62ca72dc7b988381c01c94d30/checks)
   * Git
   * UNIX/Linux development/build tools (gcc, make/gmake, etc..)
   * OpenSSL command line tool (openssl)
