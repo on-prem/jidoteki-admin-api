@@ -27,7 +27,7 @@ In combination with the [jidoteki-admin](https://github.com/on-prem/jidoteki-adm
 # Requirements
 
   * PicoLisp 32-bit or 64-bit `v3.1.11+`
-  * Tested up to PicoLisp `v19.11.25`, [see test runs](https://github.com/on-prem/jidoteki-admin-api/commit/98f3d03cc4315bd62ca72dc7b988381c01c94d30/checks)
+  * Tested up to PicoLisp `v20.6.29`, [see test runs](https://github.com/on-prem/jidoteki-admin-api/commit/98f3d03cc4315bd62ca72dc7b988381c01c94d30/checks)
   * Git
   * UNIX/Linux development/build tools (gcc, make/gmake, etc..)
   * OpenSSL command line tool (openssl)
